@@ -2,6 +2,8 @@ import { defineConfig, loadEnv, type Connect, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import type { IncomingMessage, ServerResponse } from 'node:http'
+import fs from 'node:fs'
+import path from 'node:path'
 
 const DEFAULT_LLM_TARGET = 'https://t.mysugoncloud.com:8765'
 const FETCH_URL_MAX_CHARS = 12000
@@ -98,6 +100,70 @@ function fetchUrlMiddleware(): Connect.NextHandleFunction {
   }
 }
 
+
+function serveStaticDir(
+  urlPrefix: string,
+  dirName: string,
+): Connect.NextHandleFunction {
+  const root = path.resolve(process.cwd(), dirName)
+  return (req, res, next) => {
+    const rawUrl = req.url || ''
+    const pathOnly = rawUrl.split('?')[0]
+    if (!pathOnly.startsWith(urlPrefix)) {
+      next()
+      return
+    }
+    const rel = decodeURIComponent(pathOnly.slice(urlPrefix.length))
+    if (!rel || rel.includes('..')) {
+      next()
+      return
+    }
+    const filePath = path.resolve(root, rel)
+    if (!filePath.startsWith(root) || !fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
+      next()
+      return
+    }
+    const ext = path.extname(filePath).toLowerCase()
+    const types: Record<string, string> = {
+      '.css': 'text/css; charset=utf-8',
+      '.md': 'text/markdown; charset=utf-8',
+      '.json': 'application/json; charset=utf-8',
+      '.svg': 'image/svg+xml',
+      '.html': 'text/html; charset=utf-8',
+    }
+    res.statusCode = 200
+    res.setHeader('Content-Type', types[ext] || 'application/octet-stream')
+    res.setHeader('Cache-Control', 'no-store')
+    fs.createReadStream(filePath).pipe(res)
+  }
+}
+
+function serveDesignSkillsPlugin(): Plugin {
+  const mount = (middlewares: Connect.Server) => {
+    middlewares.use(serveStaticDir('/design-skills/', 'design-skills'))
+    middlewares.use(serveStaticDir('/export/', 'export'))
+  }
+  return {
+    name: 'serve-design-skills',
+    configureServer(server) {
+      mount(server.middlewares)
+    },
+    configurePreviewServer(server) {
+      mount(server.middlewares)
+    },
+    closeBundle() {
+      // Ensure design-skills + export land in dist for preview/static hosts
+      for (const dir of ['design-skills', 'export']) {
+        const srcDir = path.resolve(process.cwd(), dir)
+        const destDir = path.resolve(process.cwd(), 'dist', dir)
+        if (!fs.existsSync(srcDir)) continue
+        fs.mkdirSync(destDir, { recursive: true })
+        fs.cpSync(srcDir, destDir, { recursive: true })
+      }
+    },
+  }
+}
+
 function sugonDevProxyPlugin(): Plugin {
   return {
     name: 'sugon-dev-proxy',
@@ -132,7 +198,7 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
-    plugins: [react(), tailwindcss(), sugonDevProxyPlugin()],
+    plugins: [react(), tailwindcss(), sugonDevProxyPlugin(), serveDesignSkillsPlugin()],
     server: { proxy: llmProxy },
     preview: { proxy: llmProxy },
   }

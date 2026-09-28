@@ -13,6 +13,7 @@ import {
   mostRecentSkill,
   type Skill,
 } from '../lib/skills'
+import { StylePreviewCard } from './StylePreviewCard'
 import {
   hasApiKey,
   loadLlmSettings,
@@ -49,6 +50,8 @@ type ChatBubble = {
   linkUrl?: string
   /** 确认归库成功后的对话内结果卡（非 toast） */
   guikuResult?: GuikuResultCard
+  /** 对话内风格预览卡（最近入库 / 看库 dig） */
+  stylePreviewSkill?: Skill
 }
 
 /** 待发送附件：图 / 普通文件 / 文件夹（聚合）三态 */
@@ -770,9 +773,8 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
     recentBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     pushBubble({
       role: 'assistant',
-      text: `【看库 · 本条详情】\n名称：${skill.name}\n用途：${skill.purpose}\npath：${skill.path}${
-        skill.content ? `\n说明：${skill.content}` : ''
-      }\n\n当前库共 ${skills.length} 项。可「选用」切换会话引用，或「复制 path」。`,
+      text: `风格预览 · ${skill.name}`,
+      stylePreviewSkill: skill,
     })
     window.setTimeout(() => setHighlightSkillId(null), 2400)
   }
@@ -1160,6 +1162,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                 onLook={(name) => void runLookLibrary(name)}
                 onSelect={(name) => void runSelectSkill(name)}
                 onCopyPath={(p) => copyPath(p)}
+                onAttachSession={(sk) => setSessionSelected(sk)}
               />
             ))}
             {busy && (
@@ -1619,17 +1622,20 @@ function Bubble({
   onLook,
   onSelect,
   onCopyPath,
+  onAttachSession,
 }: {
   bubble: ChatBubble
   onRetryLink: (url: string) => void
   onLook?: (name: string) => void
   onSelect?: (name: string) => void
   onCopyPath?: (path: string) => Promise<boolean>
+  onAttachSession?: (skill: Skill) => void
 }) {
   const [copied, setCopied] = useState(false)
   const isUser = bubble.role === 'user'
   const isError = bubble.role === 'error'
   const result = bubble.guikuResult
+  const previewSkill = bubble.stylePreviewSkill
   const bg = isError
     ? '#FEF2F2'
     : isUser
@@ -1639,7 +1645,7 @@ function Bubble({
         : 'var(--color-surface)'
   const border = isError
     ? '1px solid #FECACA'
-    : result
+    : result || previewSkill
       ? '1px solid var(--color-primary)'
       : '1px solid var(--color-border)'
   const color = isError ? '#B91C1C' : 'var(--color-text)'
@@ -1669,7 +1675,7 @@ function Bubble({
         style={{
           margin: 0,
           marginBottom:
-            bubble.imagePreview || bubble.linkUrl || result
+            bubble.imagePreview || bubble.linkUrl || result || previewSkill
               ? 'var(--space-2)'
               : 0,
           fontSize: 'var(--text-xs)',
@@ -1700,7 +1706,7 @@ function Bubble({
           }}
         />
       )}
-      {!result && (
+      {!result && !previewSkill && (
         <p
           style={{
             margin: 0,
@@ -1712,6 +1718,12 @@ function Bubble({
         >
           {bubble.text}
         </p>
+      )}
+      {previewSkill && (
+        <StylePreviewCard
+          skill={previewSkill}
+          onSelect={(sk) => onAttachSession?.(sk)}
+        />
       )}
       {result && (
         <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
