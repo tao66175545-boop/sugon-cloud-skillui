@@ -42,11 +42,11 @@ export function TokenUsageExample() {
           lineHeight: "var(--leading-relaxed)",
         }}
       >
-        本组件不依赖质量层包。令牌来自{" "}
+        本组件不依赖质量层包。令牌来自出口{" "}
         <code
           style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)" }}
         >
-          design-skills/brand-kit/tokens.css
+          export/sugon-skillui.css → design-skills/brand-kit/tokens.css
         </code>
         。
       </p>

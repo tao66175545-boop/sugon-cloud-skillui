@@ -6,6 +6,29 @@
 
 ---
 
+
+---
+
+## 对外统一出口
+
+其他项目消费**风格供给层**请走 [`export/`](./export/)：
+
+| 入口 | 说明 |
+|------|------|
+| [`export/README.md`](./export/README.md) | 中文接入说明（`@import` / 复制 `design-skills`；非 CDN） |
+| [`export/manifest.json`](./export/manifest.json) | 机器可读：包名、版本、主色 `#C8161D`、各资源 relative / raw / blob URL |
+| [`export/sugon-skillui.css`](./export/sugon-skillui.css) | 仅 `@import` `design-skills/brand-kit/tokens.css` |
+
+最小示例：
+
+```css
+@import "../path-to/sugon-skillui/export/sugon-skillui.css";
+/* 或 */
+@import "../path-to/sugon-skillui/design-skills/brand-kit/tokens.css";
+```
+
+对照 [`examples/minimal-reference/`](./examples/minimal-reference/)。**Agent / 对话不是对外出口**；勿引入质量层。
+
 ## 分层：供给层 vs 质量层
 
 | 层级 | 职责 | 本仓库 |

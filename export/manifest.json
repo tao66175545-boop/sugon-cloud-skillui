@@ -1,0 +1,84 @@
+{
+  "name": "sugon-skillui",
+  "displayName": "曙光云 SkillUI 库",
+  "version": "0.1.0",
+  "layer": "style-supply",
+  "brand": {
+    "primary": "#C8161D",
+    "neutrals": [
+      "gray",
+      "white"
+    ]
+  },
+  "notes": {
+    "privateRaw": "Private repos need a GitHub personal access token (Authorization: Bearer <token>) to fetch raw.githubusercontent.com; relative paths and blob URLs still work for humans/local clones.",
+    "notExportSurface": "Agent/chat UI is the in-app management entry only — not part of the style-supply export surface.",
+    "qualityLayer": "Out of scope. Do not introduce Taste / Impeccable / Hallmark via this export.",
+    "delivery": "Not a cloud CDN. Consume via local relative path, copy of design-skills/, or GitHub raw/blob URLs."
+  },
+  "github": {
+    "owner": "tao66175545-boop",
+    "repo": "sugon-skillui",
+    "branch": "main",
+    "rawBase": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main",
+    "blobBase": "https://github.com/tao66175545-boop/sugon-skillui/blob/main"
+  },
+  "entries": [
+    {
+      "id": "tokens",
+      "path": "design-skills/brand-kit/tokens.css",
+      "purpose": "CSS 自定义属性（品牌主色 #C8161D 等）；其他项目 @import 的主入口",
+      "relative": "design-skills/brand-kit/tokens.css",
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/design-skills/brand-kit/tokens.css",
+      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/design-skills/brand-kit/tokens.css"
+    },
+    {
+      "id": "export-css",
+      "path": "export/sugon-skillui.css",
+      "purpose": "统一 CSS 出口：仅 re-export @import tokens.css",
+      "relative": "export/sugon-skillui.css",
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/export/sugon-skillui.css",
+      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/export/sugon-skillui.css"
+    },
+    {
+      "id": "skill",
+      "path": "design-skills/brand-kit/SKILL.md",
+      "purpose": "AI / 代理读取的风格供给层入口说明",
+      "relative": "design-skills/brand-kit/SKILL.md",
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/design-skills/brand-kit/SKILL.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/design-skills/brand-kit/SKILL.md"
+    },
+    {
+      "id": "design",
+      "path": "design-skills/brand-kit/DESIGN.md",
+      "purpose": "设计规范：颜色、字体、圆角、间距、按钮三态",
+      "relative": "design-skills/brand-kit/DESIGN.md",
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/design-skills/brand-kit/DESIGN.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/design-skills/brand-kit/DESIGN.md"
+    },
+    {
+      "id": "brand-kit",
+      "path": "design-skills/brand-kit/",
+      "purpose": "整包品牌路径：可复制到其他项目后本地引用",
+      "relative": "design-skills/brand-kit/",
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/design-skills/brand-kit/README.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/design-skills/brand-kit"
+    },
+    {
+      "id": "minimal-reference",
+      "path": "examples/minimal-reference/",
+      "purpose": "最小参考样例：演示如何消费供给层令牌 / 出口",
+      "relative": "examples/minimal-reference/",
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/examples/minimal-reference/README.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/examples/minimal-reference"
+    },
+    {
+      "id": "logo",
+      "path": "public/logo.svg",
+      "purpose": "曙光品牌 SVG logo（可选引用）",
+      "relative": "public/logo.svg",
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/public/logo.svg",
+      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/public/logo.svg"
+    }
+  ]
+}
