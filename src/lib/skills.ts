@@ -116,3 +116,30 @@ export async function copyPath(path: string): Promise<boolean> {
     }
   }
 }
+
+export const LAST_INGEST_KEY = 'sugon-skillui-last-ingest'
+
+export function loadLastIngestName(): string | null {
+  try {
+    const v = localStorage.getItem(LAST_INGEST_KEY)
+    return v && v.trim() ? v.trim() : null
+  } catch {
+    return null
+  }
+}
+
+export function saveLastIngestName(name: string): void {
+  try {
+    localStorage.setItem(LAST_INGEST_KEY, name.trim())
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
+
+/** 按 createdAt 取最近一条（用于「最近入库」回显） */
+export function mostRecentSkill(skills: Skill[]): Skill | null {
+  if (!skills.length) return null
+  return [...skills].sort((a, b) =>
+    b.createdAt.localeCompare(a.createdAt),
+  )[0]
+}

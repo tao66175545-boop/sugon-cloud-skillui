@@ -5,7 +5,14 @@ import {
   type CSSProperties,
   type FormEvent,
 } from 'react'
-import { addSkill, type Skill } from '../lib/skills'
+import {
+  addSkill,
+  copyPath,
+  loadLastIngestName,
+  saveLastIngestName,
+  mostRecentSkill,
+  type Skill,
+} from '../lib/skills'
 import {
   hasApiKey,
   loadLlmSettings,
@@ -27,12 +34,21 @@ import {
 
 type UiRole = 'user' | 'assistant' | 'system' | 'error'
 
+type GuikuResultCard = {
+  name: string
+  purpose: string
+  path: string
+  skillCount: number
+}
+
 type ChatBubble = {
   id: string
   role: UiRole
   text: string
   imagePreview?: string
   linkUrl?: string
+  /** 确认归库成功后的对话内结果卡（非 toast） */
+  guikuResult?: GuikuResultCard
 }
 
 /** 待发送附件：图 / 普通文件 / 文件夹（聚合）三态 */
@@ -240,7 +256,15 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
   const [busy, setBusy] = useState(false)
   const [pendingDraft, setPendingDraft] = useState<SkillDraft | null>(null)
   const [statusMsg, setStatusMsg] = useState<string | null>(null)
+  const [lastIngestName, setLastIngestName] = useState<string | null>(() =>
+    loadLastIngestName(),
+  )
+  /** 选用：仅切换当前会话引用（不新开入口） */
+  const [sessionSelected, setSessionSelected] = useState<Skill | null>(null)
+  const [recentBarOpen, setRecentBarOpen] = useState(false)
+  const [highlightSkillId, setHighlightSkillId] = useState<string | null>(null)
   const listRef = useRef<HTMLDivElement>(null)
+  const recentBarRef = useRef<HTMLDivElement>(null)
   const imageRef = useRef<HTMLInputElement>(null)
   const fileRef = useRef<HTMLInputElement>(null)
   const folderRef = useRef<HTMLInputElement>(null)
@@ -248,6 +272,8 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
   const apiHistory = useRef<ApiMessage[]>([])
 
   const keyed = hasApiKey(settings)
+  const recentIngestLabel =
+    lastIngestName ?? mostRecentSkill(skills)?.name ?? null
 
   useEffect(() => {
     listRef.current?.scrollTo({
@@ -482,19 +508,15 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
         })
         return true
       }
+      setSessionSelected(hit)
       const pathText = hit.path
-      try {
-        await navigator.clipboard.writeText(pathText)
-        pushBubble({
-          role: 'assistant',
-          text: `已选用「${hit.name}」。\n用途：${hit.purpose}\npath 已复制：\n${pathText}\n\n可在目标项目 CSS 中 @import 该路径下的 tokens.css（仅供给层）。`,
-        })
-      } catch {
-        pushBubble({
-          role: 'assistant',
-          text: `已选用「${hit.name}」。\n用途：${hit.purpose}\npath（请手动复制）：\n${pathText}`,
-        })
-      }
+      const ok = await copyPath(pathText)
+      pushBubble({
+        role: 'assistant',
+        text: ok
+          ? `已选用「${hit.name}」（当前会话引用）。\n用途：${hit.purpose}\npath 已复制：\n${pathText}\n\n可在目标项目 CSS 中 @import 该路径下的 tokens.css（仅供给层）。`
+          : `已选用「${hit.name}」（当前会话引用）。\n用途：${hit.purpose}\npath（请手动复制）：\n${pathText}`,
+      })
       return true
     }
     return false
@@ -715,20 +737,83 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
 
   function confirmGuiku() {
     if (!pendingDraft) return
+    const draft = pendingDraft
     const next = addSkill({
-      id: pendingDraft.id,
-      name: pendingDraft.name,
-      purpose: pendingDraft.purpose,
-      path: pendingDraft.path,
-      content: pendingDraft.content,
+      id: draft.id,
+      name: draft.name,
+      purpose: draft.purpose,
+      path: draft.path,
+      content: draft.content,
     })
+    const saved = next.find((x) => x.name === draft.name.trim()) ?? next[0]
     onSkillsChanged(next)
+    saveLastIngestName(saved.name)
+    setLastIngestName(saved.name)
+    setSessionSelected(saved)
     pushBubble({
       role: 'system',
-      text: `已确认归库「${pendingDraft.name}」→ localStorage（sugon-skillui-skills）。可在对话说「看库」查看；刷新后仍在。`,
+      text: `已确认归库「${saved.name}」→ localStorage（sugon-skillui-skills）。`,
+      guikuResult: {
+        name: saved.name,
+        purpose: saved.purpose,
+        path: saved.path,
+        skillCount: next.length,
+      },
     })
     setPendingDraft(null)
     setStatusMsg(null)
+  }
+
+  function showSkillDetail(skill: Skill) {
+    setHighlightSkillId(skill.id)
+    setRecentBarOpen(true)
+    recentBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    pushBubble({
+      role: 'assistant',
+      text: `【看库 · 本条详情】\n名称：${skill.name}\n用途：${skill.purpose}\npath：${skill.path}${
+        skill.content ? `\n说明：${skill.content}` : ''
+      }\n\n当前库共 ${skills.length} 项。可「选用」切换会话引用，或「复制 path」。`,
+    })
+    window.setTimeout(() => setHighlightSkillId(null), 2400)
+  }
+
+  async function runLookLibrary(focusName?: string) {
+    if (focusName) {
+      const hit =
+        skills.find((s) => s.name === focusName) ||
+        skills.find((s) => s.name.includes(focusName) || s.id === focusName)
+      if (hit) {
+        showSkillDetail(hit)
+        return
+      }
+    }
+    const brief = formatSkillsBrief(skills)
+    pushBubble({
+      role: 'assistant',
+      text: `本机已登记 ${skills.length} 项 Skill：\n\n${brief}\n\n可说「选用 <名称>」复制其 path；或继续贴链接 / 描述以起草新 Skill。`,
+    })
+  }
+
+  async function runSelectSkill(q: string) {
+    const hit =
+      skills.find((s) => s.name === q) ||
+      skills.find((s) => s.name.includes(q) || s.id === q)
+    if (!hit) {
+      pushBubble({
+        role: 'assistant',
+        text: `未找到名为「${q}」的 Skill。当前库：\n\n${formatSkillsBrief(skills)}\n\n请核对名称后再说「选用 …」。`,
+      })
+      return
+    }
+    setSessionSelected(hit)
+    const pathText = hit.path
+    const ok = await copyPath(pathText)
+    pushBubble({
+      role: 'assistant',
+      text: ok
+        ? `已选用「${hit.name}」（当前会话引用）。\n用途：${hit.purpose}\npath 已复制：\n${pathText}\n\n可在目标项目 CSS 中 @import 该路径下的 tokens.css（仅供给层）。`
+        : `已选用「${hit.name}」（当前会话引用）。\n用途：${hit.purpose}\npath（请手动复制）：\n${pathText}`,
+    })
   }
 
   function cancelGuiku() {
@@ -817,6 +902,110 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
             >
               唯一管理入口：链接学习、起草、看库、选用、归库、导出——都在这一处对话完成。不引入质量层。
             </p>
+            <div
+              ref={recentBarRef}
+              style={{
+                marginTop: 'var(--space-3)',
+                maxWidth: '36rem',
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setRecentBarOpen((v) => !v)}
+                aria-expanded={recentBarOpen}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 'var(--space-2)',
+                  margin: 0,
+                  padding: '0.35rem 0.65rem',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--color-border)',
+                  backgroundColor: 'var(--color-surface)',
+                  color: 'var(--color-text-secondary)',
+                  fontSize: 'var(--text-sm)',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                }}
+              >
+                <span>
+                  最近入库：{recentIngestLabel ?? '（暂无）'} · 当前{' '}
+                  {skills.length} 个
+                </span>
+                <span aria-hidden style={{ fontSize: 'var(--text-xs)' }}>
+                  {recentBarOpen ? '▴' : '▾'}
+                </span>
+              </button>
+              {sessionSelected && (
+                <p
+                  style={{
+                    margin: 'var(--space-1) 0 0',
+                    fontSize: 'var(--text-xs)',
+                    color: 'var(--color-text-muted)',
+                  }}
+                >
+                  当前会话引用：{sessionSelected.name}
+                </p>
+              )}
+              {recentBarOpen && (
+                <ul
+                  style={{
+                    listStyle: 'none',
+                    margin: 'var(--space-2) 0 0',
+                    padding: 'var(--space-2)',
+                    border: '1px solid var(--color-border)',
+                    borderRadius: 'var(--radius-md)',
+                    backgroundColor: 'var(--color-bg)',
+                    display: 'grid',
+                    gap: '0.25rem',
+                    maxHeight: '12rem',
+                    overflowY: 'auto',
+                  }}
+                >
+                  {[...skills]
+                    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+                    .slice(0, 8)
+                    .map((sk) => (
+                      <li key={sk.id}>
+                        <button
+                          type="button"
+                          onClick={() => showSkillDetail(sk)}
+                          style={{
+                            width: '100%',
+                            textAlign: 'left',
+                            padding: '0.4rem 0.5rem',
+                            borderRadius: 'var(--radius-sm)',
+                            border:
+                              highlightSkillId === sk.id
+                                ? '1px solid var(--color-primary)'
+                                : '1px solid transparent',
+                            backgroundColor:
+                              highlightSkillId === sk.id
+                                ? 'var(--color-primary-muted)'
+                                : 'transparent',
+                            cursor: 'pointer',
+                            fontFamily: 'inherit',
+                            fontSize: 'var(--text-sm)',
+                            color: 'var(--color-text)',
+                          }}
+                        >
+                          <strong>{sk.name}</strong>
+                          <span
+                            style={{
+                              display: 'block',
+                              fontSize: 'var(--text-xs)',
+                              color: 'var(--color-text-muted)',
+                              fontFamily: 'var(--font-mono)',
+                            }}
+                          >
+                            {sk.path}
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                </ul>
+              )}
+            </div>
           </div>
           <button
             type="button"
@@ -964,7 +1153,14 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
             }}
           >
             {bubbles.map((b) => (
-              <Bubble key={b.id} bubble={b} onRetryLink={retryLink} />
+              <Bubble
+                key={b.id}
+                bubble={b}
+                onRetryLink={retryLink}
+                onLook={(name) => void runLookLibrary(name)}
+                onSelect={(name) => void runSelectSkill(name)}
+                onCopyPath={(p) => copyPath(p)}
+              />
             ))}
             {busy && (
               <p
@@ -1420,12 +1616,20 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
 function Bubble({
   bubble,
   onRetryLink,
+  onLook,
+  onSelect,
+  onCopyPath,
 }: {
   bubble: ChatBubble
   onRetryLink: (url: string) => void
+  onLook?: (name: string) => void
+  onSelect?: (name: string) => void
+  onCopyPath?: (path: string) => Promise<boolean>
 }) {
+  const [copied, setCopied] = useState(false)
   const isUser = bubble.role === 'user'
   const isError = bubble.role === 'error'
+  const result = bubble.guikuResult
   const bg = isError
     ? '#FEF2F2'
     : isUser
@@ -1435,8 +1639,19 @@ function Bubble({
         : 'var(--color-surface)'
   const border = isError
     ? '1px solid #FECACA'
-    : '1px solid var(--color-border)'
+    : result
+      ? '1px solid var(--color-primary)'
+      : '1px solid var(--color-border)'
   const color = isError ? '#B91C1C' : 'var(--color-text)'
+
+  async function handleCopy() {
+    if (!result || !onCopyPath) return
+    const ok = await onCopyPath(result.path)
+    if (ok) {
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 2000)
+    }
+  }
 
   return (
     <div
@@ -1454,7 +1669,9 @@ function Bubble({
         style={{
           margin: 0,
           marginBottom:
-            bubble.imagePreview || bubble.linkUrl ? 'var(--space-2)' : 0,
+            bubble.imagePreview || bubble.linkUrl || result
+              ? 'var(--space-2)'
+              : 0,
           fontSize: 'var(--text-xs)',
           fontWeight: 600,
           color: isError ? '#B91C1C' : 'var(--color-text-muted)',
@@ -1483,17 +1700,99 @@ function Bubble({
           }}
         />
       )}
-      <p
-        style={{
-          margin: 0,
-          whiteSpace: 'pre-wrap',
-          fontSize: 'var(--text-sm)',
-          lineHeight: 'var(--leading-relaxed)',
-          wordBreak: 'break-word',
-        }}
-      >
-        {bubble.text}
-      </p>
+      {!result && (
+        <p
+          style={{
+            margin: 0,
+            whiteSpace: 'pre-wrap',
+            fontSize: 'var(--text-sm)',
+            lineHeight: 'var(--leading-relaxed)',
+            wordBreak: 'break-word',
+          }}
+        >
+          {bubble.text}
+        </p>
+      )}
+      {result && (
+        <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
+          <p
+            style={{
+              margin: 0,
+              fontWeight: 700,
+              fontSize: 'var(--text-sm)',
+              color: 'var(--color-primary)',
+            }}
+          >
+            已入库 · {result.name}
+          </p>
+          <p
+            style={{
+              margin: 0,
+              fontSize: 'var(--text-sm)',
+              color: 'var(--color-text-secondary)',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+            title={result.purpose}
+          >
+            {result.purpose}
+          </p>
+          <p
+            style={{
+              margin: 0,
+              fontFamily: 'var(--font-mono)',
+              fontSize: 'var(--text-xs)',
+              wordBreak: 'break-all',
+              color: 'var(--color-text)',
+            }}
+          >
+            {result.path}
+          </p>
+          <p
+            style={{
+              margin: 0,
+              fontSize: 'var(--text-xs)',
+              color: 'var(--color-text-muted)',
+            }}
+          >
+            当前库 {result.skillCount} 个
+          </p>
+          <div
+            style={{
+              display: 'flex',
+              gap: 'var(--space-2)',
+              flexWrap: 'wrap',
+              marginTop: 'var(--space-1)',
+            }}
+          >
+            <button
+              type="button"
+              className="btn-secondary"
+              style={{ height: '2rem', fontSize: 'var(--text-xs)' }}
+              onClick={() => onLook?.(result.name)}
+            >
+              看库
+            </button>
+            <button
+              type="button"
+              className="btn-secondary"
+              style={{ height: '2rem', fontSize: 'var(--text-xs)' }}
+              onClick={() => onSelect?.(result.name)}
+            >
+              选用 {result.name}
+            </button>
+            <button
+              type="button"
+              className="btn-secondary"
+              style={{ height: '2rem', fontSize: 'var(--text-xs)' }}
+              onClick={() => void handleCopy()}
+            >
+              {copied ? '已复制' : '复制 path'}
+            </button>
+          </div>
+        </div>
+      )}
       {(isError || bubble.role === 'system') && bubble.linkUrl && (
         <button
           type="button"
@@ -1511,7 +1810,6 @@ function Bubble({
     </div>
   )
 }
-
 const labelStyle: CSSProperties = {
   fontWeight: 600,
   fontSize: 'var(--text-sm)',
