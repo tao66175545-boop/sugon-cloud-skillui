@@ -140,11 +140,13 @@
   }
 }
 
-/* Top bar frosted glass — inspired by docs.x.ai sticky header */
+/* Top bar frosted glass — docs.x.ai style (semi-clear + blur so scroll shows through) */
 .topbar-frost {
-  background-color: color-mix(in srgb, var(--color-surface) 72%, transparent);
-  -webkit-backdrop-filter: saturate(160%) blur(14px);
-  backdrop-filter: saturate(160%) blur(14px);
+  background-color: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  /* keep frost working across nested children */
+  isolation: isolate;
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {

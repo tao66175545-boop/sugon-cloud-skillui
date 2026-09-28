@@ -16,17 +16,6 @@ export function TopBar({ skillCount }: TopBarProps) {
       }}
     >
       <div
-        aria-hidden
-        style={{
-          pointerEvents: 'none',
-          position: 'absolute',
-          inset: '0 0 auto',
-          height: '100%',
-          background:
-            'linear-gradient(to bottom, color-mix(in srgb, var(--color-surface) 88%, transparent), color-mix(in srgb, var(--color-surface) 55%, transparent))',
-        }}
-      />
-      <div
         className="container-max"
         style={{
           position: 'relative',
