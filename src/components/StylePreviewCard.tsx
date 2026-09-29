@@ -126,16 +126,19 @@ function ShadowCardFace({
   onCopyImport: () => void
 }) {
   const p = model?.preview
-  const primary = p?.colors[0]?.value || '#9ca3af'
+  const primary =
+    p?.colors.find((c) => c.name === 'primary' || c.name === 'accent')?.value ||
+    p?.colors[0]?.value ||
+    '#C8161D'
   const surface =
     p?.colors.find((c) => c.name === 'surface' || c.name === 'bg')?.value ||
     '#ffffff'
-  const text = p?.colors.find((c) => c.name === 'text')?.value || '#0f172a'
+  const text = p?.colors.find((c) => c.name === 'text')?.value || '#171717'
   const border =
-    p?.colors.find((c) => c.name === 'border')?.value || '#e2e8f0'
+    p?.colors.find((c) => c.name === 'border')?.value || '#e5e5e5'
   const muted =
     p?.colors.find((c) => c.name === 'muted' || c.name === 'text-secondary')
-      ?.value || '#64748b'
+      ?.value || '#525252'
 
   return (
     <>
@@ -164,7 +167,7 @@ function ShadowCardFace({
           margin: 0;
           font-size: 0.9375rem;
           font-weight: 700;
-          color: var(--color-primary, ${primary});
+          color: var(--color-text, ${text});
         }
         .badge {
           font-size: 0.6875rem;
@@ -188,7 +191,7 @@ function ShadowCardFace({
           font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
           font-size: 0.75rem;
           word-break: break-all;
-          color: var(--color-text, ${text});
+          color: var(--color-text-secondary, ${muted});
         }
         .meta {
           margin: 0;

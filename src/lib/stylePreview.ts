@@ -27,31 +27,32 @@ export type StylePreviewModel = {
   preview: StylePreviewTokens
 }
 
-const GRAY_PLACEHOLDER: { name: string; value: string }[] = [
-  { name: 'primary', value: '#9ca3af' },
-  { name: 'surface', value: '#f3f4f6' },
-  { name: 'border', value: '#d1d5db' },
-  { name: 'text', value: '#6b7280' },
-  { name: 'muted', value: '#e5e7eb' },
+/** Brand-kit fallback when skill tokens.css / DESIGN.md lack a rich palette. */
+const BRAND_PLACEHOLDER: { name: string; value: string }[] = [
+  { name: 'primary', value: '#C8161D' },
+  { name: 'surface', value: '#ffffff' },
+  { name: 'border', value: '#e5e5e5' },
+  { name: 'text', value: '#171717' },
+  { name: 'muted', value: '#525252' },
 ]
 
-/** Fallback sandbox vars when tokens.css is missing / incomplete (gray placeholder). */
+/** Fallback sandbox vars when tokens.css is missing / incomplete (brand-kit). */
 const SANDBOX_FALLBACK: Record<string, string> = {
-  '--color-primary': '#9ca3af',
-  '--color-primary-hover': '#6b7280',
-  '--color-primary-active': '#4b5563',
+  '--color-primary': '#C8161D',
+  '--color-primary-hover': '#A81218',
+  '--color-primary-active': '#8F0F14',
   '--color-primary-foreground': '#ffffff',
-  '--color-primary-muted': '#f3f4f6',
+  '--color-primary-muted': '#FCE8E9',
   '--color-surface': '#ffffff',
   '--color-bg': '#ffffff',
-  '--color-bg-subtle': '#f9fafb',
-  '--color-bg-muted': '#f3f4f6',
-  '--color-border': '#e5e7eb',
-  '--color-border-strong': '#d1d5db',
-  '--color-text': '#6b7280',
-  '--color-text-secondary': '#9ca3af',
-  '--color-text-muted': '#d1d5db',
-  '--font-sans': 'system-ui, sans-serif',
+  '--color-bg-subtle': '#f5f5f5',
+  '--color-bg-muted': '#eeeeee',
+  '--color-border': '#e5e5e5',
+  '--color-border-strong': '#d4d4d4',
+  '--color-text': '#171717',
+  '--color-text-secondary': '#525252',
+  '--color-text-muted': '#a3a3a3',
+  '--font-sans': '"Noto Sans SC", "PingFang SC", system-ui, sans-serif',
   '--font-mono': 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
   '--text-sm': '0.875rem',
   '--text-base': '1rem',
@@ -69,8 +70,8 @@ const SANDBOX_FALLBACK: Record<string, string> = {
   '--btn-font-weight': '600',
   '--btn-transition':
     'background-color 150ms ease, box-shadow 150ms ease, border-color 150ms ease',
-  '--focus-ring': '0 0 0 3px #f3f4f6',
-  '--focus-ring-strong': '0 0 0 3px color-mix(in srgb, #9ca3af 28%, transparent)',
+  '--focus-ring': '0 0 0 3px #FCE8E9',
+  '--focus-ring-strong': '0 0 0 3px color-mix(in srgb, #C8161D 28%, transparent)',
   '--shadow-sm': '0 1px 2px 0 rgb(23 23 23 / 0.05)',
   '--shadow-md':
     '0 4px 6px -1px rgb(23 23 23 / 0.08), 0 2px 4px -2px rgb(23 23 23 / 0.06)',
@@ -218,20 +219,19 @@ function spacesFromVars(
 }
 
 /**
- * Build sandbox CSS vars for Shadow: prefer parsed tokens, else gray fallback.
+ * Build sandbox CSS vars for Shadow: prefer parsed tokens, else brand-kit fallback.
  * When DESIGN.md supplies palette but tokens are thin, overlay primary/surface/text.
  */
 function buildSandboxVars(
   vars: Record<string, string>,
   colors: { name: string; value: string }[],
-  usePlaceholder: boolean,
+  _usePlaceholder: boolean,
 ): Record<string, string> {
   const out: Record<string, string> = { ...SANDBOX_FALLBACK }
-  if (!usePlaceholder) {
-    for (const key of SANDBOX_KEYS) {
-      const v = vars[key]
-      if (v) out[key] = v
-    }
+  // Always layer skill vars when present; brand-kit base fills gaps for thin 入库 skills.
+  for (const key of SANDBOX_KEYS) {
+    const v = vars[key]
+    if (v) out[key] = v
   }
   // Overlay picked colors so DESIGN.md-only / partial tokens still tint the sandbox.
   for (const c of colors) {
@@ -240,8 +240,24 @@ function buildSandboxVars(
       out[full] = c.value
     }
   }
-  if (colors[0] && !vars['--color-primary']) {
-    out['--color-primary'] = colors[0].value
+  const primaryFromColors =
+    colors.find((c) => c.name === 'primary' || c.name === 'accent')?.value ||
+    colors[0]?.value
+  if (primaryFromColors && !vars['--color-primary']) {
+    out['--color-primary'] = primaryFromColors
+  }
+  // Never leave mute-gray as primary (legacy placeholder / incomplete 入库 tokens).
+  if (
+    !out['--color-primary'] ||
+    /^#(9ca3af|6b7280|4b5563)$/i.test(out['--color-primary'].trim())
+  ) {
+    out['--color-primary'] = '#C8161D'
+    if (
+      !out['--color-primary-hover'] ||
+      /^#(9ca3af|6b7280|4b5563)$/i.test(out['--color-primary-hover'].trim())
+    ) {
+      out['--color-primary-hover'] = '#A81218'
+    }
   }
   return out
 }
@@ -252,7 +268,7 @@ function buildPreview(
   colorSource: StylePreviewTokens['colorSource'],
 ): StylePreviewTokens {
   const usePlaceholder = colors.length < 3
-  const finalColors = usePlaceholder ? GRAY_PLACEHOLDER : colors
+  const finalColors = usePlaceholder ? BRAND_PLACEHOLDER : colors
   const finalSource: StylePreviewTokens['colorSource'] = usePlaceholder
     ? 'placeholder'
     : colorSource
@@ -279,7 +295,7 @@ async function tryFetchText(url: string): Promise<string | null> {
 }
 
 /**
- * Load preview data: tokens.css → DESIGN.md colors → gray placeholder.
+ * Load preview data: tokens.css → DESIGN.md colors → brand-kit placeholder.
  * Bundled brand-kit is preferred; otherwise fetch relative skill paths.
  */
 export async function loadStylePreview(skill: Skill): Promise<StylePreviewModel> {
@@ -312,13 +328,13 @@ export async function loadStylePreview(skill: Skill): Promise<StylePreviewModel>
       const dColors = parseDesignColors(designMd)
       preview = buildPreview(vars, dColors, 'DESIGN.md')
     } else {
-      preview = buildPreview(vars, GRAY_PLACEHOLDER, 'placeholder')
+      preview = buildPreview(vars, BRAND_PLACEHOLDER, 'placeholder')
     }
   } else if (designMd) {
     const dColors = parseDesignColors(designMd)
     preview = buildPreview({}, dColors, 'DESIGN.md')
   } else {
-    preview = buildPreview({}, GRAY_PLACEHOLDER, 'placeholder')
+    preview = buildPreview({}, BRAND_PLACEHOLDER, 'placeholder')
   }
 
   return {
