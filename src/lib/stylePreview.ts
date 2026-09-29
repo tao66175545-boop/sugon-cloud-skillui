@@ -128,28 +128,6 @@ export function skillSourceBadge(skill: Skill): string {
   return '入库'
 }
 
-/** Tone for source badges — multi-hue, still brand red/gray/white family */
-export function skillSourceBadgeTone(skill: Skill): {
-  color: string
-  background: string
-  border: string
-} {
-  const kind = skillSourceBadge(skill)
-  if (kind === '种子') {
-    return {
-      color: 'var(--color-text-secondary)',
-      background: 'var(--color-bg-muted)',
-      border: '1px solid var(--color-border-strong)',
-    }
-  }
-  // 入库
-  return {
-    color: 'var(--color-primary)',
-    background: 'color-mix(in srgb, var(--color-primary) 12%, transparent)',
-    border: '1px solid color-mix(in srgb, var(--color-primary) 28%, transparent)',
-  }
-}
-
 function parseCssVars(css: string): Record<string, string> {
   const out: Record<string, string> = {}
   const re = /(--[a-zA-Z0-9-]+)\s*:\s*([^;]+);/g

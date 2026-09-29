@@ -15,7 +15,7 @@ import {
   type Skill,
 } from '../lib/skills'
 import { StylePreviewCard } from './StylePreviewCard'
-import { skillSourceBadge, skillSourceBadgeTone } from '../lib/stylePreview'
+import { skillSourceBadge } from '../lib/stylePreview'
 import './agentRecent.css'
 import {
   hasApiKey,
@@ -1081,7 +1081,6 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                     {recentSkills.map((sk) => {
                       const selected = selectedSkillId === sk.id
                       const tag = skillSourceBadge(sk)
-                      const tone = skillSourceBadgeTone(sk)
                       return (
                         <li key={sk.id}>
                           <button
@@ -1092,7 +1091,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                               width: '100%',
                               textAlign: 'left',
                               display: 'grid',
-                              gridTemplateColumns: '1fr auto',
+                              gridTemplateColumns: '0.5rem 1fr auto',
                               gap: '0.55rem',
                               alignItems: 'center',
                               padding: '0.5rem 0.55rem',
@@ -1109,6 +1108,16 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                               color: 'var(--color-text)',
                             }}
                           >
+                            <span
+                              aria-hidden
+                              style={{
+                                width: '0.5rem',
+                                height: '0.5rem',
+                                borderRadius: '9999px',
+                                backgroundColor: 'var(--color-primary)',
+                                justifySelf: 'center',
+                              }}
+                            />
                             <span style={{ minWidth: 0 }}>
                               <span
                                 style={{
@@ -1147,9 +1156,11 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                                 fontWeight: 600,
                                 padding: '0.1rem 0.4rem',
                                 borderRadius: '9999px',
-                                color: tone.color,
-                                backgroundColor: tone.background,
-                                border: tone.border,
+                                color: 'var(--color-primary)',
+                                backgroundColor:
+                                  'color-mix(in srgb, var(--color-primary) 12%, transparent)',
+                                border:
+                                  '1px solid color-mix(in srgb, var(--color-primary) 28%, transparent)',
                                 whiteSpace: 'nowrap',
                               }}
                             >

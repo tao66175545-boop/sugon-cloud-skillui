@@ -178,11 +178,6 @@ function ShadowCardFace({
           color: var(--color-primary, ${primary});
           border: 1px solid color-mix(in srgb, var(--color-primary, ${primary}) 35%, transparent);
         }
-        .badge.seed {
-          background: var(--color-bg-muted, #f3f4f6);
-          color: var(--color-text-secondary, ${muted});
-          border: 1px solid var(--color-border-strong, #d1d5db);
-        }
         .purpose {
           margin: 0;
           font-size: 0.8125rem;
@@ -396,7 +391,7 @@ function ShadowCardFace({
           <>
             <div className="head">
               <p className="name">{model.skill.name}</p>
-              <span className={`badge${model.sourceBadge === '种子' ? ' seed' : ''}`}>{model.sourceBadge}</span>
+              <span className="badge">{model.sourceBadge}</span>
             </div>
             <p className="purpose" title={model.skill.purpose}>
               {model.skill.purpose}
