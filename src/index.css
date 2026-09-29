@@ -135,7 +135,7 @@
     width: 100%;
     max-width: var(--container-max);
     margin-inline: auto;
-    padding-inline: var(--space-6);
+    padding-inline: var(--container-pad-inline);
   }
 
   .field-label {

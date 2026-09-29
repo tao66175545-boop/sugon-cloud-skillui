@@ -120,7 +120,8 @@
     transform 100ms ease, border-color 150ms ease;
 
   /* 布局 */
-  --container-max: 72rem;
+  --container-max: 80rem;
+  --container-pad-inline: var(--space-4);
   --section-py: var(--space-20);
-  --agent-max: 48rem;
+  --agent-max: 80rem;
 }
