@@ -1080,6 +1080,11 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                         <li key={sk.id}>
                           <button
                             type="button"
+                            className={
+                              selected
+                                ? 'agent-library-item is-selected'
+                                : 'agent-library-item'
+                            }
                             onClick={() => showSkillDetail(sk)}
                             aria-pressed={selected}
                             style={{
@@ -1091,13 +1096,6 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                               alignItems: 'center',
                               padding: '0.5rem 0.55rem',
                               borderRadius: 'var(--radius-sm)',
-                              border: '1px solid transparent',
-                              borderLeft: selected
-                                ? '3px solid var(--color-primary)'
-                                : '3px solid transparent',
-                              backgroundColor: selected
-                                ? 'var(--color-primary-muted)'
-                                : 'transparent',
                               cursor: 'pointer',
                               fontFamily: 'inherit',
                               color: 'var(--color-text)',
