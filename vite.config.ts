@@ -1,4 +1,4 @@
-import { defineConfig, loadEnv, type Connect, type Plugin } from 'vite'
+﻿import { defineConfig, loadEnv, type Connect, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import type { IncomingMessage, ServerResponse } from 'node:http'
@@ -109,6 +109,12 @@ function serveStaticDir(
   return (req, res, next) => {
     const rawUrl = req.url || ''
     const pathOnly = rawUrl.split('?')[0]
+    const qs = rawUrl.includes('?') ? rawUrl.slice(rawUrl.indexOf('?') + 1) : ''
+    // Vite ?raw / ?import must reach the transform pipeline (not static MIME).
+    if (qs.includes('raw') || qs.includes('import')) {
+      next()
+      return
+    }
     if (!pathOnly.startsWith(urlPrefix)) {
       next()
       return
