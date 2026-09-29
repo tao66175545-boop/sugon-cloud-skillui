@@ -174,9 +174,14 @@ function ShadowCardFace({
           font-weight: 600;
           padding: 0.125rem 0.4rem;
           border-radius: 9999px;
-          background: color-mix(in srgb, var(--color-primary, ${primary}) 14%, transparent);
+          background: var(--color-primary-muted, #FCE8E9);
           color: var(--color-primary, ${primary});
-          border: 1px solid color-mix(in srgb, var(--color-primary, ${primary}) 35%, transparent);
+          border: 1px solid color-mix(in srgb, var(--color-primary, ${primary}) 22%, transparent);
+        }
+        .badge.seed {
+          background: var(--color-bg-muted, #f4f4f5);
+          color: var(--color-text-secondary, ${muted});
+          border: 1px solid var(--color-border, #e5e5e5);
         }
         .purpose {
           margin: 0;
@@ -391,7 +396,7 @@ function ShadowCardFace({
           <>
             <div className="head">
               <p className="name">{model.skill.name}</p>
-              <span className="badge">{model.sourceBadge}</span>
+              <span className={`badge${model.sourceBadge === '种子' ? ' seed' : ''}`}>{model.sourceBadge}</span>
             </div>
             <p className="purpose" title={model.skill.purpose}>
               {model.skill.purpose}

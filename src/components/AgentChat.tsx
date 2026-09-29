@@ -15,7 +15,7 @@ import {
   type Skill,
 } from '../lib/skills'
 import { StylePreviewCard } from './StylePreviewCard'
-import { skillSourceBadge } from '../lib/stylePreview'
+import { skillSourceBadge, skillSourceBadgeTone } from '../lib/stylePreview'
 import './agentRecent.css'
 import {
   hasApiKey,
@@ -1075,6 +1075,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                     {recentSkills.map((sk) => {
                       const selected = selectedSkillId === sk.id
                       const tag = skillSourceBadge(sk)
+                      const tone = skillSourceBadgeTone(sk)
                       return (
                         <li key={sk.id}>
                           <button
@@ -1085,7 +1086,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                               width: '100%',
                               textAlign: 'left',
                               display: 'grid',
-                              gridTemplateColumns: '0.5rem 1fr auto',
+                              gridTemplateColumns: '1fr auto',
                               gap: '0.55rem',
                               alignItems: 'center',
                               padding: '0.5rem 0.55rem',
@@ -1102,16 +1103,6 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                               color: 'var(--color-text)',
                             }}
                           >
-                            <span
-                              aria-hidden
-                              style={{
-                                width: '0.5rem',
-                                height: '0.5rem',
-                                borderRadius: '9999px',
-                                backgroundColor: 'var(--color-primary)',
-                                justifySelf: 'center',
-                              }}
-                            />
                             <span style={{ minWidth: 0 }}>
                               <span
                                 style={{
@@ -1150,11 +1141,9 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                                 fontWeight: 600,
                                 padding: '0.1rem 0.4rem',
                                 borderRadius: '9999px',
-                                color: 'var(--color-primary)',
-                                backgroundColor:
-                                  'color-mix(in srgb, var(--color-primary) 12%, transparent)',
-                                border:
-                                  '1px solid color-mix(in srgb, var(--color-primary) 28%, transparent)',
+                                color: tone.color,
+                                backgroundColor: tone.background,
+                                border: tone.border,
                                 whiteSpace: 'nowrap',
                               }}
                             >
@@ -1199,21 +1188,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
           <div ref={listRef} className="agent-chat-stream">
             {bubbles.length === 0 && !pendingDraft && !busy && (
               <div className="agent-welcome" role="status">
-                <p>
-                  直接发消息即可：粘贴链接、描述 Skill、附图片/文件/文件夹，或说「归库」「导出」「看库」「选用某某」。Agent 会理解意图。选用时可复制供给层 path。写入本机库前会请你确认。
-                </p>
-                <p>
-                  选用后对话里说「归库」「选用某某」可复制该技能路径，如{' '}
-                  <code>design-skills/brand-kit/</code>
-                  。也可看小参考{' '}
-                  <code>examples/minimal-reference/</code>
-                  。
-                </p>
-                <p>
-                  目标项目可按下路径 @import{' '}
-                  <code>design-skills/brand-kit/tokens.css</code>{' '}
-                  使用；无 npm 包、无 CDN，仅本地。
-                </p>
+                <p>发消息即可入库/看库/选用，写入前会确认</p>
               </div>
             )}
             {bubbles.map((b) => (
