@@ -1,6 +1,6 @@
 import brandKitTokensCss from '../../design-skills/brand-kit/tokens.css?raw'
 import brandKitDesignMd from '../../design-skills/brand-kit/DESIGN.md?raw'
-import { normalizeSupplyPath, type Skill } from './skills'
+import { loadSkills, normalizeSupplyPath, type Skill } from './skills'
 
 /** Parsed preview palette + type/spacing samples for the in-chat style card. */
 export type StylePreviewTokens = {
@@ -27,6 +27,31 @@ export type StylePreviewModel = {
   preview: StylePreviewTokens
   /** Short label for typography sample (path slug or truncated name) */
   shortLabel: string
+}
+
+/**
+ * User-facing chip for the palette source. Two trust groups:
+ * - 'real': colors come from the skill's own tokens.css / DESIGN.md
+ * - 'illustrative': guessed from text, auto-derived, or brand fallback
+ * Never shows internal words (tokens / derived / content) to users.
+ */
+export function colorSourceLabel(source: StylePreviewTokens['colorSource']): {
+  text: string
+  trust: 'real' | 'illustrative'
+  title: string
+} {
+  switch (source) {
+    case 'tokens.css':
+      return { text: '设计令牌', trust: 'real', title: '色板读取自该 Skill 的 tokens.css' }
+    case 'DESIGN.md':
+      return { text: '来自 DESIGN.md', trust: 'real', title: '色板读取自该 Skill 的 DESIGN.md' }
+    case 'content':
+      return { text: '正文取色', trust: 'illustrative', title: '从 Skill 描述正文中提取的色值，非正式令牌' }
+    case 'derived':
+      return { text: '自动配色 · 仅示意', trust: 'illustrative', title: '未找到配色文件，按 Skill 自动生成的示意色，非正式令牌' }
+    default:
+      return { text: '未找到配色 · 品牌默认', trust: 'illustrative', title: '未找到任何配色，暂用品牌默认色' }
+  }
 }
 
 /** Brand-kit fallback when skill tokens.css / DESIGN.md lack a rich palette. */
@@ -383,6 +408,137 @@ function extractColorsFromSkillContent(
   ]
 }
 
+/* ---------- Derived hue spacing (persisted) ---------- */
+
+export const DERIVED_HUES_KEY = 'sugon-skillui-derived-hues'
+const HUE_MIN = 25
+const HUE_MAX = 324
+const HUE_MIN_GAP = 40
+const CROWDED_LIGHT_SHIFT = 10
+
+/** Stored value: plain hue, or hue + lightness shift when the wheel is crowded. */
+type StoredHue = number | { hue: number; light: number }
+export type DerivedHueSlot = { hue: number; lightShift: number }
+
+function derivedSeed(skill: Skill): string {
+  return `${skill.id || skill.name || 'skill'}|${skillShortLabel(skill)}`
+}
+
+/** Start hue from hash of id + path slug, mapped into 25°–324°. */
+export function derivedStartHue(skill: Skill): number {
+  return HUE_MIN + (hashString(derivedSeed(skill)) % (HUE_MAX - HUE_MIN + 1))
+}
+
+function hueDistance(a: number, b: number): number {
+  const d = Math.abs(a - b) % 360
+  return d > 180 ? 360 - d : d
+}
+
+function toSlot(v: StoredHue): DerivedHueSlot | null {
+  if (typeof v === 'number' && Number.isFinite(v)) return { hue: v, lightShift: 0 }
+  if (v && typeof v === 'object' && Number.isFinite(v.hue)) {
+    return { hue: v.hue, lightShift: Number.isFinite(v.light) ? v.light : 0 }
+  }
+  return null
+}
+
+/**
+ * Pure placement: keep `start` if ≥40° from every taken hue; else nearest free
+ * slot searching outward (1° steps, both directions, inside 25°–324°); if the
+ * wheel is full, take the slot maximizing min distance and alternate lightness.
+ */
+export function placeDerivedHue(start: number, taken: DerivedHueSlot[]): DerivedHueSlot {
+  const minDist = (h: number) =>
+    taken.reduce((m, t) => Math.min(m, hueDistance(h, t.hue)), Infinity)
+  if (minDist(start) >= HUE_MIN_GAP) return { hue: start, lightShift: 0 }
+  for (let d = 1; d <= HUE_MAX - HUE_MIN; d++) {
+    for (const cand of [start + d, start - d]) {
+      if (cand < HUE_MIN || cand > HUE_MAX) continue
+      if (minDist(cand) >= HUE_MIN_GAP) return { hue: cand, lightShift: 0 }
+    }
+  }
+  // Crowded: best-spread hue (ties → nearest to start), plus darker/lighter alternation.
+  let best = start
+  let bestScore = -1
+  for (let d = 0; d <= HUE_MAX - HUE_MIN; d++) {
+    for (const cand of d === 0 ? [start] : [start + d, start - d]) {
+      if (cand < HUE_MIN || cand > HUE_MAX) continue
+      const score = minDist(cand)
+      if (score > bestScore) {
+        best = cand
+        bestScore = score
+      }
+    }
+  }
+  const crowdedCount = taken.filter((t) => t.lightShift !== 0).length
+  const lightShift = crowdedCount % 2 === 0 ? -CROWDED_LIGHT_SHIFT : CROWDED_LIGHT_SHIFT
+  return { hue: best, lightShift }
+}
+
+function readHueMap(): Record<string, StoredHue> {
+  try {
+    const raw = globalThis.localStorage?.getItem(DERIVED_HUES_KEY)
+    if (!raw) return {}
+    const parsed: unknown = JSON.parse(raw)
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+      ? (parsed as Record<string, StoredHue>)
+      : {}
+  } catch {
+    return {}
+  }
+}
+
+function writeHueMap(map: Record<string, StoredHue>): void {
+  try {
+    globalThis.localStorage?.setItem(DERIVED_HUES_KEY, JSON.stringify(map))
+  } catch {
+    /* storage full / unavailable: hues stay in-memory for this call */
+  }
+}
+
+/** Skills that will fall through to the derived palette (no bundled tokens, no content hex). */
+function isDerivedEligible(skill: Skill): boolean {
+  const dir = normalizeDirPath(skill.path)
+  if (BUNDLED[dir]?.tokens) return false
+  return extractColorsFromSkillContent(skill).length < 3
+}
+
+function skillKey(skill: Skill): string {
+  return skill.id || derivedSeed(skill)
+}
+
+/**
+ * Stable per-skill hue. Seeds every derived-eligible library skill in
+ * createdAt→id order (so assignment does not depend on preview order),
+ * reuses any stored hue, and persists new ones in localStorage.
+ */
+export function resolveDerivedHue(skill: Skill, library?: Skill[]): DerivedHueSlot {
+  const map = readHueMap()
+  let changed = false
+  let lib: Skill[] = []
+  try {
+    lib = library ?? loadSkills()
+  } catch {
+    lib = []
+  }
+  const queue = lib
+    .filter(isDerivedEligible)
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt) || a.id.localeCompare(b.id))
+  if (!queue.some((s) => skillKey(s) === skillKey(skill))) queue.push(skill)
+  for (const s of queue) {
+    const key = skillKey(s)
+    if (toSlot(map[key])) continue
+    const taken = Object.values(map)
+      .map(toSlot)
+      .filter((x): x is DerivedHueSlot => x !== null)
+    const slot = placeDerivedHue(derivedStartHue(s), taken)
+    map[key] = slot.lightShift ? { hue: slot.hue, light: slot.lightShift } : slot.hue
+    changed = true
+  }
+  if (changed) writeHueMap(map)
+  return toSlot(map[skillKey(skill)]) ?? { hue: derivedStartHue(skill), lightShift: 0 }
+}
+
 /**
  * Deterministic HSL/hex palette seeded by skill id (or path slug)
  * so each 入库 skill gets a visibly different primary.
@@ -390,12 +546,13 @@ function extractColorsFromSkillContent(
 export function derivePaletteFromSkill(
   skill: Skill,
 ): { name: string; value: string }[] {
-  const seed = `${skill.id || skill.name || 'skill'}|${skillShortLabel(skill)}`
-  const h = hashString(seed)
+  const h = hashString(derivedSeed(skill))
   // Hue 25–324: skip the brand-kit red band (~325–25) so derived never mimics #C8161D.
-  const hue = 25 + (h % 300)
+  // Spaced ≥40° from other derived skills and persisted per skill id (see resolveDerivedHue).
+  const slot = resolveDerivedHue(skill)
+  const hue = slot.hue
   const sat = 58 + ((h >>> 9) % 17)
-  const light = 36 + ((h >>> 17) % 10)
+  const light = Math.max(24, Math.min(58, 36 + ((h >>> 17) % 10) + slot.lightShift))
   const primary = hslToHex(hue, sat, light)
   const primaryMuted = hslToHex(hue, 48, 94)
   const text = hslToHex(hue, 18, 12)
@@ -555,7 +712,12 @@ async function tryFetchText(url: string): Promise<string | null> {
   try {
     const res = await fetch(url, { method: 'GET', cache: 'no-store' })
     if (!res.ok) return null
-    return await res.text()
+    // Dev server SPA fallback answers missing files with index.html (200) — treat as absent.
+    const type = res.headers.get('content-type') || ''
+    if (/text\/html/i.test(type)) return null
+    const text = await res.text()
+    if (/^\s*<(!doctype|html)/i.test(text)) return null
+    return text
   } catch {
     return null
   }

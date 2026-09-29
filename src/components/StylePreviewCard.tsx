@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import type { Skill } from '../lib/skills'
 import {
+  colorSourceLabel,
   copyText,
   loadStylePreview,
   type StylePreviewModel,
@@ -198,10 +199,28 @@ function ShadowCardFace({
           word-break: break-all;
           color: var(--color-text-secondary, ${muted});
         }
-        .meta {
-          margin: 0;
+        /* Source chip: FIXED neutral greys only — never per-skill sandbox vars. */
+        .src-chip {
+          display: inline-flex;
+          align-items: center;
+          height: 1.35rem;
+          padding: 0 0.5rem;
+          margin-left: 0.25rem;
+          border-radius: 9999px;
+          font-family: "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
           font-size: 0.6875rem;
-          color: var(--color-text-secondary, ${muted});
+          font-weight: 600;
+          line-height: 1;
+          letter-spacing: 0.01em;
+          white-space: nowrap;
+          color: #404040;
+          background: #f5f5f5;
+          border: 1px solid #d4d4d4;
+        }
+        .src-chip.illustrative {
+          color: #44403c;
+          background: #fafaf9;
+          border: 1px dashed #a3a3a3;
         }
         .swatches {
           display: flex;
@@ -283,6 +302,9 @@ function ShadowCardFace({
         .demo-btn-primary:hover {
           background: var(--color-primary-hover, ${primary});
           box-shadow: var(--shadow-md, 0 4px 6px -1px rgb(23 23 23 / 0.08));
+        }
+        .demo-btn-primary:active {
+          background: var(--color-primary-active, var(--color-primary-hover, ${primary}));
         }
         .demo-btn-primary:focus-visible {
           outline: none;
@@ -402,7 +424,6 @@ function ShadowCardFace({
               {model.skill.purpose}
             </p>
             <p className="path">{model.skill.path}</p>
-            <p className="meta">预览色来源：{model.preview.colorSource}</p>
             <div className="swatches" aria-label="色板">
               {model.preview.colors.map((c) => (
                 <span
@@ -412,6 +433,18 @@ function ShadowCardFace({
                   style={{ background: c.value }}
                 />
               ))}
+              {(() => {
+                const label = colorSourceLabel(model.preview.colorSource)
+                return (
+                  <span
+                    className={`src-chip ${label.trust}`}
+                    data-color-source={model.preview.colorSource}
+                    title={label.title}
+                  >
+                    {label.text}
+                  </span>
+                )
+              })()}
             </div>
             <p className="type-sample">Aa · {model.shortLabel} · 字体样例</p>
             <div className="spaces" aria-label="间距">
