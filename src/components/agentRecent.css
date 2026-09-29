@@ -1,4 +1,4 @@
-/* Feature: Agent 左库右聊 — 宽屏并排、窄屏纵向堆叠 */
+/* Feature: Agent 左库右聊 — 宽屏并排、窄屏纵向堆叠；左栏单一滚动 */
 .agent-shell {
   display: grid;
   grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr);
@@ -15,8 +15,10 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 0;
   border-right: 1px solid var(--color-border);
   background-color: var(--color-surface);
+  overflow-y: auto;
 }
 
 .agent-library-head {
@@ -28,24 +30,26 @@
   border-bottom: 1px solid var(--color-border);
   background-color: var(--color-bg-subtle);
   flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .agent-recent-list {
-  flex: 0 1 auto;
-  min-height: 8rem;
-  max-height: 14rem;
-  overflow: auto;
+  flex: 0 0 auto;
+  min-height: 0;
+  overflow: visible;
 }
 
 .agent-library-preview {
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   min-height: 11rem;
   padding: var(--space-3);
   border-top: 1px solid var(--color-border);
   background-color: var(--color-bg);
   display: flex;
   align-items: stretch;
-  overflow: auto;
+  overflow: visible;
 }
 
 .agent-chat {
@@ -54,6 +58,26 @@
   min-width: 0;
   min-height: 28rem;
   background-color: var(--color-bg);
+}
+
+/* #agent 上区收紧（不删 hero） */
+#agent.section-pad {
+  padding-block: var(--space-8);
+}
+
+#agent .agent-hero {
+  margin-bottom: var(--space-4);
+}
+
+#agent .agent-hero .shell-title {
+  margin-top: var(--space-1);
+  font-size: var(--text-2xl);
+}
+
+#agent .agent-hero .shell-lede {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
 }
 
 @media (max-width: 48rem) {
@@ -65,10 +89,7 @@
   .agent-library {
     border-right: none;
     border-bottom: 1px solid var(--color-border);
-  }
-
-  .agent-recent-list {
-    max-height: 12rem;
+    max-height: none;
   }
 
   .agent-library-preview {
@@ -77,5 +98,9 @@
 
   .agent-chat {
     min-height: 24rem;
+  }
+
+  #agent.section-pad {
+    padding-block: var(--space-6);
   }
 }

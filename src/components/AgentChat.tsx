@@ -885,11 +885,11 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
         scrollMarginTop: '5rem',
         backgroundColor: 'var(--color-bg-subtle)',
         borderTop: '1px solid var(--color-border)',
-        paddingBlock: 'var(--space-16)',
+        paddingBlock: 'var(--space-8)',
       }}
     >
       <div className="container-max" style={{ maxWidth: 'var(--agent-max)' }}>
-        <div style={{ marginBottom: 'var(--space-6)' }}>
+        <div className="agent-hero">
           <p className="shell-eyebrow">对话</p>
           <h2 className="shell-title">用 Agent 管理 Skill</h2>
           <p
@@ -1088,8 +1088,6 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                       padding: 'var(--space-2)',
                       display: 'grid',
                       gap: '0.2rem',
-                      maxHeight: '16rem',
-                      overflowY: 'auto',
                     }}
                   >
                     {recentSkills.map((sk) => {
