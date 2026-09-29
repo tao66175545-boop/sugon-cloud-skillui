@@ -12,7 +12,7 @@ export function TopBar({ skillCount }: TopBarProps) {
         position: 'sticky',
         top: 0,
         zIndex: 40,
-        borderBottom: '1px solid color-mix(in srgb, var(--color-border) 70%, transparent)',
+        borderBottom: '1px solid var(--topbar-border)',
       }}
     >
       <div
@@ -23,7 +23,7 @@ export function TopBar({ skillCount }: TopBarProps) {
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: 'var(--space-4)',
-          minHeight: '3.75rem',
+          minHeight: '4rem',
           flexWrap: 'wrap',
           paddingBlock: 'var(--space-3)',
         }}
@@ -36,6 +36,7 @@ export function TopBar({ skillCount }: TopBarProps) {
             gap: 'var(--space-3)',
             textDecoration: 'none',
             color: 'var(--color-text)',
+            borderRadius: 'var(--radius-md)',
           }}
         >
           <img
@@ -50,8 +51,15 @@ export function TopBar({ skillCount }: TopBarProps) {
               objectFit: 'contain',
             }}
           />
-          <span>
-            <strong style={{ fontSize: 'var(--text-lg)', fontWeight: 700 }}>
+          <span style={{ display: 'grid', gap: '0.125rem' }}>
+            <strong
+              style={{
+                fontSize: 'var(--text-lg)',
+                fontWeight: 'var(--font-weight-bold)',
+                lineHeight: 'var(--leading-tight)',
+                letterSpacing: 'var(--tracking-tight)',
+              }}
+            >
               曙光云 SkillUI 库
             </strong>
             <span
@@ -59,7 +67,8 @@ export function TopBar({ skillCount }: TopBarProps) {
                 display: 'block',
                 fontSize: 'var(--text-xs)',
                 color: 'var(--color-text-muted)',
-                fontWeight: 500,
+                fontWeight: 'var(--font-weight-medium)',
+                lineHeight: 'var(--leading-snug)',
               }}
             >
               风格供给层 · 本地可复用 · 已登记 {skillCount} 项
@@ -72,6 +81,7 @@ export function TopBar({ skillCount }: TopBarProps) {
             display: 'flex',
             gap: 'var(--space-2)',
             flexWrap: 'wrap',
+            alignItems: 'center',
           }}
         >
           <a
@@ -79,9 +89,10 @@ export function TopBar({ skillCount }: TopBarProps) {
             className="btn-secondary"
             style={{
               height: '2.25rem',
-              paddingInline: '0.875rem',
+              paddingInline: 'var(--space-4)',
               fontSize: 'var(--text-sm)',
-              backgroundColor: 'color-mix(in srgb, var(--color-surface) 55%, transparent)',
+              backgroundColor:
+                'color-mix(in srgb, var(--color-surface) 55%, transparent)',
               backdropFilter: 'blur(8px)',
               WebkitBackdropFilter: 'blur(8px)',
             }}

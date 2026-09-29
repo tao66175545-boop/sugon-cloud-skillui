@@ -139,10 +139,11 @@ function ShadowCardFace({
           color: ${text};
           background: ${surface};
           border: 1px solid ${border};
-          border-radius: 0.75rem;
-          padding: 0.875rem 1rem;
+          border-radius: 1rem;
+          padding: 1rem 1.125rem;
           display: grid;
-          gap: 0.65rem;
+          gap: 0.75rem;
+          box-shadow: 0 1px 2px 0 rgb(23 23 23 / 0.05);
         }
         .head {
           display: flex;
@@ -230,8 +231,8 @@ function ShadowCardFace({
         }
         button {
           height: 2rem;
-          padding: 0 0.7rem;
-          border-radius: 0.5rem;
+          padding: 0 0.75rem;
+          border-radius: 0.75rem;
           border: 1px solid ${border};
           background: ${surface};
           color: ${text};

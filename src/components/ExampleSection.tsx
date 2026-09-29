@@ -10,14 +10,14 @@ export function ExampleSection() {
       id="example-preview"
       style={{
         borderTop: '1px solid var(--color-border)',
-        backgroundColor: 'var(--color-surface)',
+        backgroundColor: 'var(--color-bg)',
         scrollMarginTop: '5rem',
       }}
     >
       <div
         className="container-max"
         style={{
-          paddingBlock: 'var(--space-4)',
+          paddingBlock: 'var(--space-6)',
           display: 'grid',
           gap: 'var(--space-3)',
         }}

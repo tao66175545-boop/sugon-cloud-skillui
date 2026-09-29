@@ -862,9 +862,10 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
         scrollMarginTop: '5rem',
         backgroundColor: 'var(--color-bg-subtle)',
         borderTop: '1px solid var(--color-border)',
+        paddingBlock: 'var(--space-16)',
       }}
     >
-      <div className="container-max" style={{ maxWidth: '48rem' }}>
+      <div className="container-max" style={{ maxWidth: 'var(--agent-max)' }}>
         <div
           style={{
             display: 'flex',
@@ -872,33 +873,20 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
             alignItems: 'flex-end',
             gap: 'var(--space-4)',
             flexWrap: 'wrap',
-            marginBottom: 'var(--space-6)',
+            marginBottom: 'var(--space-8)',
           }}
         >
           <div>
-            <p
-              style={{
-                margin: 0,
-                color: 'var(--color-primary)',
-                fontWeight: 600,
-                fontSize: 'var(--text-sm)',
-              }}
-            >
+            <p className="shell-eyebrow">
               对话
             </p>
-            <h2
-              style={{
-                margin: 'var(--space-2) 0 0',
-                fontSize: 'var(--text-3xl)',
-                fontWeight: 700,
-              }}
-            >
+            <h2 className="shell-title">
               用 Agent 管理 Skill
             </h2>
             <p
+              className="shell-lede"
               style={{
-                margin: 'var(--space-2) 0 0',
-                color: 'var(--color-text-secondary)',
+                margin: 'var(--space-3) 0 0',
                 maxWidth: '36rem',
               }}
             >
@@ -920,14 +908,17 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                   alignItems: 'center',
                   gap: 'var(--space-2)',
                   margin: 0,
-                  padding: '0.35rem 0.65rem',
+                  padding: '0.4rem 0.75rem',
                   borderRadius: 'var(--radius-md)',
                   border: '1px solid var(--color-border)',
                   backgroundColor: 'var(--color-surface)',
                   color: 'var(--color-text-secondary)',
                   fontSize: 'var(--text-sm)',
+                  fontWeight: 'var(--font-weight-medium)',
                   cursor: 'pointer',
                   fontFamily: 'inherit',
+                  boxShadow: 'var(--shadow-sm)',
+                  transition: 'border-color 150ms ease, box-shadow 150ms ease',
                 }}
               >
                 <span>
@@ -1139,6 +1130,8 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
             display: 'flex',
             flexDirection: 'column',
             minHeight: '28rem',
+            boxShadow: 'var(--shadow-md)',
+            borderRadius: 'var(--radius-xl)',
           }}
         >
           <div
@@ -1146,11 +1139,11 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
             style={{
               flex: 1,
               overflowY: 'auto',
-              padding: 'var(--space-4)',
+              padding: 'var(--space-5)',
               display: 'flex',
               flexDirection: 'column',
-              gap: 'var(--space-3)',
-              maxHeight: '22rem',
+              gap: 'var(--space-4)',
+              maxHeight: '24rem',
               backgroundColor: 'var(--color-bg)',
             }}
           >
@@ -1274,7 +1267,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
             onSubmit={(e) => void handleSend(e)}
             style={{
               borderTop: '1px solid var(--color-border)',
-              padding: 'var(--space-4)',
+              padding: 'var(--space-5)',
               display: 'grid',
               gap: 'var(--space-3)',
               backgroundColor: 'var(--color-surface)',
@@ -1355,7 +1348,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                           a.kind === 'image'
                             ? 'var(--color-primary)'
                             : a.kind === 'folder'
-                              ? '#B45309'
+                              ? 'var(--color-warning)'
                               : 'var(--color-text-secondary)',
                         display: 'inline-flex',
                       }}
@@ -1380,7 +1373,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                           borderRadius: 4,
                           border: '1px solid var(--color-border)',
                           flexShrink: 0,
-                          background: '#fff',
+                          background: 'var(--color-surface)',
                         }}
                       />
                     ) : null}
@@ -1520,7 +1513,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                       background: 'var(--color-surface)',
                       border: '1px solid var(--color-border)',
                       borderRadius: 'var(--radius-md)',
-                      boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
+                      boxShadow: 'var(--shadow-lg)',
                       padding: '0.25rem',
                     }}
                   >
@@ -1637,18 +1630,18 @@ function Bubble({
   const result = bubble.guikuResult
   const previewSkill = bubble.stylePreviewSkill
   const bg = isError
-    ? '#FEF2F2'
+    ? 'var(--color-danger-muted)'
     : isUser
       ? 'var(--color-primary-muted)'
       : bubble.role === 'system'
         ? 'var(--color-bg-muted)'
         : 'var(--color-surface)'
   const border = isError
-    ? '1px solid #FECACA'
+    ? '1px solid var(--color-danger-border)'
     : result || previewSkill
       ? '1px solid var(--color-primary)'
       : '1px solid var(--color-border)'
-  const color = isError ? '#B91C1C' : 'var(--color-text)'
+  const color = isError ? 'var(--color-danger-foreground)' : 'var(--color-text)'
 
   async function handleCopy() {
     if (!result || !onCopyPath) return
@@ -1666,8 +1659,9 @@ function Bubble({
         maxWidth: '92%',
         backgroundColor: bg,
         border,
-        borderRadius: 'var(--radius-lg)',
+        borderRadius: 'var(--radius-xl)',
         padding: 'var(--space-3) var(--space-4)',
+        boxShadow: 'var(--shadow-sm)',
         color,
       }}
     >
@@ -1680,7 +1674,7 @@ function Bubble({
               : 0,
           fontSize: 'var(--text-xs)',
           fontWeight: 600,
-          color: isError ? '#B91C1C' : 'var(--color-text-muted)',
+          color: isError ? 'var(--color-danger-foreground)' : 'var(--color-text-muted)',
         }}
       >
         {isUser
@@ -1702,7 +1696,7 @@ function Bubble({
             borderRadius: 'var(--radius-md)',
             marginBottom: 'var(--space-2)',
             objectFit: 'contain',
-            background: '#fff',
+            background: 'var(--color-surface)',
           }}
         />
       )}
@@ -1825,4 +1819,5 @@ function Bubble({
 const labelStyle: CSSProperties = {
   fontWeight: 600,
   fontSize: 'var(--text-sm)',
+  color: 'var(--color-text)',
 }

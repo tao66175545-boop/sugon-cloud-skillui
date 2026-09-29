@@ -1,4 +1,4 @@
-﻿@import "../design-skills/brand-kit/tokens.css";
+@import "../design-skills/brand-kit/tokens.css";
 @import "tailwindcss";
 
 @layer base {
@@ -20,13 +20,19 @@
 
   #root {
     min-height: 100svh;
-    padding-bottom: 2rem;
+    padding-bottom: var(--space-8);
   }
 
   input,
   textarea,
-  select {
+  select,
+  button {
     font-family: inherit;
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring-strong);
   }
 }
 
@@ -61,6 +67,17 @@
     box-shadow: var(--shadow-sm);
   }
 
+  .btn-primary:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-sm), var(--focus-ring-strong);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+  }
+
   .btn-secondary {
     display: inline-flex;
     align-items: center;
@@ -82,11 +99,24 @@
 
   .btn-secondary:hover {
     background-color: var(--color-bg-muted);
+    border-color: var(--color-border-strong);
   }
 
   .btn-secondary:active {
     background-color: var(--color-bg-subtle);
     transform: scale(0.98);
+  }
+
+  .btn-secondary:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring);
+  }
+
+  .btn-secondary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
   }
 
   .card {
@@ -119,7 +149,7 @@
   .field-input {
     width: 100%;
     box-sizing: border-box;
-    padding: 0.625rem 0.875rem;
+    padding: 0.75rem 0.875rem;
     border: 1px solid var(--color-border-strong);
     border-radius: var(--radius-md);
     background: var(--color-surface);
@@ -129,28 +159,63 @@
     transition: border-color 150ms ease, box-shadow 150ms ease;
   }
 
+  .field-input:hover:not(:disabled):not(:focus) {
+    border-color: var(--color-text-muted);
+  }
+
   .field-input:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px var(--color-primary-muted);
+    box-shadow: var(--focus-ring);
+  }
+
+  .field-input:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring-strong);
   }
 
   .field-input::placeholder {
     color: var(--color-text-muted);
   }
+
+  /* 壳层级：区块眉题 / 标题 */
+  .shell-eyebrow {
+    margin: 0;
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-sm);
+    letter-spacing: 0.02em;
+  }
+
+  .shell-title {
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text);
+  }
+
+  .shell-lede {
+    margin: var(--space-3) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    max-width: 36rem;
+  }
 }
 
-/* Top bar frosted glass 鈥?docs.x.ai style (semi-clear + blur so scroll shows through) */
+/* Top bar frosted glass — docs.x.ai style (semi-clear + blur so scroll shows through) */
 .topbar-frost {
-  background-color: rgba(255, 255, 255, 0.03);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  backdrop-filter: saturate(180%) blur(20px);
-  /* keep frost working across nested children */
+  background-color: var(--topbar-bg);
+  -webkit-backdrop-filter: var(--topbar-blur);
+  backdrop-filter: var(--topbar-blur);
   isolation: isolate;
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .topbar-frost {
-    background-color: var(--color-surface);
+    background-color: var(--topbar-bg-fallback);
   }
 }
