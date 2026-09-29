@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
   type CSSProperties,
@@ -14,6 +15,8 @@ import {
   type Skill,
 } from '../lib/skills'
 import { StylePreviewCard } from './StylePreviewCard'
+import { skillSourceBadge } from '../lib/stylePreview'
+import './agentRecent.css'
 import {
   hasApiKey,
   loadLlmSettings,
@@ -264,8 +267,8 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
   )
   /** 选用：仅切换当前会话引用（不新开入口） */
   const [sessionSelected, setSessionSelected] = useState<Skill | null>(null)
-  const [recentBarOpen, setRecentBarOpen] = useState(false)
-  const [highlightSkillId, setHighlightSkillId] = useState<string | null>(null)
+  /** 最近入库面板选中项；与结果卡「看库」共用 */
+  const [selectedSkillId, setSelectedSkillId] = useState<string | null>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const recentBarRef = useRef<HTMLDivElement>(null)
   const imageRef = useRef<HTMLInputElement>(null)
@@ -277,6 +280,32 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
   const keyed = hasApiKey(settings)
   const recentIngestLabel =
     lastIngestName ?? mostRecentSkill(skills)?.name ?? null
+
+  const recentSkills = useMemo(
+    () =>
+      [...skills]
+        .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+        .slice(0, 8),
+    [skills],
+  )
+
+  const selectedSkill =
+    recentSkills.find((s) => s.id === selectedSkillId) ??
+    skills.find((s) => s.id === selectedSkillId) ??
+    null
+
+  useEffect(() => {
+    if (!recentSkills.length) {
+      setSelectedSkillId(null)
+      return
+    }
+    setSelectedSkillId((prev) =>
+      prev && recentSkills.some((s) => s.id === prev)
+        ? prev
+        : recentSkills[0].id,
+    )
+  }, [recentSkills])
+
 
   useEffect(() => {
     listRef.current?.scrollTo({
@@ -753,6 +782,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
     saveLastIngestName(saved.name)
     setLastIngestName(saved.name)
     setSessionSelected(saved)
+    setSelectedSkillId(saved.id)
     pushBubble({
       role: 'system',
       text: `已确认归库「${saved.name}」→ localStorage（sugon-skillui-skills）。`,
@@ -768,15 +798,8 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
   }
 
   function showSkillDetail(skill: Skill) {
-    setHighlightSkillId(skill.id)
-    setRecentBarOpen(true)
+    setSelectedSkillId(skill.id)
     recentBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-    pushBubble({
-      role: 'assistant',
-      text: `风格预览 · ${skill.name}`,
-      stylePreviewSkill: skill,
-    })
-    window.setTimeout(() => setHighlightSkillId(null), 2400)
   }
 
   async function runLookLibrary(focusName?: string) {
@@ -866,150 +889,268 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
       }}
     >
       <div className="container-max" style={{ maxWidth: 'var(--agent-max)' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-            gap: 'var(--space-4)',
-            flexWrap: 'wrap',
-            marginBottom: 'var(--space-8)',
-          }}
-        >
-          <div>
-            <p className="shell-eyebrow">
-              对话
-            </p>
-            <h2 className="shell-title">
-              用 Agent 管理 Skill
-            </h2>
+        <div style={{ marginBottom: 'var(--space-8)' }}>
+          <p className="shell-eyebrow">对话</p>
+          <h2 className="shell-title">用 Agent 管理 Skill</h2>
+          <p
+            className="shell-lede"
+            style={{
+              margin: 'var(--space-3) 0 0',
+              maxWidth: '36rem',
+            }}
+          >
+            唯一管理入口：链接学习、起草、看库、选用、归库、导出——都在这一处对话完成。不引入质量层。
+          </p>
+          {sessionSelected && (
             <p
-              className="shell-lede"
               style={{
-                margin: 'var(--space-3) 0 0',
-                maxWidth: '36rem',
+                margin: 'var(--space-2) 0 0',
+                fontSize: 'var(--text-xs)',
+                color: 'var(--color-text-muted)',
               }}
             >
-              唯一管理入口：链接学习、起草、看库、选用、归库、导出——都在这一处对话完成。不引入质量层。
+              当前会话引用：{sessionSelected.name}
             </p>
+          )}
+
+          <div
+            ref={recentBarRef}
+            className="agent-recent-panel"
+            style={{
+              marginTop: 'var(--space-5)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 'var(--radius-xl)',
+              backgroundColor: 'var(--color-surface)',
+              boxShadow: 'var(--shadow-sm)',
+              overflow: 'hidden',
+            }}
+          >
             <div
-              ref={recentBarRef}
               style={{
-                marginTop: 'var(--space-3)',
-                maxWidth: '36rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 'var(--space-3)',
+                padding: '0.65rem 0.9rem',
+                borderBottom: '1px solid var(--color-border)',
+                backgroundColor: 'var(--color-bg-subtle)',
               }}
             >
-              <button
-                type="button"
-                onClick={() => setRecentBarOpen((v) => !v)}
-                aria-expanded={recentBarOpen}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 'var(--space-2)',
-                  margin: 0,
-                  padding: '0.4rem 0.75rem',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--color-border)',
-                  backgroundColor: 'var(--color-surface)',
-                  color: 'var(--color-text-secondary)',
-                  fontSize: 'var(--text-sm)',
-                  fontWeight: 'var(--font-weight-medium)',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  boxShadow: 'var(--shadow-sm)',
-                  transition: 'border-color 150ms ease, box-shadow 150ms ease',
-                }}
-              >
-                <span>
-                  最近入库：{recentIngestLabel ?? '（暂无）'} · 当前{' '}
-                  {skills.length} 个
-                </span>
-                <span aria-hidden style={{ fontSize: 'var(--text-xs)' }}>
-                  {recentBarOpen ? '▴' : '▾'}
-                </span>
-              </button>
-              {sessionSelected && (
+              <div style={{ minWidth: 0 }}>
                 <p
                   style={{
-                    margin: 'var(--space-1) 0 0',
+                    margin: 0,
+                    fontSize: 'var(--text-sm)',
+                    fontWeight: 'var(--font-weight-semibold)',
+                    color: 'var(--color-text)',
+                  }}
+                >
+                  最近入库
+                </p>
+                <p
+                  style={{
+                    margin: '0.1rem 0 0',
                     fontSize: 'var(--text-xs)',
                     color: 'var(--color-text-muted)',
                   }}
                 >
-                  当前会话引用：{sessionSelected.name}
+                  {recentIngestLabel
+                    ? `最近：${recentIngestLabel} · 当前 ${skills.length} 个`
+                    : `当前 ${skills.length} 个`}
                 </p>
-              )}
-              {recentBarOpen && (
-                <ul
-                  style={{
-                    listStyle: 'none',
-                    margin: 'var(--space-2) 0 0',
-                    padding: 'var(--space-2)',
-                    border: '1px solid var(--color-border)',
-                    borderRadius: 'var(--radius-md)',
-                    backgroundColor: 'var(--color-bg)',
-                    display: 'grid',
-                    gap: '0.25rem',
-                    maxHeight: '12rem',
-                    overflowY: 'auto',
-                  }}
-                >
-                  {[...skills]
-                    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-                    .slice(0, 8)
-                    .map((sk) => (
-                      <li key={sk.id}>
-                        <button
-                          type="button"
-                          onClick={() => showSkillDetail(sk)}
-                          style={{
-                            width: '100%',
-                            textAlign: 'left',
-                            padding: '0.4rem 0.5rem',
-                            borderRadius: 'var(--radius-sm)',
-                            border:
-                              highlightSkillId === sk.id
-                                ? '1px solid var(--color-primary)'
-                                : '1px solid transparent',
-                            backgroundColor:
-                              highlightSkillId === sk.id
+              </div>
+              <button
+                type="button"
+                className="btn-secondary"
+                style={{
+                  height: '2rem',
+                  fontSize: 'var(--text-xs)',
+                  flexShrink: 0,
+                }}
+                onClick={() => {
+                  setSettingsDraft(loadLlmSettings())
+                  setShowSettings((v) => !v)
+                }}
+              >
+                {showSettings ? '收起设置' : keyed ? '设置' : '去配置 API'}
+              </button>
+            </div>
+
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'stretch',
+              }}
+            >
+              <div
+                className="agent-recent-list"
+                style={{
+                  flex: '1 1 14rem',
+                  minWidth: '12rem',
+                  maxWidth: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  minHeight: '11rem',
+                }}
+              >
+                {recentSkills.length === 0 ? (
+                  <p
+                    style={{
+                      margin: 'auto',
+                      padding: 'var(--space-6)',
+                      textAlign: 'center',
+                      fontSize: 'var(--text-sm)',
+                      color: 'var(--color-text-muted)',
+                    }}
+                  >
+                    暂无入库
+                  </p>
+                ) : (
+                  <ul
+                    style={{
+                      listStyle: 'none',
+                      margin: 0,
+                      padding: 'var(--space-2)',
+                      display: 'grid',
+                      gap: '0.2rem',
+                      maxHeight: '16rem',
+                      overflowY: 'auto',
+                    }}
+                  >
+                    {recentSkills.map((sk) => {
+                      const selected = selectedSkillId === sk.id
+                      const tag = skillSourceBadge(sk)
+                      return (
+                        <li key={sk.id}>
+                          <button
+                            type="button"
+                            onClick={() => showSkillDetail(sk)}
+                            aria-pressed={selected}
+                            style={{
+                              width: '100%',
+                              textAlign: 'left',
+                              display: 'grid',
+                              gridTemplateColumns: '0.5rem 1fr auto',
+                              gap: '0.55rem',
+                              alignItems: 'center',
+                              padding: '0.5rem 0.55rem',
+                              borderRadius: 'var(--radius-sm)',
+                              border: '1px solid transparent',
+                              borderLeft: selected
+                                ? '3px solid var(--color-primary)'
+                                : '3px solid transparent',
+                              backgroundColor: selected
                                 ? 'var(--color-primary-muted)'
                                 : 'transparent',
-                            cursor: 'pointer',
-                            fontFamily: 'inherit',
-                            fontSize: 'var(--text-sm)',
-                            color: 'var(--color-text)',
-                          }}
-                        >
-                          <strong>{sk.name}</strong>
-                          <span
-                            style={{
-                              display: 'block',
-                              fontSize: 'var(--text-xs)',
-                              color: 'var(--color-text-muted)',
-                              fontFamily: 'var(--font-mono)',
+                              cursor: 'pointer',
+                              fontFamily: 'inherit',
+                              color: 'var(--color-text)',
                             }}
                           >
-                            {sk.path}
-                          </span>
-                        </button>
-                      </li>
-                    ))}
-                </ul>
-              )}
+                            <span
+                              aria-hidden
+                              style={{
+                                width: '0.5rem',
+                                height: '0.5rem',
+                                borderRadius: '9999px',
+                                backgroundColor: 'var(--color-primary)',
+                                justifySelf: 'center',
+                              }}
+                            />
+                            <span style={{ minWidth: 0 }}>
+                              <span
+                                style={{
+                                  display: 'block',
+                                  fontSize: 'var(--text-sm)',
+                                  fontWeight: selected
+                                    ? 'var(--font-weight-semibold)'
+                                    : 'var(--font-weight-medium)',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  whiteSpace: 'nowrap',
+                                }}
+                              >
+                                {sk.name}
+                              </span>
+                              <span
+                                style={{
+                                  display: 'block',
+                                  marginTop: '0.1rem',
+                                  fontSize: '0.6875rem',
+                                  color: 'var(--color-text-muted)',
+                                  fontFamily: 'var(--font-mono)',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  whiteSpace: 'nowrap',
+                                  opacity: 0.75,
+                                }}
+                                title={sk.path}
+                              >
+                                {sk.path}
+                              </span>
+                            </span>
+                            <span
+                              style={{
+                                fontSize: '0.6875rem',
+                                fontWeight: 600,
+                                padding: '0.1rem 0.4rem',
+                                borderRadius: '9999px',
+                                color: 'var(--color-primary)',
+                                backgroundColor:
+                                  'color-mix(in srgb, var(--color-primary) 12%, transparent)',
+                                border:
+                                  '1px solid color-mix(in srgb, var(--color-primary) 28%, transparent)',
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              {tag}
+                            </span>
+                          </button>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                )}
+              </div>
+
+              <div
+                style={{
+                  flex: '1 1 16rem',
+                  minWidth: '14rem',
+                  padding: 'var(--space-3)',
+                  backgroundColor: 'var(--color-bg)',
+                  display: 'flex',
+                  alignItems: 'stretch',
+                  minHeight: '11rem',
+                }}
+              >
+                {selectedSkill ? (
+                  <StylePreviewCard
+                    skill={selectedSkill}
+                    onSelect={(sk) => setSessionSelected(sk)}
+                  />
+                ) : (
+                  <div
+                    role="status"
+                    style={{
+                      width: '100%',
+                      margin: 'auto',
+                      padding: 'var(--space-6)',
+                      textAlign: 'center',
+                      borderRadius: 'var(--radius-lg)',
+                      border: '1px dashed var(--color-border-strong)',
+                      backgroundColor: 'var(--color-bg-muted)',
+                      color: 'var(--color-text-muted)',
+                      fontSize: 'var(--text-sm)',
+                    }}
+                  >
+                    选择左侧 Skill 查看风格预览
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => {
-              setSettingsDraft(loadLlmSettings())
-              setShowSettings((v) => !v)
-            }}
-          >
-            {showSettings ? '收起设置' : keyed ? '设置' : '去配置 API'}
-          </button>
         </div>
 
         {!keyed && (

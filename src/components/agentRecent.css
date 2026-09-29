@@ -1,0 +1,11 @@
+﻿/* Feature: Agent 「最近入库」左右栏（窄屏纵向堆叠） */
+.agent-recent-panel .agent-recent-list {
+  border-right: 1px solid var(--color-border);
+}
+
+@media (max-width: 40rem) {
+  .agent-recent-panel .agent-recent-list {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+}
