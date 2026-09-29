@@ -1202,19 +1202,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
           </aside>
 
           <div className="agent-chat">
-          <div
-            ref={listRef}
-            style={{
-              flex: 1,
-              overflowY: 'auto',
-              padding: 'var(--space-5)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 'var(--space-4)',
-              minHeight: '16rem',
-              backgroundColor: 'var(--color-bg)',
-            }}
-          >
+          <div ref={listRef} className="agent-chat-stream">
             {bubbles.map((b) => (
               <Bubble
                 key={b.id}
@@ -1241,6 +1229,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
 
           {pendingDraft && (
             <div
+              className="agent-confirm-gate"
               style={{
                 borderTop: '2px solid var(--color-primary)',
                 padding: 'var(--space-4)',
@@ -1332,13 +1321,12 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
           )}
 
           <form
+            className="agent-composer"
             onSubmit={(e) => void handleSend(e)}
             style={{
-              borderTop: '1px solid var(--color-border)',
-              padding: 'var(--space-5)',
+              padding: 'var(--space-3)',
               display: 'grid',
-              gap: 'var(--space-3)',
-              backgroundColor: 'var(--color-surface)',
+              gap: 'var(--space-2)',
             }}
           >
             <label style={{ display: 'grid', gap: 'var(--space-1)' }}>
