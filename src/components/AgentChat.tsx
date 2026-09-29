@@ -889,7 +889,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
       }}
     >
       <div className="container-max" style={{ maxWidth: 'var(--agent-max)' }}>
-        <div style={{ marginBottom: 'var(--space-8)' }}>
+        <div style={{ marginBottom: 'var(--space-6)' }}>
           <p className="shell-eyebrow">对话</p>
           <h2 className="shell-title">用 Agent 管理 Skill</h2>
           <p
@@ -912,30 +912,121 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
               当前会话引用：{sessionSelected.name}
             </p>
           )}
+        </div>
 
+        {!keyed && (
           <div
-            ref={recentBarRef}
-            className="agent-recent-panel"
+            role="status"
+            className="card"
             style={{
-              marginTop: 'var(--space-5)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 'var(--radius-xl)',
-              backgroundColor: 'var(--color-surface)',
-              boxShadow: 'var(--shadow-sm)',
-              overflow: 'hidden',
+              marginBottom: 'var(--space-4)',
+              borderColor: 'var(--color-primary)',
+              backgroundColor: 'var(--color-primary-muted)',
+              padding: 'var(--space-4)',
             }}
           >
+            <strong style={{ color: 'var(--color-primary)' }}>
+              未配置 API Key
+            </strong>
+            <p
+              style={{
+                margin: 'var(--space-2) 0 0',
+                fontSize: 'var(--text-sm)',
+              }}
+            >
+              不会假连通。请点击「去配置 API」填写 Base URL、模型名与 Key（仅
+              localStorage）。配置前模型请求会被拦截；「看库 / 选用」仍可用。
+            </p>
+          </div>
+        )}
+
+        {showSettings && (
+          <form
+            className="card"
+            onSubmit={saveSettingsForm}
+            style={{
+              display: 'grid',
+              gap: 'var(--space-3)',
+              marginBottom: 'var(--space-4)',
+              padding: 'var(--space-5)',
+            }}
+          >
+            <label style={{ display: 'grid', gap: 'var(--space-1)' }}>
+              <span style={labelStyle}>Base URL（OpenAI 兼容）</span>
+              <input
+                className="field-input"
+                value={settingsDraft.baseUrl}
+                onChange={(e) =>
+                  setSettingsDraft((s) => ({ ...s, baseUrl: e.target.value }))
+                }
+                placeholder="https://t.mysugoncloud.com:8765"
+                autoComplete="off"
+              />
+              <span
+                style={{
+                  fontSize: 'var(--text-xs)',
+                  color: 'var(--color-text-muted)',
+                }}
+              >
+                默认云主机在开发模式下走同源 /api/llm 代理，避免浏览器
+                CORS。自定义地址将直连（需网关允许跨域）。
+              </span>
+            </label>
+            <label style={{ display: 'grid', gap: 'var(--space-1)' }}>
+              <span style={labelStyle}>模型名</span>
+              <input
+                className="field-input"
+                value={settingsDraft.model}
+                onChange={(e) =>
+                  setSettingsDraft((s) => ({ ...s, model: e.target.value }))
+                }
+                placeholder="deepseek-flash"
+                autoComplete="off"
+              />
+            </label>
+            <label style={{ display: 'grid', gap: 'var(--space-1)' }}>
+              <span style={labelStyle}>API Key（仅本机 localStorage）</span>
+              <input
+                className="field-input"
+                type="password"
+                value={settingsDraft.apiKey}
+                onChange={(e) =>
+                  setSettingsDraft((s) => ({ ...s, apiKey: e.target.value }))
+                }
+                placeholder="sk-..."
+                autoComplete="off"
+              />
+            </label>
             <div
               style={{
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 'var(--space-3)',
-                padding: '0.65rem 0.9rem',
-                borderBottom: '1px solid var(--color-border)',
-                backgroundColor: 'var(--color-bg-subtle)',
+                gap: 'var(--space-2)',
+                flexWrap: 'wrap',
               }}
             >
+              <button type="submit" className="btn-primary">
+                保存配置
+              </button>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => {
+                  const cleared = { ...DEFAULT_LLM_SETTINGS, apiKey: '' }
+                  saveLlmSettings(cleared)
+                  setSettings(cleared)
+                  setSettingsDraft(cleared)
+                  setStatusMsg('已清除本机 API Key。')
+                }}
+              >
+                清除 Key
+              </button>
+            </div>
+          </form>
+        )}
+
+        <div ref={recentBarRef} className="agent-shell">
+          <aside className="agent-library" aria-label="最近入库">
+            <div className="agent-library-head">
               <div style={{ minWidth: 0 }}>
                 <p
                   style={{
@@ -976,24 +1067,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
               </button>
             </div>
 
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                alignItems: 'stretch',
-              }}
-            >
-              <div
-                className="agent-recent-list"
-                style={{
-                  flex: '1 1 14rem',
-                  minWidth: '12rem',
-                  maxWidth: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  minHeight: '11rem',
-                }}
-              >
+            <div className="agent-recent-list">
                 {recentSkills.length === 0 ? (
                   <p
                     style={{
@@ -1112,169 +1186,36 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                     })}
                   </ul>
                 )}
-              </div>
-
-              <div
-                style={{
-                  flex: '1 1 16rem',
-                  minWidth: '14rem',
-                  padding: 'var(--space-3)',
-                  backgroundColor: 'var(--color-bg)',
-                  display: 'flex',
-                  alignItems: 'stretch',
-                  minHeight: '11rem',
-                }}
-              >
-                {selectedSkill ? (
-                  <StylePreviewCard
-                    skill={selectedSkill}
-                    onSelect={(sk) => setSessionSelected(sk)}
-                  />
-                ) : (
-                  <div
-                    role="status"
-                    style={{
-                      width: '100%',
-                      margin: 'auto',
-                      padding: 'var(--space-6)',
-                      textAlign: 'center',
-                      borderRadius: 'var(--radius-lg)',
-                      border: '1px dashed var(--color-border-strong)',
-                      backgroundColor: 'var(--color-bg-muted)',
-                      color: 'var(--color-text-muted)',
-                      fontSize: 'var(--text-sm)',
-                    }}
-                  >
-                    选择左侧 Skill 查看风格预览
-                  </div>
-                )}
-              </div>
             </div>
-          </div>
-        </div>
 
-        {!keyed && (
-          <div
-            role="status"
-            className="card"
-            style={{
-              marginBottom: 'var(--space-4)',
-              borderColor: 'var(--color-primary)',
-              backgroundColor: 'var(--color-primary-muted)',
-              padding: 'var(--space-4)',
-            }}
-          >
-            <strong style={{ color: 'var(--color-primary)' }}>
-              未配置 API Key
-            </strong>
-            <p
-              style={{
-                margin: 'var(--space-2) 0 0',
-                fontSize: 'var(--text-sm)',
-              }}
-            >
-              不会假连通。请点击「去配置 API」填写 Base URL、模型名与 Key（仅
-              localStorage）。配置前模型请求会被拦截；「看库 / 选用」仍可用。
-            </p>
-          </div>
-        )}
-
-        {showSettings && (
-          <form
-            className="card"
-            onSubmit={saveSettingsForm}
-            style={{
-              display: 'grid',
-              gap: 'var(--space-3)',
-              marginBottom: 'var(--space-4)',
-              padding: 'var(--space-5)',
-            }}
-          >
-            <label style={{ display: 'grid', gap: 'var(--space-1)' }}>
-              <span style={labelStyle}>Base URL（OpenAI 兼容）</span>
-              <input
-                className="field-input"
-                value={settingsDraft.baseUrl}
-                onChange={(e) =>
-                  setSettingsDraft((s) => ({ ...s, baseUrl: e.target.value }))
-                }
-                placeholder="https://t.mysugoncloud.com:8765"
-                autoComplete="off"
-              />
-              <span
-                style={{
-                  fontSize: 'var(--text-xs)',
-                  color: 'var(--color-text-muted)',
-                }}
-              >
-                默认云主机在开发模式下走同源 /api/llm 代理，避免浏览器
-                CORS。自定义地址将直连（需网关允许跨域）。
-              </span>
-            </label>
-            <label style={{ display: 'grid', gap: 'var(--space-1)' }}>
-              <span style={labelStyle}>模型名</span>
-              <input
-                className="field-input"
-                value={settingsDraft.model}
-                onChange={(e) =>
-                  setSettingsDraft((s) => ({ ...s, model: e.target.value }))
-                }
-                placeholder="deepseek-flash"
-                autoComplete="off"
-              />
-            </label>
-            <label style={{ display: 'grid', gap: 'var(--space-1)' }}>
-              <span style={labelStyle}>API Key（仅本机 localStorage）</span>
-              <input
-                className="field-input"
-                type="password"
-                value={settingsDraft.apiKey}
-                onChange={(e) =>
-                  setSettingsDraft((s) => ({ ...s, apiKey: e.target.value }))
-                }
-                placeholder="sk-..."
-                autoComplete="off"
-              />
-            </label>
-            <div
-              style={{
-                display: 'flex',
-                gap: 'var(--space-2)',
-                flexWrap: 'wrap',
-              }}
-            >
-              <button type="submit" className="btn-primary">
-                保存配置
-              </button>
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={() => {
-                  const cleared = { ...DEFAULT_LLM_SETTINGS, apiKey: '' }
-                  saveLlmSettings(cleared)
-                  setSettings(cleared)
-                  setSettingsDraft(cleared)
-                  setStatusMsg('已清除本机 API Key。')
-                }}
-              >
-                清除 Key
-              </button>
+            <div className="agent-library-preview">
+              {selectedSkill ? (
+                <StylePreviewCard
+                  skill={selectedSkill}
+                  onSelect={(sk) => setSessionSelected(sk)}
+                />
+              ) : (
+                <div
+                  role="status"
+                  style={{
+                    width: '100%',
+                    margin: 'auto',
+                    padding: 'var(--space-6)',
+                    textAlign: 'center',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px dashed var(--color-border-strong)',
+                    backgroundColor: 'var(--color-bg-muted)',
+                    color: 'var(--color-text-muted)',
+                    fontSize: 'var(--text-sm)',
+                  }}
+                >
+                  选择上方 Skill 查看风格预览
+                </div>
+              )}
             </div>
-          </form>
-        )}
+          </aside>
 
-        <div
-          className="card"
-          style={{
-            padding: 0,
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '28rem',
-            boxShadow: 'var(--shadow-md)',
-            borderRadius: 'var(--radius-xl)',
-          }}
-        >
+          <div className="agent-chat">
           <div
             ref={listRef}
             style={{
@@ -1284,7 +1225,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
               display: 'flex',
               flexDirection: 'column',
               gap: 'var(--space-4)',
-              maxHeight: '24rem',
+              minHeight: '16rem',
               backgroundColor: 'var(--color-bg)',
             }}
           >
@@ -1744,6 +1685,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
               </p>
             )}
           </form>
+          </div>
         </div>
       </div>
     </section>

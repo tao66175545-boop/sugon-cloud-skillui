@@ -1,11 +1,81 @@
-﻿/* Feature: Agent 「最近入库」左右栏（窄屏纵向堆叠） */
-.agent-recent-panel .agent-recent-list {
-  border-right: 1px solid var(--color-border);
+/* Feature: Agent 左库右聊 — 宽屏并排、窄屏纵向堆叠 */
+.agent-shell {
+  display: grid;
+  grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr);
+  align-items: stretch;
+  min-height: 32rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
 }
 
-@media (max-width: 40rem) {
-  .agent-recent-panel .agent-recent-list {
+.agent-library {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-right: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.agent-library-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg-subtle);
+  flex-shrink: 0;
+}
+
+.agent-recent-list {
+  flex: 0 1 auto;
+  min-height: 8rem;
+  max-height: 14rem;
+  overflow: auto;
+}
+
+.agent-library-preview {
+  flex: 1 1 auto;
+  min-height: 11rem;
+  padding: var(--space-3);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+  display: flex;
+  align-items: stretch;
+  overflow: auto;
+}
+
+.agent-chat {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 28rem;
+  background-color: var(--color-bg);
+}
+
+@media (max-width: 48rem) {
+  .agent-shell {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .agent-library {
     border-right: none;
     border-bottom: 1px solid var(--color-border);
+  }
+
+  .agent-recent-list {
+    max-height: 12rem;
+  }
+
+  .agent-library-preview {
+    min-height: 10rem;
+  }
+
+  .agent-chat {
+    min-height: 24rem;
   }
 }
