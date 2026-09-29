@@ -1,41 +1,54 @@
 /**
- * 曙光云 SkillUI — 品牌设计令牌
+ * 曙光 · SkillUI · 品牌设计令牌
  * 由 src/index.css @import 引入；与 DESIGN.md 保持同步。
  *
- * 品牌色板：曙光红 + 石板灰 + 白底
+ * 品牌色板：曙光红 + 中性灰 + 白底
  * Primary: #C8161D
  */
 
 :root {
   /* 品牌主色 — 曙光红 */
   --color-primary: #C8161D;
-  --color-primary-hover: #A51218;
-  --color-primary-active: #8B0F14;
+  --color-primary-hover: #A81218;
+  --color-primary-active: #8F0F14;
   --color-primary-foreground: #ffffff;
-  --color-primary-muted: #FDE8EA;
+  --color-primary-muted: #FCE8E9;
 
-  /* 辅色 — 深红强调 */
-  --color-accent: #A51218;
-  --color-accent-hover: #8B0F14;
-  --color-accent-muted: #F5D0D3;
+  /* 辅色 — 与主色一致（DESIGN） */
+  --color-accent: #C8161D;
+  --color-accent-hover: #A81218;
+  --color-accent-muted: #FCE8E9;
 
-  /* 中性色 — 石板灰 + 白底 */
+  /* 中性色 — 灰 + 白底（对齐 DESIGN） */
   --color-bg: #ffffff;
-  --color-bg-subtle: #f8fafc;
-  --color-bg-muted: #f1f5f9;
+  --color-bg-subtle: #f5f5f5;
+  --color-bg-muted: #eeeeee;
   --color-surface: #ffffff;
-  --color-border: #e2e8f0;
-  --color-border-strong: #cbd5e1;
+  --color-border: #e5e5e5;
+  --color-border-strong: #d4d4d4;
 
-  --color-text: #0f172a;
-  --color-text-secondary: #475569;
-  --color-text-muted: #94a3b8;
+  --color-text: #171717;
+  --color-text-secondary: #525252;
+  --color-text-muted: #a3a3a3;
   --color-text-inverse: #ffffff;
 
   /* 语义色 */
   --color-success: #059669;
   --color-warning: #d97706;
   --color-danger: #C8161D;
+  --color-danger-muted: #FEF2F2;
+  --color-danger-border: #FECACA;
+  --color-danger-foreground: #B91C1C;
+
+  /* 焦点环（壳与表单共用） */
+  --focus-ring: 0 0 0 3px var(--color-primary-muted);
+  --focus-ring-strong: 0 0 0 3px color-mix(in srgb, var(--color-primary) 28%, transparent);
+
+  /* 顶栏毛玻璃 */
+  --topbar-bg: color-mix(in srgb, var(--color-surface) 3%, transparent);
+  --topbar-bg-fallback: var(--color-surface);
+  --topbar-blur: saturate(180%) blur(20px);
+  --topbar-border: color-mix(in srgb, var(--color-border) 70%, transparent);
 
   /* 字体 */
   --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Inter",
@@ -89,13 +102,13 @@
   --space-24: 6rem;
 
   /* 阴影 */
-  --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.08),
-    0 2px 4px -2px rgb(15 23 42 / 0.06);
-  --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.08),
-    0 4px 6px -4px rgb(15 23 42 / 0.05);
-  --shadow-xl: 0 20px 25px -5px rgb(15 23 42 / 0.1),
-    0 8px 10px -6px rgb(15 23 42 / 0.06);
+  --shadow-sm: 0 1px 2px 0 rgb(23 23 23 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(23 23 23 / 0.08),
+    0 2px 4px -2px rgb(23 23 23 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(23 23 23 / 0.08),
+    0 4px 6px -4px rgb(23 23 23 / 0.05);
+  --shadow-xl: 0 20px 25px -5px rgb(23 23 23 / 0.1),
+    0 8px 10px -6px rgb(23 23 23 / 0.06);
 
   /* 按钮 */
   --btn-height: 2.75rem;
@@ -104,9 +117,10 @@
   --btn-font-size: var(--text-sm);
   --btn-font-weight: var(--font-weight-semibold);
   --btn-transition: background-color 150ms ease, box-shadow 150ms ease,
-    transform 100ms ease;
+    transform 100ms ease, border-color 150ms ease;
 
   /* 布局 */
   --container-max: 72rem;
   --section-py: var(--space-20);
+  --agent-max: 48rem;
 }
