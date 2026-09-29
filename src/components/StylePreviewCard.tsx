@@ -413,7 +413,7 @@ function ShadowCardFace({
                 />
               ))}
             </div>
-            <p className="type-sample">Aa 曙光 · SkillUI · 字体样例</p>
+            <p className="type-sample">Aa · {model.shortLabel} · 字体样例</p>
             <div className="spaces" aria-label="间距">
               {model.preview.spaces.map((s) => (
                 <div key={s.name} className="space-row">

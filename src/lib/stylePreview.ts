@@ -9,7 +9,7 @@ export type StylePreviewTokens = {
   textSampleSize: string
   spaces: { name: string; value: string }[]
   /** Where the color values came from */
-  colorSource: 'tokens.css' | 'DESIGN.md' | 'placeholder'
+  colorSource: 'tokens.css' | 'DESIGN.md' | 'content' | 'derived' | 'placeholder'
   /**
    * Curated CSS custom properties for the Shadow sandbox
    * (buttons / input / type scale). Keys include leading `--`.
@@ -25,6 +25,8 @@ export type StylePreviewModel = {
   importPath: string
   importSnippet: string
   preview: StylePreviewTokens
+  /** Short label for typography sample (path slug or truncated name) */
+  shortLabel: string
 }
 
 /** Brand-kit fallback when skill tokens.css / DESIGN.md lack a rich palette. */
@@ -100,6 +102,14 @@ const BUNDLED: Record<string, { tokens?: string; design?: string }> = {
 
 function normalizeDirPath(path: string): string {
   return normalizeSupplyPath(path)
+}
+
+/** Path slug or truncated name for typography / labels. */
+export function skillShortLabel(skill: Skill): string {
+  const parts = skill.path.replace(/\\/g, '/').split('/').filter(Boolean)
+  const slug = parts[parts.length - 1] || skill.id || skill.name
+  const label = slug.trim() || skill.name.trim() || 'skill'
+  return label.length > 28 ? `${label.slice(0, 26)}…` : label
 }
 
 export function skillTokensPath(skill: Skill): string {
@@ -193,6 +203,214 @@ function extractHex(s: string): string | null {
   return m ? `#${m[1]}` : null
 }
 
+function expandHex(hex: string): string {
+  const h = hex.replace(/^#/, '')
+  if (h.length === 3) {
+    return `#${h[0]}${h[0]}${h[1]}${h[1]}${h[2]}${h[2]}`.toUpperCase()
+  }
+  if (h.length === 4) {
+    // #RGBA → ignore alpha for preview swatches
+    return `#${h[0]}${h[0]}${h[1]}${h[1]}${h[2]}${h[2]}`.toUpperCase()
+  }
+  if (h.length === 8) {
+    return `#${h.slice(0, 6)}`.toUpperCase()
+  }
+  return `#${h.slice(0, 6)}`.toUpperCase()
+}
+
+function parseHexRgb(hex: string): { r: number; g: number; b: number } | null {
+  const full = expandHex(hex).replace(/^#/, '')
+  if (!/^[0-9A-Fa-f]{6}$/.test(full)) return null
+  return {
+    r: parseInt(full.slice(0, 2), 16),
+    g: parseInt(full.slice(2, 4), 16),
+    b: parseInt(full.slice(4, 6), 16),
+  }
+}
+
+function rgbToHex(r: number, g: number, b: number): string {
+  const clamp = (n: number) => Math.max(0, Math.min(255, Math.round(n)))
+  return (
+    '#' +
+    [clamp(r), clamp(g), clamp(b)]
+      .map((n) => n.toString(16).padStart(2, '0'))
+      .join('')
+      .toUpperCase()
+  )
+}
+
+function hslToHex(h: number, s: number, l: number): string {
+  const sat = Math.max(0, Math.min(100, s)) / 100
+  const light = Math.max(0, Math.min(100, l)) / 100
+  const hue = ((h % 360) + 360) % 360
+  const c = (1 - Math.abs(2 * light - 1)) * sat
+  const x = c * (1 - Math.abs(((hue / 60) % 2) - 1))
+  const m = light - c / 2
+  let rp = 0
+  let gp = 0
+  let bp = 0
+  if (hue < 60) {
+    rp = c
+    gp = x
+  } else if (hue < 120) {
+    rp = x
+    gp = c
+  } else if (hue < 180) {
+    gp = c
+    bp = x
+  } else if (hue < 240) {
+    gp = x
+    bp = c
+  } else if (hue < 300) {
+    rp = x
+    bp = c
+  } else {
+    rp = c
+    bp = x
+  }
+  return rgbToHex((rp + m) * 255, (gp + m) * 255, (bp + m) * 255)
+}
+
+function mixHex(hex: string, toward: string, t: number): string {
+  const a = parseHexRgb(hex)
+  const b = parseHexRgb(toward)
+  if (!a || !b) return expandHex(hex)
+  return rgbToHex(
+    a.r + (b.r - a.r) * t,
+    a.g + (b.g - a.g) * t,
+    a.b + (b.b - a.b) * t,
+  )
+}
+
+function darkenHex(hex: string, amount: number): string {
+  return mixHex(hex, '#000000', amount)
+}
+
+function lightenHex(hex: string, amount: number): string {
+  return mixHex(hex, '#ffffff', amount)
+}
+
+function relativeLuminance(hex: string): number {
+  const rgb = parseHexRgb(hex)
+  if (!rgb) return 0
+  const lin = [rgb.r, rgb.g, rgb.b].map((v) => {
+    const s = v / 255
+    return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4
+  })
+  return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
+}
+
+/** Prefer saturated / mid-lightness swatches as primary. */
+function isVividHex(hex: string): boolean {
+  const rgb = parseHexRgb(hex)
+  if (!rgb) return false
+  const max = Math.max(rgb.r, rgb.g, rgb.b)
+  const min = Math.min(rgb.r, rgb.g, rgb.b)
+  const sat = max === 0 ? 0 : (max - min) / max
+  const lum = relativeLuminance(hex)
+  return sat >= 0.25 && lum > 0.08 && lum < 0.85
+}
+
+function hashString(seed: string): number {
+  let h = 2166136261
+  for (let i = 0; i < seed.length; i++) {
+    h ^= seed.charCodeAt(i)
+    h = Math.imul(h, 16777619)
+  }
+  // Avalanche (murmur3 fmix32) so similar ids/slugs land on distant hues.
+  h ^= h >>> 16
+  h = Math.imul(h, 0x85ebca6b)
+  h ^= h >>> 13
+  h = Math.imul(h, 0xc2b2ae35)
+  h ^= h >>> 16
+  return h >>> 0
+}
+
+/**
+ * Pull #RGB / #RRGGBB from skill text fields; map first vivid as primary.
+ * Returns [] when fewer than 2 usable hexes (caller falls through to derived).
+ */
+function extractColorsFromSkillContent(
+  skill: Skill,
+): { name: string; value: string }[] {
+  const blob = [skill.content, skill.purpose, skill.name]
+    .filter((s): s is string => Boolean(s && s.trim()))
+    .join('\n')
+  if (!blob) return []
+
+  const hexRe = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b/g
+  const seen = new Set<string>()
+  const hexes: string[] = []
+  let m: RegExpExecArray | null
+  while ((m = hexRe.exec(blob))) {
+    const value = expandHex(`#${m[1]}`)
+    const key = value.toLowerCase()
+    if (seen.has(key)) continue
+    // Skip near-white / near-black noise unless we have nothing else later
+    seen.add(key)
+    hexes.push(value)
+  }
+  if (hexes.length < 2) return []
+
+  const vivid = hexes.find(isVividHex) || hexes[0]
+  const rest = hexes.filter((h) => h.toLowerCase() !== vivid.toLowerCase())
+
+  const surface =
+    rest.find((h) => relativeLuminance(h) > 0.85) || '#FFFFFF'
+  const text =
+    rest.find((h) => relativeLuminance(h) < 0.2) || '#171717'
+  const border =
+    rest.find(
+      (h) =>
+        h.toLowerCase() !== surface.toLowerCase() &&
+        h.toLowerCase() !== text.toLowerCase() &&
+        relativeLuminance(h) > 0.55,
+    ) || lightenHex(vivid, 0.82)
+  const primaryMuted =
+    rest.find(
+      (h) =>
+        h.toLowerCase() !== vivid.toLowerCase() &&
+        h.toLowerCase() !== surface.toLowerCase() &&
+        relativeLuminance(h) > 0.75,
+    ) || lightenHex(vivid, 0.88)
+
+  return [
+    { name: 'primary', value: vivid },
+    { name: 'surface', value: surface },
+    { name: 'border', value: border },
+    { name: 'text', value: text },
+    { name: 'primary-muted', value: primaryMuted },
+  ]
+}
+
+/**
+ * Deterministic HSL/hex palette seeded by skill id (or path slug)
+ * so each 入库 skill gets a visibly different primary.
+ */
+export function derivePaletteFromSkill(
+  skill: Skill,
+): { name: string; value: string }[] {
+  const seed = `${skill.id || skill.name || 'skill'}|${skillShortLabel(skill)}`
+  const h = hashString(seed)
+  // Hue 25–324: skip the brand-kit red band (~325–25) so derived never mimics #C8161D.
+  const hue = 25 + (h % 300)
+  const sat = 58 + ((h >>> 9) % 17)
+  const light = 36 + ((h >>> 17) % 10)
+  const primary = hslToHex(hue, sat, light)
+  const primaryMuted = hslToHex(hue, 48, 94)
+  const text = hslToHex(hue, 18, 12)
+  const border = hslToHex(hue, 12, 88)
+  const muted = hslToHex(hue, 10, 38)
+  return [
+    { name: 'primary', value: primary },
+    { name: 'surface', value: '#FFFFFF' },
+    { name: 'border', value: border },
+    { name: 'text', value: text },
+    { name: 'primary-muted', value: primaryMuted },
+    { name: 'muted', value: muted },
+  ]
+}
+
 function parseDesignColors(md: string): { name: string; value: string }[] {
   const picked: { name: string; value: string }[] = []
   const seen = new Set<string>()
@@ -201,7 +419,7 @@ function parseDesignColors(md: string): { name: string; value: string }[] {
   let m: RegExpExecArray | null
   while ((m = rowRe.exec(md))) {
     const name = m[1]
-    const value = m[2]
+    const value = expandHex(m[2])
     if (seen.has(value.toLowerCase())) continue
     seen.add(value.toLowerCase())
     picked.push({ name, value })
@@ -211,7 +429,7 @@ function parseDesignColors(md: string): { name: string; value: string }[] {
     const hexRe = /#([0-9A-Fa-f]{6})\b/g
     let h: RegExpExecArray | null
     while ((h = hexRe.exec(md))) {
-      const value = `#${h[1]}`
+      const value = expandHex(`#${h[1]}`)
       if (seen.has(value.toLowerCase())) continue
       seen.add(value.toLowerCase())
       picked.push({ name: `color-${picked.length + 1}`, value })
@@ -242,7 +460,8 @@ function spacesFromVars(
 
 /**
  * Build sandbox CSS vars for Shadow: prefer parsed tokens, else brand-kit fallback.
- * When DESIGN.md supplies palette but tokens are thin, overlay primary/surface/text.
+ * When DESIGN.md / content / derived supplies palette but tokens are thin,
+ * overlay primary/surface/text and retint hover / muted / focus ring.
  */
 function buildSandboxVars(
   vars: Record<string, string>,
@@ -255,7 +474,7 @@ function buildSandboxVars(
     const v = vars[key]
     if (v) out[key] = v
   }
-  // Overlay picked colors so DESIGN.md-only / partial tokens still tint the sandbox.
+  // Overlay picked colors so DESIGN.md-only / content / derived still tint the sandbox.
   for (const c of colors) {
     const full = `--color-${c.name}`
     if (SANDBOX_KEYS.includes(full) || full.startsWith('--color-')) {
@@ -279,6 +498,32 @@ function buildSandboxVars(
       /^#(9ca3af|6b7280|4b5563)$/i.test(out['--color-primary-hover'].trim())
     ) {
       out['--color-primary-hover'] = '#A81218'
+    }
+  }
+
+  const primaryHex = extractHex(out['--color-primary'] || '')
+  if (primaryHex && !/^#(9ca3af|6b7280|4b5563)$/i.test(primaryHex)) {
+    // Retint companion tokens when skill CSS did not define them so buttons/focus match primary.
+    if (!vars['--color-primary-hover']) {
+      out['--color-primary-hover'] = darkenHex(primaryHex, 0.14)
+    }
+    if (!vars['--color-primary-active']) {
+      out['--color-primary-active'] = darkenHex(primaryHex, 0.22)
+    }
+    if (!vars['--color-primary-muted']) {
+      const fromColors = colors.find((c) => c.name === 'primary-muted')?.value
+      out['--color-primary-muted'] = fromColors || lightenHex(primaryHex, 0.88)
+    }
+    if (!vars['--focus-ring']) {
+      out['--focus-ring'] = `0 0 0 3px ${out['--color-primary-muted']}`
+    }
+    if (!vars['--focus-ring-strong']) {
+      out['--focus-ring-strong'] =
+        `0 0 0 3px color-mix(in srgb, ${out['--color-primary']} 28%, transparent)`
+    }
+    if (!vars['--color-primary-foreground']) {
+      out['--color-primary-foreground'] =
+        relativeLuminance(primaryHex) > 0.55 ? '#171717' : '#FFFFFF'
     }
   }
   return out
@@ -317,7 +562,8 @@ async function tryFetchText(url: string): Promise<string | null> {
 }
 
 /**
- * Load preview data: tokens.css → DESIGN.md colors → brand-kit placeholder.
+ * Load preview data:
+ * tokens.css → DESIGN.md → content hex → derived palette → brand placeholder.
  * Bundled brand-kit is preferred; otherwise fetch relative skill paths.
  */
 export async function loadStylePreview(skill: Skill): Promise<StylePreviewModel> {
@@ -348,15 +594,23 @@ export async function loadStylePreview(skill: Skill): Promise<StylePreviewModel>
       preview = buildPreview(vars, colors, 'tokens.css')
     } else if (designMd) {
       const dColors = parseDesignColors(designMd)
-      preview = buildPreview(vars, dColors, 'DESIGN.md')
+      if (dColors.length >= 3) {
+        preview = buildPreview(vars, dColors, 'DESIGN.md')
+      } else {
+        preview = previewFromContentOrDerived(skill, vars)
+      }
     } else {
-      preview = buildPreview(vars, BRAND_PLACEHOLDER, 'placeholder')
+      preview = previewFromContentOrDerived(skill, vars)
     }
   } else if (designMd) {
     const dColors = parseDesignColors(designMd)
-    preview = buildPreview({}, dColors, 'DESIGN.md')
+    if (dColors.length >= 3) {
+      preview = buildPreview({}, dColors, 'DESIGN.md')
+    } else {
+      preview = previewFromContentOrDerived(skill, {})
+    }
   } else {
-    preview = buildPreview({}, BRAND_PLACEHOLDER, 'placeholder')
+    preview = previewFromContentOrDerived(skill, {})
   }
 
   return {
@@ -366,7 +620,24 @@ export async function loadStylePreview(skill: Skill): Promise<StylePreviewModel>
     importPath,
     importSnippet: skillImportSnippet(skill),
     preview,
+    shortLabel: skillShortLabel(skill),
   }
+}
+
+/** content hex (≥2) → derived(seed) → brand placeholder last resort. */
+function previewFromContentOrDerived(
+  skill: Skill,
+  vars: Record<string, string>,
+): StylePreviewTokens {
+  const contentColors = extractColorsFromSkillContent(skill)
+  if (contentColors.length >= 3) {
+    return buildPreview(vars, contentColors, 'content')
+  }
+  const derived = derivePaletteFromSkill(skill)
+  if (derived.length >= 3) {
+    return buildPreview(vars, derived, 'derived')
+  }
+  return buildPreview(vars, BRAND_PLACEHOLDER, 'placeholder')
 }
 
 export async function copyText(text: string): Promise<boolean> {
