@@ -102,7 +102,7 @@
 
 /* #agent 区：紧凑一句眉+标题+短说明 */
 #agent.section-pad {
-  padding-block: var(--space-3);
+  padding-block: var(--space-3) 0;
 }
 
 #agent .agent-hero {
@@ -245,7 +245,7 @@
   }
 
   #agent.section-pad {
-    padding-block: var(--space-2);
+    padding-block: var(--space-2) 0;
   }
 
   #agent .agent-hero {

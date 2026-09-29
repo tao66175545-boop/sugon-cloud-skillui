@@ -879,7 +879,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
         scrollMarginTop: '4.5rem',
         backgroundColor: 'var(--color-bg-subtle)',
         borderTop: '1px solid var(--color-border)',
-        paddingBlock: 'var(--space-3)',
+        paddingBlock: 'var(--space-3) 0',
       }}
     >
       <div className="container-max" style={{ maxWidth: 'var(--agent-max)' }}>

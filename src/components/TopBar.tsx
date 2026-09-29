@@ -75,31 +75,6 @@ export function TopBar({ skillCount }: TopBarProps) {
             </span>
           </span>
         </a>
-        <nav
-          aria-label="页面导航"
-          style={{
-            display: 'flex',
-            gap: 'var(--space-2)',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-          }}
-        >
-          <a
-            href="#agent"
-            className="btn-secondary"
-            style={{
-              height: '2.25rem',
-              paddingInline: 'var(--space-4)',
-              fontSize: 'var(--text-sm)',
-              backgroundColor:
-                'color-mix(in srgb, var(--color-surface) 55%, transparent)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-            }}
-          >
-            对话
-          </a>
-        </nav>
       </div>
     </header>
   )
