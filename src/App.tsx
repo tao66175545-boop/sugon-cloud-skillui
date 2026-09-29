@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { TopBar } from './components/TopBar'
 import { AgentChat } from './components/AgentChat'
-import { ExampleSection } from './components/ExampleSection'
 import { loadSkills, type Skill } from './lib/skills'
 
 export default function App() {
@@ -16,7 +15,6 @@ export default function App() {
       <TopBar skillCount={skills.length} />
       <main>
         <AgentChat skills={skills} onSkillsChanged={setSkills} />
-        <ExampleSection />
       </main>
     </>
   )

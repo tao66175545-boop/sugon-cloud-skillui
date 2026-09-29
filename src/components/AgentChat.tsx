@@ -249,13 +249,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
   const [settingsDraft, setSettingsDraft] = useState<LlmSettings>(() =>
     loadLlmSettings(),
   )
-  const [bubbles, setBubbles] = useState<ChatBubble[]>([
-    {
-      id: 'welcome',
-      role: 'system',
-      text: '直接发消息即可：粘贴链接、描述 Skill、附图片/文件/文件夹，或说「归库」「导出」「看库」「选用某某」。Agent 会理解意图。选用时可复制供给层 path。写入本机库前会请你确认。',
-    },
-  ])
+  const [bubbles, setBubbles] = useState<ChatBubble[]>([])
   const [input, setInput] = useState('')
   const [attachments, setAttachments] = useState<PendingAttachment[]>([])
   const [attachMenuOpen, setAttachMenuOpen] = useState(false)
@@ -1203,6 +1197,25 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
 
           <div className="agent-chat">
           <div ref={listRef} className="agent-chat-stream">
+            {bubbles.length === 0 && !pendingDraft && !busy && (
+              <div className="agent-welcome" role="status">
+                <p>
+                  直接发消息即可：粘贴链接、描述 Skill、附图片/文件/文件夹，或说「归库」「导出」「看库」「选用某某」。Agent 会理解意图。选用时可复制供给层 path。写入本机库前会请你确认。
+                </p>
+                <p>
+                  选用后对话里说「归库」「选用某某」可复制该技能路径，如{' '}
+                  <code>design-skills/brand-kit/</code>
+                  。也可看小参考{' '}
+                  <code>examples/minimal-reference/</code>
+                  。
+                </p>
+                <p>
+                  目标项目可按下路径 @import{' '}
+                  <code>design-skills/brand-kit/tokens.css</code>{' '}
+                  使用；无 npm 包、无 CDN，仅本地。
+                </p>
+              </div>
+            )}
             {bubbles.map((b) => (
               <Bubble
                 key={b.id}
