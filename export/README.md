@@ -1,56 +1,82 @@
 # 对外统一出口 — 曙光云 SkillUI 库（风格供给层）
 
 本目录是**其他项目消费本库风格供给层**的统一入口。  
-机器可读清单见 [`manifest.json`](./manifest.json)。
+机器可读清单：[`manifest.json`](./manifest.json)。  
+**3 步接入**：[`CONSUME.md`](./CONSUME.md)。
 
-> **不是**云 CDN，也**不是** Agent / 对话 UI。  
-> 对话（`#agent`）仅为本仓库前端的管理入口；对外只导出 `design-skills/`（令牌 + Skill 文档）与本目录的 CSS 再导出。
+> **不是** CDN；也**不是** Agent / 对话 UI。  
+> 对话（`#agent`）仅为库壳前端的管理入口；对外只导出 `design-skills/`（令牌 + Skill 文档）与本目录的 CSS 再导出。
 
 ---
 
-## 快速接入（二选一）
+## 两种最快接入（任选其一）
 
 ### 方式 A：`@import` 令牌（推荐）
 
 在目标项目 CSS 入口中按**本地相对路径**引入：
 
 ```css
-/* 直接引用 tokens（与本仓 src/index.css 一致） */
+/* 直接引入 tokens（与本仓 src/index.css 一致） */
 @import "../path-to/sugon-skillui/design-skills/brand-kit/tokens.css";
 
-/* 或经统一出口 re-export */
+/* 或统一出口 re-export */
 @import "../path-to/sugon-skillui/export/sugon-skillui.css";
+```
+
+若通过 `file:` / 本地 path 安装并能解析 `package.json` `exports`：
+
+```css
+@import "sugon-skillui/css";
+/* 或 */
+@import "sugon-skillui/tokens";
 ```
 
 然后在组件中使用 CSS 变量，例如 `var(--color-primary)`（`#C8161D`）。
 
 ### 方式 B：复制 `design-skills/`
 
-将本仓库的 `design-skills/brand-kit/` 整包复制到目标项目，再本地 `@import` 复制后的 `tokens.css`。  
-适合不便共享 git 子目录、或需离线固定版本的场景。
+把本仓库的 `design-skills/brand-kit/` 整夹复制到目标项目，再按本地 `@import` 引入其 `tokens.css`。  
+适合不便共享 git 子目录、或需要锁定版本的场景。
 
 ---
 
-## 必读文档
+## package.json exports
+
+本仓虽以 Vite 应用 + `design-skills/` 为主（`private: true`，非强制 npm 发布），仍提供稳定 `exports` 便于 path / `file:` 引用：
+
+| 子路径 | 真实文件 |
+|--------|----------|
+| `.` / `./css` | `export/sugon-skillui.css` |
+| `./tokens` | `design-skills/brand-kit/tokens.css` |
+| `./manifest` | `export/manifest.json` |
+| `./design-skills/brand-kit/*` | 对应文档 / tokens |
+
+`style` 字段同指向 `./export/sugon-skillui.css`。`files` 包含 `export`、`design-skills`、`examples`、`public/logo.svg`。
+
+---
+
+## 固定文档
 
 | 文件 | 用途 |
 |------|------|
-| [`design-skills/brand-kit/SKILL.md`](../design-skills/brand-kit/SKILL.md) | AI / 代理：何时用、如何用供给层 |
-| [`design-skills/brand-kit/DESIGN.md`](../design-skills/brand-kit/DESIGN.md) | 设计规范（色、字、圆角、间距、按钮三态） |
-| [`design-skills/brand-kit/tokens.css`](../design-skills/brand-kit/tokens.css) | CSS 变量事实来源 |
-| [`examples/minimal-reference/`](../examples/minimal-reference/) | 最小参考样例 |
+| [`CONSUME.md`](./CONSUME.md) | 第三方 3 步接入 |
+| [`design-skills/brand-kit/SKILL.md`](../design-skills/brand-kit/SKILL.md) | AI / 工具提示时「如何用供给层」 |
+| [`design-skills/brand-kit/DESIGN.md`](../design-skills/brand-kit/DESIGN.md) | 设计规范（色、字、圆角、间距、按钮状态） |
+| [`design-skills/brand-kit/tokens.css`](../design-skills/brand-kit/tokens.css) | CSS 变量真实来源 |
+| [`examples/minimal-reference/`](../examples/minimal-reference/) | 最小参考（静态 HTML + TSX） |
+| [`examples/import-from-export/`](../examples/import-from-export/) | package exports 引用注释样例 |
 
 ---
 
 ## URL 说明（非 CDN）
 
-本库**不提供**托管 CDN。可用：
+本库**不提供**公有 CDN。消费：
 
 1. **本地相对路径**（克隆 / 子模块 / 复制后）— 推荐  
-2. **GitHub raw**（`raw.githubusercontent.com/...`）— 私有仓需带 token  
-3. **GitHub blob**（`github.com/.../blob/...`）— 给人看的页面链接  
+2. **GitHub raw**（`raw.githubusercontent.com/...`）— **私有仓需 token**；勿当公开 CDN  
+3. **GitHub blob**（`github.com/.../blob/...`）— 给人看网页用  
 
-`manifest.json` 中每个 `entries[]` 均给出 `relative` / `raw` / `blob` 三套地址。
+`manifest.json` 里每条 `entries[]` 都带有 `relative` / `raw` / `blob`，以及 `importHint` / `copyHint` / `packageExport`。
 
 私有仓拉取 raw 示例：
 
@@ -79,7 +105,7 @@ curl -H "Authorization: Bearer <GITHUB_TOKEN>" \
 }
 ```
 
-对照仓内真实样例：[`examples/minimal-reference/TokenUsageExample.tsx`](../examples/minimal-reference/TokenUsageExample.tsx)。
+完整可打开样例见 [`examples/minimal-reference/index.html`](../examples/minimal-reference/index.html)；组件对照见 [`TokenUsageExample.tsx`](../examples/minimal-reference/TokenUsageExample.tsx)。
 
 ---
 
@@ -87,8 +113,8 @@ curl -H "Authorization: Bearer <GITHUB_TOKEN>" \
 
 | 做 | 不做 |
 |----|------|
-| 引用 / 复制 `design-skills/brand-kit/*` | 把 Agent / 对话当导出面 |
+| 引用 / 复制 `design-skills/brand-kit/*` | 改 Agent / 对话管理壳当出口 |
 | `@import` tokens 或 `export/sugon-skillui.css` | 引入质量层（Taste / Impeccable / Hallmark） |
-| 读 `SKILL.md` / `DESIGN.md` | 期望云端市场 / Figma / npm 强制发布 |
+| 读 `SKILL.md` / `DESIGN.md` | 要求移动端出厂 / Figma / npm 强制发布 |
 
 版本与品牌主色以根目录 `package.json` 与 `manifest.json` 为准（当前主色 `#C8161D`）。

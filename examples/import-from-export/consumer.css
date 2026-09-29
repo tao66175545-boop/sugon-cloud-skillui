@@ -1,0 +1,39 @@
+/**
+ * 第三方消费示意 — package.json exports 风格
+ *
+ * 本文件不会被库壳构建打包；请复制注释到你的 CSS 入口。
+ * 私有仓无公开 CDN；优先本地 path / file: 安装。
+ */
+
+/* ---------- 方式 1：package exports（file: / 本地 path 安装后） ---------- */
+/* @import "sugon-skillui"; */
+/* @import "sugon-skillui/css"; */
+/* @import "sugon-skillui/tokens"; */
+
+/* ---------- 方式 2：相对路径（clone / 复制后，不依赖 exports） ---------- */
+@import "../../export/sugon-skillui.css";
+/* 等价：@import "../../design-skills/brand-kit/tokens.css"; */
+
+/* ---------- 使用令牌（勿硬编码品牌色） ---------- */
+.demo-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--btn-height);
+  padding-inline: var(--btn-px);
+  border-radius: var(--btn-radius);
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  font-family: var(--font-sans);
+  color: var(--color-primary-foreground);
+  background: var(--color-primary);
+  border: none;
+}
+
+.demo-cta:hover {
+  background: var(--color-primary-hover);
+}
+
+.demo-cta:active {
+  background: var(--color-primary-active);
+}

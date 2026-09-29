@@ -3,6 +3,27 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "description": "曙光云 SkillUI 库 — style-supply tokens & design skills（非质量层）",
+  "style": "./export/sugon-skillui.css",
+  "exports": {
+    ".": "./export/sugon-skillui.css",
+    "./package.json": "./package.json",
+    "./css": "./export/sugon-skillui.css",
+    "./export/sugon-skillui.css": "./export/sugon-skillui.css",
+    "./tokens": "./design-skills/brand-kit/tokens.css",
+    "./design-skills/brand-kit/tokens.css": "./design-skills/brand-kit/tokens.css",
+    "./design-skills/brand-kit/SKILL.md": "./design-skills/brand-kit/SKILL.md",
+    "./design-skills/brand-kit/DESIGN.md": "./design-skills/brand-kit/DESIGN.md",
+    "./manifest": "./export/manifest.json",
+    "./export/manifest.json": "./export/manifest.json"
+  },
+  "files": [
+    "export",
+    "design-skills",
+    "examples",
+    "public/logo.svg",
+    "README.md"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

@@ -11,13 +11,16 @@
 
 ## 对外统一出口
 
-其他项目消费**风格供给层**请走 [`export/`](./export/)：
+其他项目消费**风格供给层**请走 [`export/`](./export/)（`package.json` `exports` 已指向真实可消费路径）：
 
 | 入口 | 说明 |
 |------|------|
-| [`export/README.md`](./export/README.md) | 中文接入说明（`@import` / 复制 `design-skills`；非 CDN） |
-| [`export/manifest.json`](./export/manifest.json) | 机器可读：包名、版本、主色 `#C8161D`、各资源 relative / raw / blob URL |
+| [`export/CONSUME.md`](./export/CONSUME.md) | **3 步接入**（拿到文件 → `@import` → 选 skill path） |
+| [`export/README.md`](./export/README.md) | 中文接入说明（本地 path / package exports / 复制；非 CDN；私有 raw 需登录） |
+| [`export/manifest.json`](./export/manifest.json) | 机器可读：id、path、`importHint`/`copyHint`、relative / raw / blob |
 | [`export/sugon-skillui.css`](./export/sugon-skillui.css) | 仅 `@import` `design-skills/brand-kit/tokens.css` |
+
+`exports` 摘要：`.` / `./css` → 统一 CSS；`./tokens` → `design-skills/brand-kit/tokens.css`；`./manifest` → `export/manifest.json`。
 
 最小示例：
 
@@ -25,9 +28,10 @@
 @import "../path-to/sugon-skillui/export/sugon-skillui.css";
 /* 或 */
 @import "../path-to/sugon-skillui/design-skills/brand-kit/tokens.css";
+/* file: 安装后也可：@import "sugon-skillui/css"; */
 ```
 
-对照 [`examples/minimal-reference/`](./examples/minimal-reference/)。**Agent / 对话不是对外出口**；勿引入质量层。
+对照 [`examples/minimal-reference/`](./examples/minimal-reference/)（含可静态打开的 `index.html`）与 [`examples/import-from-export/`](./examples/import-from-export/)。**Agent / 对话不是对外出口**；勿引入质量层。
 
 ## 分层：供给层 vs 质量层
 

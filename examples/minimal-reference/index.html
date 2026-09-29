@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>曙光云 SkillUI — 最小参考</title>
+    <!--
+      第三方照抄即可：
+      1) 用本地静态服务打开本目录（推荐：在仓库根 npx serve . 后访问 /examples/minimal-reference/）
+      2) 或把下面两条 link 改成你复制后的相对路径
+      浏览器需能解析 CSS @import；纯 file:// 在部分浏览器可能拦相对 @import，请用本地 HTTP。
+    -->
+    <link rel="stylesheet" href="../../export/sugon-skillui.css" />
+    <link rel="stylesheet" href="./demo.css" />
+  </head>
+  <body>
+    <main class="card">
+      <p class="eyebrow">曙光云 SkillUI 库 · 最小参考</p>
+      <h1>主色 #C8161D</h1>
+      <p class="lede">
+        本页只依赖出口 CSS 与 skill tokens。对照
+        <code>export/sugon-skillui.css</code> /
+        <code>design-skills/brand-kit/tokens.css</code>。
+      </p>
+      <div class="actions">
+        <button type="button" class="btn btn-primary">主按钮</button>
+        <button type="button" class="btn btn-secondary">次按钮</button>
+      </div>
+    </main>
+  </body>
+</html>
