@@ -15,7 +15,7 @@ import {
   type Skill,
 } from '../lib/skills'
 import { StylePreviewCard } from './StylePreviewCard'
-import { skillSourceBadge } from '../lib/stylePreview'
+import { skillSourceBadge, skillSourceBadgeTone } from '../lib/stylePreview'
 import './agentRecent.css'
 import {
   hasApiKey,
@@ -882,37 +882,25 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
       id="agent"
       className="section-pad"
       style={{
-        scrollMarginTop: '5rem',
+        scrollMarginTop: '4.5rem',
         backgroundColor: 'var(--color-bg-subtle)',
         borderTop: '1px solid var(--color-border)',
-        paddingBlock: 'var(--space-8)',
+        paddingBlock: 'var(--space-3)',
       }}
     >
       <div className="container-max" style={{ maxWidth: 'var(--agent-max)' }}>
-        <div className="agent-hero">
-          <p className="shell-eyebrow">对话</p>
-          <h2 className="shell-title">用 Agent 管理 Skill</h2>
-          <p
-            className="shell-lede"
-            style={{
-              margin: 'var(--space-3) 0 0',
-              maxWidth: '36rem',
-            }}
-          >
-            唯一管理入口：链接学习、起草、看库、选用、归库、导出——都在这一处对话完成。不引入质量层。
-          </p>
-          {sessionSelected && (
-            <p
-              style={{
-                margin: 'var(--space-2) 0 0',
-                fontSize: 'var(--text-xs)',
-                color: 'var(--color-text-muted)',
-              }}
-            >
-              当前会话引用：{sessionSelected.name}
+        <header className="agent-hero">
+          <div className="agent-hero-main">
+            <p className="shell-eyebrow">对话</p>
+            <h2 className="shell-title">用 Agent 管理 Skill</h2>
+            <p className="shell-lede">
+              唯一入口：学习 · 起草 · 看库 · 选用 · 归库 · 导出
             </p>
+          </div>
+          {sessionSelected && (
+            <p className="agent-hero-ref">当前引用：{sessionSelected.name}</p>
           )}
-        </div>
+        </header>
 
         {!keyed && (
           <div
@@ -1093,6 +1081,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                     {recentSkills.map((sk) => {
                       const selected = selectedSkillId === sk.id
                       const tag = skillSourceBadge(sk)
+                      const tone = skillSourceBadgeTone(sk)
                       return (
                         <li key={sk.id}>
                           <button
@@ -1103,7 +1092,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                               width: '100%',
                               textAlign: 'left',
                               display: 'grid',
-                              gridTemplateColumns: '0.5rem 1fr auto',
+                              gridTemplateColumns: '1fr auto',
                               gap: '0.55rem',
                               alignItems: 'center',
                               padding: '0.5rem 0.55rem',
@@ -1120,16 +1109,6 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                               color: 'var(--color-text)',
                             }}
                           >
-                            <span
-                              aria-hidden
-                              style={{
-                                width: '0.5rem',
-                                height: '0.5rem',
-                                borderRadius: '9999px',
-                                backgroundColor: 'var(--color-primary)',
-                                justifySelf: 'center',
-                              }}
-                            />
                             <span style={{ minWidth: 0 }}>
                               <span
                                 style={{
@@ -1168,11 +1147,9 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                                 fontWeight: 600,
                                 padding: '0.1rem 0.4rem',
                                 borderRadius: '9999px',
-                                color: 'var(--color-primary)',
-                                backgroundColor:
-                                  'color-mix(in srgb, var(--color-primary) 12%, transparent)',
-                                border:
-                                  '1px solid color-mix(in srgb, var(--color-primary) 28%, transparent)',
+                                color: tone.color,
+                                backgroundColor: tone.background,
+                                border: tone.border,
                                 whiteSpace: 'nowrap',
                               }}
                             >

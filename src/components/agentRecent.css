@@ -60,24 +60,54 @@
   background-color: var(--color-bg);
 }
 
-/* #agent 上区收紧（不删 hero） */
+/* #agent 紧凑条：一行眉题+标题+短说明，把库+聊抬进首屏 */
 #agent.section-pad {
-  padding-block: var(--space-8);
+  padding-block: var(--space-3);
 }
 
 #agent .agent-hero {
-  margin-bottom: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  margin: 0 0 var(--space-3);
+  padding: 0;
+}
+
+#agent .agent-hero-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.75rem;
+  min-width: 0;
+}
+
+#agent .agent-hero .shell-eyebrow {
+  margin: 0;
+  font-size: var(--text-xs);
 }
 
 #agent .agent-hero .shell-title {
-  margin-top: var(--space-1);
-  font-size: var(--text-2xl);
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0;
 }
 
 #agent .agent-hero .shell-lede {
-  margin-top: var(--space-2);
-  font-size: var(--text-sm);
+  margin: 0;
+  max-width: none;
+  font-size: var(--text-xs);
   line-height: var(--leading-normal);
+  color: var(--color-text-muted);
+}
+
+#agent .agent-hero-ref {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
 @media (max-width: 48rem) {
@@ -101,6 +131,10 @@
   }
 
   #agent.section-pad {
-    padding-block: var(--space-6);
+    padding-block: var(--space-2);
+  }
+
+  #agent .agent-hero {
+    margin-bottom: var(--space-2);
   }
 }
