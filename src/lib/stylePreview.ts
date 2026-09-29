@@ -10,6 +10,11 @@ export type StylePreviewTokens = {
   spaces: { name: string; value: string }[]
   /** Where the color values came from */
   colorSource: 'tokens.css' | 'DESIGN.md' | 'placeholder'
+  /**
+   * Curated CSS custom properties for the Shadow sandbox
+   * (buttons / input / type scale). Keys include leading `--`.
+   */
+  sandboxVars: Record<string, string>
 }
 
 export type StylePreviewModel = {
@@ -29,6 +34,49 @@ const GRAY_PLACEHOLDER: { name: string; value: string }[] = [
   { name: 'text', value: '#6b7280' },
   { name: 'muted', value: '#e5e7eb' },
 ]
+
+/** Fallback sandbox vars when tokens.css is missing / incomplete (gray placeholder). */
+const SANDBOX_FALLBACK: Record<string, string> = {
+  '--color-primary': '#9ca3af',
+  '--color-primary-hover': '#6b7280',
+  '--color-primary-active': '#4b5563',
+  '--color-primary-foreground': '#ffffff',
+  '--color-primary-muted': '#f3f4f6',
+  '--color-surface': '#ffffff',
+  '--color-bg': '#ffffff',
+  '--color-bg-subtle': '#f9fafb',
+  '--color-bg-muted': '#f3f4f6',
+  '--color-border': '#e5e7eb',
+  '--color-border-strong': '#d1d5db',
+  '--color-text': '#6b7280',
+  '--color-text-secondary': '#9ca3af',
+  '--color-text-muted': '#d1d5db',
+  '--font-sans': 'system-ui, sans-serif',
+  '--font-mono': 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+  '--text-sm': '0.875rem',
+  '--text-base': '1rem',
+  '--text-xl': '1.25rem',
+  '--leading-normal': '1.5',
+  '--radius-md': '0.5rem',
+  '--radius-lg': '0.75rem',
+  '--space-2': '0.5rem',
+  '--space-3': '0.75rem',
+  '--space-4': '1rem',
+  '--btn-height': '2.25rem',
+  '--btn-px': '1rem',
+  '--btn-radius': '0.75rem',
+  '--btn-font-size': '0.875rem',
+  '--btn-font-weight': '600',
+  '--btn-transition':
+    'background-color 150ms ease, box-shadow 150ms ease, border-color 150ms ease',
+  '--focus-ring': '0 0 0 3px #f3f4f6',
+  '--focus-ring-strong': '0 0 0 3px color-mix(in srgb, #9ca3af 28%, transparent)',
+  '--shadow-sm': '0 1px 2px 0 rgb(23 23 23 / 0.05)',
+  '--shadow-md':
+    '0 4px 6px -1px rgb(23 23 23 / 0.08), 0 2px 4px -2px rgb(23 23 23 / 0.06)',
+}
+
+const SANDBOX_KEYS = Object.keys(SANDBOX_FALLBACK)
 
 const COLOR_PICK_ORDER = [
   'primary',
@@ -169,19 +217,54 @@ function spacesFromVars(
   return out
 }
 
+/**
+ * Build sandbox CSS vars for Shadow: prefer parsed tokens, else gray fallback.
+ * When DESIGN.md supplies palette but tokens are thin, overlay primary/surface/text.
+ */
+function buildSandboxVars(
+  vars: Record<string, string>,
+  colors: { name: string; value: string }[],
+  usePlaceholder: boolean,
+): Record<string, string> {
+  const out: Record<string, string> = { ...SANDBOX_FALLBACK }
+  if (!usePlaceholder) {
+    for (const key of SANDBOX_KEYS) {
+      const v = vars[key]
+      if (v) out[key] = v
+    }
+  }
+  // Overlay picked colors so DESIGN.md-only / partial tokens still tint the sandbox.
+  for (const c of colors) {
+    const full = `--color-${c.name}`
+    if (SANDBOX_KEYS.includes(full) || full.startsWith('--color-')) {
+      out[full] = c.value
+    }
+  }
+  if (colors[0] && !vars['--color-primary']) {
+    out['--color-primary'] = colors[0].value
+  }
+  return out
+}
+
 function buildPreview(
   vars: Record<string, string>,
   colors: { name: string; value: string }[],
   colorSource: StylePreviewTokens['colorSource'],
 ): StylePreviewTokens {
+  const usePlaceholder = colors.length < 3
+  const finalColors = usePlaceholder ? GRAY_PLACEHOLDER : colors
+  const finalSource: StylePreviewTokens['colorSource'] = usePlaceholder
+    ? 'placeholder'
+    : colorSource
   return {
-    colors: colors.length >= 3 ? colors : GRAY_PLACEHOLDER,
+    colors: finalColors,
     fontSans:
       vars['--font-sans'] ||
       '"Noto Sans SC", "PingFang SC", system-ui, sans-serif',
     textSampleSize: vars['--text-base'] || '1rem',
     spaces: spacesFromVars(vars),
-    colorSource: colors.length >= 3 ? colorSource : 'placeholder',
+    colorSource: finalSource,
+    sandboxVars: buildSandboxVars(vars, finalColors, usePlaceholder),
   }
 }
 

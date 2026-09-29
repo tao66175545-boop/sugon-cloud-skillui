@@ -102,6 +102,14 @@ export function StylePreviewCard({ skill, onSelect }: StylePreviewCardProps) {
   )
 }
 
+function sandboxStyleBlock(vars: Record<string, string> | undefined): string {
+  if (!vars) return ''
+  const body = Object.entries(vars)
+    .map(([k, v]) => `  ${k}: ${v};`)
+    .join('\n')
+  return `.card {\n${body}\n}`
+}
+
 function ShadowCardFace({
   loading,
   model,
@@ -134,16 +142,17 @@ function ShadowCardFace({
       <style>{`
         :host { display: block; width: 100%; }
         * { box-sizing: border-box; }
+        ${sandboxStyleBlock(p?.sandboxVars)}
         .card {
-          font-family: ${p?.fontSans || 'system-ui, sans-serif'};
-          color: ${text};
-          background: ${surface};
-          border: 1px solid ${border};
+          font-family: var(--font-sans, ${p?.fontSans || 'system-ui, sans-serif'});
+          color: var(--color-text, ${text});
+          background: var(--color-surface, ${surface});
+          border: 1px solid var(--color-border, ${border});
           border-radius: 1rem;
           padding: 1rem 1.125rem;
           display: grid;
           gap: 0.75rem;
-          box-shadow: 0 1px 2px 0 rgb(23 23 23 / 0.05);
+          box-shadow: var(--shadow-sm, 0 1px 2px 0 rgb(23 23 23 / 0.05));
         }
         .head {
           display: flex;
@@ -155,36 +164,36 @@ function ShadowCardFace({
           margin: 0;
           font-size: 0.9375rem;
           font-weight: 700;
-          color: ${primary};
+          color: var(--color-primary, ${primary});
         }
         .badge {
           font-size: 0.6875rem;
           font-weight: 600;
           padding: 0.125rem 0.4rem;
           border-radius: 9999px;
-          background: color-mix(in srgb, ${primary} 14%, transparent);
-          color: ${primary};
-          border: 1px solid color-mix(in srgb, ${primary} 35%, transparent);
+          background: color-mix(in srgb, var(--color-primary, ${primary}) 14%, transparent);
+          color: var(--color-primary, ${primary});
+          border: 1px solid color-mix(in srgb, var(--color-primary, ${primary}) 35%, transparent);
         }
         .purpose {
           margin: 0;
           font-size: 0.8125rem;
-          color: ${muted};
+          color: var(--color-text-secondary, ${muted});
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
         .path {
           margin: 0;
-          font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+          font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
           font-size: 0.75rem;
           word-break: break-all;
-          color: ${text};
+          color: var(--color-text, ${text});
         }
         .meta {
           margin: 0;
           font-size: 0.6875rem;
-          color: ${muted};
+          color: var(--color-text-secondary, ${muted});
         }
         .swatches {
           display: flex;
@@ -196,14 +205,14 @@ function ShadowCardFace({
           width: 1.35rem;
           height: 1.35rem;
           border-radius: 0.35rem;
-          border: 1px solid ${border};
+          border: 1px solid var(--color-border, ${border});
           flex-shrink: 0;
         }
         .type-sample {
           margin: 0;
           font-size: ${p?.textSampleSize || '1rem'};
           line-height: 1.4;
-          color: ${text};
+          color: var(--color-text, ${text});
         }
         .spaces {
           display: grid;
@@ -214,50 +223,162 @@ function ShadowCardFace({
           align-items: center;
           gap: 0.5rem;
           font-size: 0.6875rem;
-          color: ${muted};
-          font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+          color: var(--color-text-secondary, ${muted});
+          font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
         }
         .space-bar {
           height: 0.4rem;
           border-radius: 0.2rem;
-          background: color-mix(in srgb, ${primary} 55%, ${border});
+          background: color-mix(in srgb, var(--color-primary, ${primary}) 55%, var(--color-border, ${border}));
           min-width: 0.25rem;
         }
+        /* —— Deepen: demo controls (shadow-only, do not touch shell) —— */
+        .deepen {
+          display: grid;
+          gap: 0.55rem;
+          padding-top: 0.15rem;
+          border-top: 1px dashed var(--color-border, ${border});
+        }
+        .deepen-label {
+          margin: 0;
+          font-size: 0.6875rem;
+          font-weight: 600;
+          letter-spacing: 0.02em;
+          color: var(--color-text-secondary, ${muted});
+        }
+        .demo-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--space-3, 0.75rem);
+          align-items: center;
+        }
+        .demo-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          height: var(--btn-height, 2.25rem);
+          padding-inline: var(--btn-px, 1rem);
+          border-radius: var(--btn-radius, 0.75rem);
+          font-size: var(--btn-font-size, 0.875rem);
+          font-weight: var(--btn-font-weight, 600);
+          font-family: inherit;
+          line-height: 1;
+          cursor: pointer;
+          transition: var(--btn-transition, background-color 150ms ease, box-shadow 150ms ease);
+        }
+        .demo-btn-primary {
+          color: var(--color-primary-foreground, #fff);
+          background: var(--color-primary, ${primary});
+          border: none;
+          box-shadow: var(--shadow-sm, 0 1px 2px 0 rgb(23 23 23 / 0.05));
+        }
+        .demo-btn-primary:hover {
+          background: var(--color-primary-hover, ${primary});
+          box-shadow: var(--shadow-md, 0 4px 6px -1px rgb(23 23 23 / 0.08));
+        }
+        .demo-btn-primary:focus-visible {
+          outline: none;
+          box-shadow: var(--shadow-sm, 0 1px 2px 0 rgb(23 23 23 / 0.05)), var(--focus-ring-strong, 0 0 0 3px color-mix(in srgb, ${primary} 28%, transparent));
+        }
+        .demo-btn-secondary {
+          color: var(--color-text, ${text});
+          background: var(--color-surface, ${surface});
+          border: 1px solid var(--color-border-strong, ${border});
+          box-shadow: var(--shadow-sm, 0 1px 2px 0 rgb(23 23 23 / 0.05));
+        }
+        .demo-btn-secondary:hover {
+          background: var(--color-bg-muted, #f3f4f6);
+        }
+        .demo-btn-secondary:focus-visible {
+          outline: none;
+          border-color: var(--color-primary, ${primary});
+          box-shadow: var(--focus-ring, 0 0 0 3px color-mix(in srgb, ${primary} 18%, transparent));
+        }
+        .demo-input {
+          width: 100%;
+          max-width: 16rem;
+          padding: 0.55rem 0.75rem;
+          border: 1px solid var(--color-border-strong, ${border});
+          border-radius: var(--radius-md, 0.5rem);
+          background: var(--color-surface, ${surface});
+          color: var(--color-text, ${text});
+          font-size: var(--text-sm, 0.875rem);
+          font-family: inherit;
+          line-height: var(--leading-normal, 1.5);
+          transition: border-color 150ms ease, box-shadow 150ms ease;
+        }
+        .demo-input::placeholder {
+          color: var(--color-text-muted, ${muted});
+        }
+        .demo-input:hover:not(:disabled):not(:focus) {
+          border-color: var(--color-text-muted, ${muted});
+        }
+        .demo-input:focus-visible {
+          outline: none;
+          border-color: var(--color-primary, ${primary});
+          box-shadow: var(--focus-ring-strong, 0 0 0 3px color-mix(in srgb, ${primary} 28%, transparent));
+        }
+        .type-scale {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: baseline;
+          gap: 0.75rem 1.25rem;
+        }
+        .type-scale-item {
+          margin: 0;
+          color: var(--color-text, ${text});
+          line-height: 1.3;
+        }
+        .type-scale-item .tag {
+          display: block;
+          font-size: 0.625rem;
+          font-weight: 600;
+          color: var(--color-text-secondary, ${muted});
+          font-family: var(--font-mono, ui-monospace, monospace);
+          margin-bottom: 0.15rem;
+        }
+        .type-scale-sm { font-size: var(--text-sm, 0.875rem); }
+        .type-scale-base { font-size: var(--text-base, 1rem); }
+        .type-scale-xl { font-size: var(--text-xl, 1.25rem); font-weight: 600; }
         .actions {
           display: flex;
           gap: 0.4rem;
           flex-wrap: wrap;
           margin-top: 0.15rem;
         }
-        button {
+        button.action {
           height: 2rem;
           padding: 0 0.75rem;
           border-radius: 0.75rem;
-          border: 1px solid ${border};
-          background: ${surface};
-          color: ${text};
+          border: 1px solid var(--color-border, ${border});
+          background: var(--color-surface, ${surface});
+          color: var(--color-text, ${text});
           font-size: 0.75rem;
           font-weight: 600;
           cursor: pointer;
           font-family: inherit;
         }
-        button.primary {
-          background: ${primary};
-          color: #fff;
-          border-color: ${primary};
+        button.action.primary {
+          background: var(--color-primary, ${primary});
+          color: var(--color-primary-foreground, #fff);
+          border-color: var(--color-primary, ${primary});
         }
-        button:hover { filter: brightness(0.97); }
+        button.action:hover { filter: brightness(0.97); }
+        button.action:focus-visible {
+          outline: none;
+          box-shadow: var(--focus-ring-strong, 0 0 0 3px color-mix(in srgb, ${primary} 28%, transparent));
+        }
         .feedback {
           margin: 0;
           font-size: 0.75rem;
-          color: ${primary};
+          color: var(--color-primary, ${primary});
           font-weight: 600;
           min-height: 1.1em;
         }
         .loading {
           margin: 0;
           font-size: 0.8125rem;
-          color: ${muted};
+          color: var(--color-text-secondary, ${muted});
         }
       `}</style>
       <div className="card">
@@ -284,7 +405,7 @@ function ShadowCardFace({
                 />
               ))}
             </div>
-            <p className="type-sample">Aa 曙光云 SkillUI · 字体样例</p>
+            <p className="type-sample">Aa 曙光 · SkillUI · 字体样例</p>
             <div className="spaces" aria-label="间距">
               {model.preview.spaces.map((s) => (
                 <div key={s.name} className="space-row">
@@ -294,14 +415,51 @@ function ShadowCardFace({
                 </div>
               ))}
             </div>
+            <div className="deepen" data-style-preview-deepen>
+              <p className="deepen-label">组件态 · 字阶对比</p>
+              <div className="demo-row" aria-label="主次按钮">
+                <button type="button" className="demo-btn demo-btn-primary">
+                  主按钮
+                </button>
+                <button type="button" className="demo-btn demo-btn-secondary">
+                  次按钮
+                </button>
+              </div>
+              <div className="demo-row" aria-label="输入框">
+                <input
+                  className="demo-input"
+                  type="text"
+                  placeholder="空态输入 · 点此看焦点"
+                  aria-label="预览输入框"
+                />
+              </div>
+              <div className="type-scale" aria-label="字阶对比">
+                <p className="type-scale-item type-scale-sm">
+                  <span className="tag">text-sm</span>
+                  字阶对比
+                </p>
+                <p className="type-scale-item type-scale-base">
+                  <span className="tag">text-base</span>
+                  字阶对比
+                </p>
+                <p className="type-scale-item type-scale-xl">
+                  <span className="tag">text-xl</span>
+                  字阶对比
+                </p>
+              </div>
+            </div>
             <div className="actions">
-              <button type="button" className="primary" onClick={onSelect}>
+              <button
+                type="button"
+                className="action primary"
+                onClick={onSelect}
+              >
                 选用
               </button>
-              <button type="button" onClick={onCopyPath}>
+              <button type="button" className="action" onClick={onCopyPath}>
                 复制 path
               </button>
-              <button type="button" onClick={onCopyImport}>
+              <button type="button" className="action" onClick={onCopyImport}>
                 复制 @import
               </button>
             </div>
