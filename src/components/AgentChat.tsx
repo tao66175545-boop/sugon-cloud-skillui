@@ -1050,7 +1050,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                 aria-controls="agent-llm-settings"
                 onClick={toggleSettings}
               >
-                {showSettings ? '收起设置' : keyed ? '设置' : '去配置 API'}
+                {showSettings ? '收起设置' : '设置'}
               </button>
             </div>
 
