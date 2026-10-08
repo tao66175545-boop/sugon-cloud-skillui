@@ -34,6 +34,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "check:dist": "node scripts/check-dist.mjs",
+    "check:tokens": "node scripts/check-tokens.mjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },

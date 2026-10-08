@@ -1,6 +1,7 @@
 /**
  * 曙光 · SkillUI · 品牌设计令牌
- * 由 src/index.css @import 引入；与 DESIGN.md 保持同步。
+ * 唯一事实来源：DESIGN.md 的数值抄自本文件（源仓库用 npm run check:tokens 校验两者一致）。
+ * 在你的入口 CSS 顶部 @import 本文件即可使用（本仓库：src/index.css）。
  *
  * 品牌色板：曙光红 + 中性灰 + 白底
  * Primary: #C8161D
