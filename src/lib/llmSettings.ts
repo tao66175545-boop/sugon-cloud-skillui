@@ -15,10 +15,12 @@ export const LLM_STORAGE_KEY = 'sugon-skillui-llm-settings'
  * 并由 Vite dev/preview 的同源 /api/llm 代理转发（见 vite.config.ts）。
  */
 export const LLM_BASE_URL_PLACEHOLDER = 'https://api.example.com'
+/** 模型名默认留空（按所填端点实际开通的模型填写）；内部构建可用 VITE_LLM_MODEL 预填 */
+export const LLM_MODEL_PLACEHOLDER = '按你的端点填写，例如 gpt-4o-mini'
 
 export const DEFAULT_LLM_SETTINGS: LlmSettings = {
   baseUrl: '',
-  model: 'deepseek-flash',
+  model: '',
   apiKey: '',
 }
 
@@ -64,6 +66,11 @@ function hostOf(raw: string): string | null {
   }
 }
 
+/** 当前环境下的默认配置（公开构建：全空；内部构建：.env.local 的 VITE_* 预填） */
+export function defaultLlmSettings(): LlmSettings {
+  return mergeDefaults()
+}
+
 function mergeDefaults(): LlmSettings {
   const seed = envSeed()
   return {
@@ -80,7 +87,7 @@ const LEGACY_DEFAULT_MODELS = new Set(['gpt-4o-mini', 'gpt-4o', 'gpt-3.5-turbo']
 function normalizeModelName(model: string, fallback: string, baseUrl: string): string {
   const m = model.trim()
   if (!m) return fallback
-  if (LEGACY_DEFAULT_MODELS.has(m) && shouldUseLlmProxy(baseUrl)) return fallback
+  if (LEGACY_DEFAULT_MODELS.has(m) && fallback && shouldUseLlmProxy(baseUrl)) return fallback
   return m
 }
 

@@ -22,8 +22,9 @@ import {
   loadLlmSettings,
   saveLlmSettings,
   type LlmSettings,
-  DEFAULT_LLM_SETTINGS,
+  defaultLlmSettings,
   LLM_BASE_URL_PLACEHOLDER,
+  LLM_MODEL_PLACEHOLDER,
 } from '../lib/llmSettings'
 import {
   buildSystemMessage,
@@ -346,8 +347,8 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
   function saveSettingsForm(e: FormEvent) {
     e.preventDefault()
     const next: LlmSettings = {
-      baseUrl: settingsDraft.baseUrl.trim() || DEFAULT_LLM_SETTINGS.baseUrl,
-      model: settingsDraft.model.trim() || DEFAULT_LLM_SETTINGS.model,
+      baseUrl: settingsDraft.baseUrl.trim() || defaultLlmSettings().baseUrl,
+      model: settingsDraft.model.trim() || defaultLlmSettings().model,
       apiKey: settingsDraft.apiKey.trim(),
     }
     saveLlmSettings(next)
@@ -968,7 +969,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                 onChange={(e) =>
                   setSettingsDraft((s) => ({ ...s, model: e.target.value }))
                 }
-                placeholder="deepseek-flash"
+                placeholder={LLM_MODEL_PLACEHOLDER}
                 autoComplete="off"
               />
             </label>
@@ -1000,7 +1001,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                 type="button"
                 className="btn-secondary"
                 onClick={() => {
-                  const cleared = { ...DEFAULT_LLM_SETTINGS, apiKey: '' }
+                  const cleared = { ...defaultLlmSettings(), apiKey: '' }
                   saveLlmSettings(cleared)
                   setSettings(cleared)
                   setSettingsDraft(cleared)

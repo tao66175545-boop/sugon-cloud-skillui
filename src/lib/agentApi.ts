@@ -142,6 +142,12 @@ export async function chatCompletion(
     throw e instanceof Error ? e : new Error(String(e))
   }
 
+  if (!settings.model.trim()) {
+    throw new Error(
+      '尚未填写模型名。请在「设置」中填写该端点已开通的模型名（例如 gpt-4o-mini）；未填写前不会发起模型请求。',
+    )
+  }
+
   let res: Response | null = null
   let rawText = ''
   let finalUrl = resolved.url
@@ -212,7 +218,7 @@ export async function chatCompletion(
     }
     if (res.status === 404 && /model/i.test(detail + code)) {
       throw new Error(
-        `模型不可用（HTTP ${res.status}）：${detail}。请在设置中改用网关已开通的模型（例如 deepseek-flash、glm-5.3-flash）。`,
+        `模型不可用（HTTP ${res.status}）：${detail}。请在设置中改用该端点已开通的模型名。`,
       )
     }
     throw new Error(`API ${res.status}：${detail}`)

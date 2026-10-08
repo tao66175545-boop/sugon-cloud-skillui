@@ -95,7 +95,7 @@ npm run preview
 2. 点击「去配置 API」/「设置」。
 3. 填写：
    - **Base URL**：必填，你的 OpenAI 兼容端点（例如 `https://api.example.com`；请求由浏览器直连，端点需允许 CORS）
-   - **模型名**：默认 `deepseek-flash`，按你的端点改成实际可用的模型（看图请选用支持 vision 的模型）
+   - **模型名**：必填，默认留空；填写你的端点实际开通的模型（看图请选用支持 vision 的模型）。未填写时发送会被拦截，不发请求
    - **API Key**：你的密钥
 4. 保存。未配置 Key 时发送会被拦截，并提示去配置（不假连通）。
 
@@ -104,7 +104,7 @@ npm run preview
 ```bash
 VITE_LLM_BASE_URL=https://your-llm-gateway.example.com
 VITE_SUGON_LLM_API_KEY=你的密钥
-VITE_LLM_MODEL=deepseek-flash
+VITE_LLM_MODEL=your-model-name
 ```
 
 设置了 `VITE_LLM_BASE_URL`（或 `VITE_SUGON_LLM_PROXY_TARGET`）时，`npm run dev` / `npm run preview` 会把同源 `/api/llm` 代理到该地址，用于没有开放 CORS 的内部网关；未设置时不挂代理，浏览器直连你在设置里填写的端点。应用会读取上述变量作为默认值；UI 中保存的 localStorage 优先。
