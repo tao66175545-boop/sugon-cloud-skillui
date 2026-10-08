@@ -11,7 +11,7 @@ description: >-
 license: MIT
 metadata:
   author: 涛 李
-  version: "0.2.1"
+  version: "0.2.2"
   homepage: https://github.com/tao66175545-boop/sugon-cloud-skillui
 ---
 
@@ -44,18 +44,18 @@ metadata:
 ## 工作步骤
 
 1. **先读 `DESIGN.md`**，确认颜色角色、字阶和按钮规则。
-2. **确保项目已引入令牌**。在项目里找有没有已经包含 `--color-primary: #C8161D` 的 CSS（常见位置 `src/styles/sugon-tokens.css`）。没有的话，把本目录的 `tokens.css` 复制到项目里（建议 `src/styles/sugon-tokens.css`），并在入口 CSS **最顶部**引入：
+2. **确保项目已引入令牌**。在项目里找有没有已经包含 `--color-primary: #C8161D` 的 CSS（常见位置 `src/styles/sugon-tokens.css`）。用 shadcn 安装且已有 `components.json` 时，入口 CSS 顶部的 `@import` 会自动写上，不要再加一遍。没有的话，把本目录的 `tokens.css` 复制到项目里（建议 `src/styles/sugon-tokens.css`），并在入口 CSS **最顶部**引入：
 
    ```css
-   /* src/index.css 或 app/globals.css */
+   /* src/index.css；若入口是 app/globals.css，改成相对它的路径 */
    @import "./styles/sugon-tokens.css";
    @import "tailwindcss"; /* 若使用 Tailwind v4，放在令牌之后 */
    ```
 
    只想快速试用、不落文件时，可用 CDN：
-   `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.0/skills/sugon-brand-kit/tokens.css`
+   `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.2/skills/sugon-brand-kit/tokens.css`
 3. **写样式时只用变量**：颜色用 `var(--color-*)`，字号 `var(--text-*)`，圆角 `var(--radius-*)`，间距 `var(--space-*)`，阴影 `var(--shadow-*)`。**不要硬编码 `#C8161D` 等色值**；Tailwind 中用任意值写法，例如 `bg-[var(--color-primary)]`、`rounded-[var(--radius-xl)]`。
-4. **按钮、卡片、表单优先用 `components.css` 里的类，不要另写一套。** 先在令牌之后引入它（shadcn 安装时会写到 `src/styles/sugon-components.css`）：
+4. **按钮、卡片、表单优先用 `components.css` 里的类，不要另写一套。** 先在令牌之后引入它（shadcn 安装时会写到 `src/styles/sugon-components.css`；已有 `components.json` 时这两行会自动出现在入口 CSS，不要重复添加）：
 
    ```css
    @import "./styles/sugon-tokens.css";

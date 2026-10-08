@@ -15,7 +15,10 @@
           "target": "~/src/styles/sugon-tokens.css"
         }
       ],
-      "docs": "已写入 src/styles/sugon-tokens.css。请在入口 CSS（如 src/index.css）最顶部加：@import \"./styles/sugon-tokens.css\";（相对路径按你的项目调整；用 Tailwind v4 时放在 @import \"tailwindcss\" 之前）。"
+      "css": {
+        "@import \"./styles/sugon-tokens.css\"": {}
+      },
+      "docs": "已写入 src/styles/sugon-tokens.css。若上面的日志有 Updating 你的入口 CSS（components.json 里 tailwind.css 指向的文件，Vite 为 src/index.css），@import \"./styles/sugon-tokens.css\"; 已经写进去，不必再手改。若没有这行 Updating，说明项目没有 components.json（例如刚 npm create vite），请在 src/index.css 最顶部手写这一行：@import \"./styles/sugon-tokens.css\";。路径相对于入口 CSS 所在目录；入口不在 src/（例如 app/globals.css）时改成正确的相对路径。用 Tailwind v4 时，这行放在 @import \"tailwindcss\" 之前。"
     },
     {
       "name": "sugon-brand-kit",
@@ -74,7 +77,11 @@
           "target": "~/src/styles/sugon-components.css"
         }
       ],
-      "docs": "技能已写入 .agents/skills/sugon-brand-kit/ 与 .claude/skills/sugon-brand-kit/（含 components.css）。令牌写入 src/styles/sugon-tokens.css，片段写入 src/styles/sugon-components.css。请在入口 CSS 顶部依次加：@import \"./styles/sugon-tokens.css\"; @import \"./styles/sugon-components.css\";。按钮 / 卡片 / 表单用 sugon-btn、sugon-card、sugon-input 等类，不要另写一套。想让规则常驻生效，可再装可选项 sugon-brand-rules。"
+      "css": {
+        "@import \"./styles/sugon-tokens.css\"": {},
+        "@import \"./styles/sugon-components.css\"": {}
+      },
+      "docs": "技能已写入 .agents/skills/sugon-brand-kit/ 与 .claude/skills/sugon-brand-kit/（含 components.css）。令牌写入 src/styles/sugon-tokens.css，片段写入 src/styles/sugon-components.css。若上面的日志有 Updating 你的入口 CSS（components.json 里 tailwind.css 指向的文件，Vite 为 src/index.css），@import \"./styles/sugon-tokens.css\"; 与 @import \"./styles/sugon-components.css\"; 已经按这个顺序写进去，不必再手改。若没有这行 Updating，说明项目没有 components.json（例如刚 npm create vite），请在 src/index.css 最顶部手写这两行：@import \"./styles/sugon-tokens.css\"; @import \"./styles/sugon-components.css\";。路径相对于入口 CSS 所在目录；入口不在 src/（例如 app/globals.css）时改成正确的相对路径。用 Tailwind v4 时，这两行放在 @import \"tailwindcss\" 之前。按钮 / 卡片 / 表单用 sugon-btn、sugon-card、sugon-input 等类，不要另写一套。想让规则常驻生效，可再装可选项 sugon-brand-rules。"
     },
     {
       "name": "sugon-brand-rules",
