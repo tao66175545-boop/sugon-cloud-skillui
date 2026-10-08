@@ -12,14 +12,14 @@
 
 ## 30 秒安装
 
-技能名 **`sugon-brand-kit`**（目录 [`skills/sugon-brand-kit/`](./skills/sugon-brand-kit/)）。以下命令都**不需要 npm 账号、不需要 clone**；`v0.2.0` 是固定版本，换成 `main` 即为尝鲜版。
+技能名 **`sugon-brand-kit`**（目录 [`skills/sugon-brand-kit/`](./skills/sugon-brand-kit/)）。以下命令都**不需要 npm 账号、不需要 clone**；`v0.2.2` 是固定版本，换成 `main` 即为尝鲜版。
 
 **1. 装进 AI 编程工具（Agent Skills）**
 
 ```bash
 npx skills add tao66175545-boop/sugon-cloud-skillui
 # 锁定版本：
-npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.2.0/skills/sugon-brand-kit
+npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.2.2/skills/sugon-brand-kit
 ```
 
 由 [`skills` CLI](https://github.com/vercel-labs/skills) 写入 `.agents/skills/sugon-brand-kit/`，并按你选择的工具链接到 `.claude/skills/` 等目录（`-a claude-code` 指定工具，`-g` 装到全局）。
@@ -27,7 +27,7 @@ npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.2
 **2. 技能 + 令牌一起写进项目（shadcn registry）**
 
 ```bash
-npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.0
+npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.2
 ```
 
 | 条目 | 写入的文件 |
@@ -36,16 +36,23 @@ npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.
 | `sugon-tokens` | 只要令牌：`src/styles/sugon-tokens.css` |
 | `sugon-brand-rules`（可选） | 常驻规则：`.cursor/rules/sugon-brand.mdc`、`.github/instructions/sugon-brand.instructions.md`（只对 UI 文件生效）；**不会**改写你的 `AGENTS.md` / `CLAUDE.md`，需要时手动追加 [`registry/rules/AGENTS.snippet.md`](./registry/rules/AGENTS.snippet.md) |
 
-不要求项目已初始化 shadcn（没有 `components.json` 也能装）。装之前可用 `npx shadcn@latest view tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit` 查看将写入的文件和内容（`--dry-run` 需要项目里已有 `components.json`）。装完在入口 CSS 顶部加 `@import "./styles/sugon-tokens.css";`。
+不要求项目已初始化 shadcn（没有 `components.json` 也能装上文件）。**样式会不会自动接上，取决于有没有 `components.json`**：有，并且 `tailwind.css` 指向入口 CSS（Vite 为 `src/index.css`）时，`sugon-brand-kit` 会在该文件顶部写入下面两行，`sugon-tokens` 只写第一行，装完不用再改入口 CSS。没有 `components.json` 时（例如刚 `npm create vite`）CLI **不会**改入口 CSS，需要自己在 `src/index.css` 最顶部加：
+
+```css
+@import "./styles/sugon-tokens.css";
+@import "./styles/sugon-components.css"; /* 只装 sugon-tokens 时不要这一行 */
+```
+
+路径相对于入口 CSS 所在目录；入口不在 `src/`（例如 `app/globals.css`）时改成正确的相对路径。Tailwind v4 时这两行放在 `@import "tailwindcss"` 之前。装之前可用 `npx shadcn@latest view tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit` 查看将写入的文件（`--dry-run` 需要项目里已有 `components.json`）。
 
 **3. 只要 CSS 变量（CDN）**
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.0/skills/sugon-brand-kit/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.2/skills/sugon-brand-kit/tokens.css">
 ```
 
 ```css
-@import url("https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.0/skills/sugon-brand-kit/tokens.css");
+@import url("https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.2/skills/sugon-brand-kit/tokens.css");
 .cta { background: var(--color-primary); color: var(--color-primary-foreground); border-radius: var(--btn-radius); }
 ```
 

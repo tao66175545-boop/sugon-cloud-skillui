@@ -2,13 +2,15 @@
 
 > Style-supply design skill for AI coding agents: the `sugon-brand-kit` Agent Skill (SKILL.md + DESIGN.md + tokens.css) gives 曙光云 / Sugon Cloud brand tokens — brand red #C8161D with gray/white neutrals, type scale, radius, spacing, shadows and button default/hover/active states — as plain CSS variables. Read it before generating UI; use `var(--color-*)` etc. instead of hard-coded colors. Not a post-generation polish / audit tool.
 
-Install (no account or clone needed; `v0.2.0` is the pinned release, `main` is latest):
+Install (no account or clone needed; `v0.2.2` is the pinned release, `main` is latest).
+If the project already has components.json whose tailwind.css points at the global CSS, shadcn add prepends the @import lines. A fresh Vite app has no components.json: add `@import "./styles/sugon-tokens.css";` and `@import "./styles/sugon-components.css";` at the top of src/index.css yourself.
+
 
 - Agent Skills (Claude Code, Codex, Cursor, Copilot, Gemini CLI, …): `npx skills add tao66175545-boop/sugon-cloud-skillui`
-- Skill + tokens into a project (shadcn GitHub registry): `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.0`
-- Tokens only: `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#v0.2.0`
-- Optional always-on rules (Cursor .mdc + Copilot instructions; never edits AGENTS.md): `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-rules#v0.2.0`
-- CDN: `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.0/skills/sugon-brand-kit/tokens.css`
+- Skill + tokens into a project (shadcn GitHub registry): `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.2`
+- Tokens only: `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#v0.2.2`
+- Optional always-on rules (Cursor .mdc + Copilot instructions; never edits AGENTS.md): `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-rules#v0.2.2`
+- CDN: `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.2/skills/sugon-brand-kit/tokens.css`
 
 Code and docs are MIT. The 曙光 / 曙光云 / Sugon names, logos and brand identity are not covered by the MIT license (see TRADEMARKS.md).
 

@@ -4,6 +4,18 @@
 一个版本号贯穿所有渠道：git tag `vX.Y.Z` = `package.json` `version` = `SKILL.md` `metadata.version` = `export/manifest.json` `version`。
 1.0 之前：删除 / 重命名 CSS 变量、改技能目录或 `name` 视为破坏性变更，升 minor。
 
+## [0.2.2] - 2026-10-08
+
+### 新增
+
+- `sugon-brand-kit` 与 `sugon-tokens` 使用 shadcn registry 的 `css` 字段。项目已有 `components.json` 且 `tailwind.css` 指向入口 CSS（Vite 为 `src/index.css`）时，安装会把 `@import "./styles/sugon-tokens.css"`（品牌包再加 `@import "./styles/sugon-components.css"`）写到该文件顶部，不必再手改。
+- 没有 `components.json` 时（例如刚 `npm create vite`）行为与之前相同：文件照常写入，入口 CSS 不改。安装结束时的说明给出要手写的那一两行。`@import` 路径相对于入口 CSS 所在目录，入口不在 `src/` 时需要改相对路径。
+
+### 文档
+
+- 当前安装命令从 `v0.2.0` 改为 `v0.2.2`（README、`export/`、`public/llms.txt`、技能里的 CDN 链接）。
+- 更正 0.2.1 条目：tag `v0.2.1`（`bd8ce6a`）已经发布；当时文档仍锁在 `v0.2.0`。
+
 ## [0.2.1] - 2026-10-08
 
 ### 新增
@@ -15,7 +27,7 @@
 - `sugon-brand-kit` 安装时把该文件写入 `.agents/skills/`、`.claude/skills/` 和 `src/styles/sugon-components.css`。`sugon-tokens` 仍然只有令牌。
 - `npm run check:tokens` 同时检查 `components.css` 没有硬编码色值、引用的变量都在 `tokens.css` 里。
 
-尚未打 tag。文档里锁版本的命令仍指向已发布的 `v0.2.0`；合入 main 并打 `v0.2.1` 之后，把 `#v0.2.0` / `@v0.2.0` 换成 `v0.2.1` 才能装到本文件。
+已发布为 tag `v0.2.1`（`bd8ce6a`）。该版本文档里的安装命令仍指向 `v0.2.0`；从 0.2.2 起当前命令改为 `v0.2.2`。
 
 ## [0.2.0] - 2026-10-08
 
@@ -58,5 +70,6 @@
 - 公开构建不内置任何 API Key 或模型网关（用户自带 OpenAI 兼容端点与 Key，仅存浏览器）；`npm run check:dist` 拦截密钥与内部地址。
 - GitHub Pages 子路径构建与自动部署；MIT 许可证。
 
+[0.2.2]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.2.2
 [0.2.1]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.2.1
 [0.2.0]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.2.0
