@@ -1,5 +1,6 @@
 import {
   shouldUseLlmProxy,
+  llmProxyBase,
   type LlmSettings,
 } from './llmSettings'
 import type { Skill } from './skills'
@@ -41,7 +42,7 @@ export function buildSystemMessage(): ApiMessage {
   return { role: 'system', content: SYSTEM_PROMPT }
 }
 
-/** 规范化 chat/completions 最终 URL；默认云主机走同源代理避免浏览器 CORS */
+/** 规范化 chat/completions 最终 URL；仅内部开发（配置了代理目标）走同源 /api/llm，其余浏览器直连 */
 export function resolveChatCompletionsUrl(baseUrl: string): {
   url: string
   usedProxy: boolean
@@ -49,13 +50,19 @@ export function resolveChatCompletionsUrl(baseUrl: string): {
   const raw = (baseUrl || '').trim()
   if (raw && !/^https?:\/\//i.test(raw) && !raw.startsWith('/')) {
     throw new Error(
-      `Base URL 格式无效：「${raw}」。请使用 https://主机[:端口] 或留空以使用默认云网关。`,
+      `Base URL 格式无效：「${raw}」。请使用 https://主机[:端口]（OpenAI 兼容端点）。`,
     )
   }
 
   if (shouldUseLlmProxy(raw)) {
-    // 开发/预览：Vite 将 /api/llm → 云网关，浏览器同源无 CORS
+    // 内部开发/预览：Vite 将 /api/llm → VITE_LLM_BASE_URL，浏览器同源无 CORS
     return { url: '/api/llm/v1/chat/completions', usedProxy: true }
+  }
+
+  if (!raw) {
+    throw new Error(
+      '尚未填写 Base URL。请在「设置」中填写你的 OpenAI 兼容端点（例如 https://api.example.com）；请求将从浏览器直接发往该地址。',
+    )
   }
 
   let base = raw.replace(/\/$/, '')
@@ -89,7 +96,8 @@ async function postChatCompletions(
 }
 
 function directCompletionsUrl(baseUrl: string): string {
-  const raw = (baseUrl || '').trim().replace(/\/$/, '') || 'https://t.mysugoncloud.com:8765'
+  const raw = (baseUrl || '').trim().replace(/\/$/, '') || llmProxyBase()
+  if (!raw) throw new Error('尚未填写 Base URL。')
   if (/\/chat\/completions\/?$/i.test(raw)) return raw.replace(/\/$/, '')
   if (/\/v1$/i.test(raw)) return `${raw}/chat/completions`
   return `${raw}/v1/chat/completions`
@@ -145,7 +153,7 @@ export async function chatCompletion(
     const proxyNetErr = e instanceof Error ? e.message : String(e)
     if (!resolved.usedProxy) {
       throw new Error(
-        `模型请求失败（网络/CORS）：${proxyNetErr}。自定义 Base URL 须由网关允许跨域，或改回默认云主机并在开发模式走 /api/llm 代理。`,
+        `模型请求失败（网络/CORS）：${proxyNetErr}。Base URL 对应的端点须允许浏览器跨域（CORS）；内部开发可在 .env.local 设置 VITE_LLM_BASE_URL 走同源 /api/llm 代理。`,
       )
     }
     // 代理层网络失败（未跑 vite / 端口错 / 连接被重置）→ 再试直连，并区分 CORS 与网关不可达

@@ -5,7 +5,6 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
 import fs from 'node:fs'
 import path from 'node:path'
 
-const DEFAULT_LLM_TARGET = 'https://t.mysugoncloud.com:8765'
 const FETCH_URL_MAX_CHARS = 12000
 
 function readRequestBody(req: IncomingMessage): Promise<string> {
@@ -184,16 +183,17 @@ function sugonDevProxyPlugin(): Plugin {
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
+  // 内部开发专用：仅当 .env.local 配置了目标时才挂 /api/llm 代理；公开仓库不内置任何网关地址
   const llmTarget = (
     env.VITE_SUGON_LLM_PROXY_TARGET ||
     env.VITE_LLM_BASE_URL ||
-    DEFAULT_LLM_TARGET
+    ''
   ).replace(/\/$/, '')
 
   // Browser → same-origin /api/llm/* → strip prefix → llmTarget/v1/...
   // secure:false：自签/证书异常时 Node 代理仍可连；changeOrigin 避免 Host 校验失败
   // server + preview 都挂同一份代理，避免只配 configureServer 时 preview/生产式预览 Failed to fetch
-  const llmProxy = {
+  const llmProxy = llmTarget ? {
     '/api/llm': {
       target: llmTarget,
       changeOrigin: true,
@@ -201,7 +201,7 @@ export default defineConfig(({ mode }) => {
       ws: true,
       rewrite: (p: string) => p.replace(/^\/api\/llm/, '') || '/',
     },
-  }
+  } : undefined
 
   return {
     plugins: [react(), tailwindcss(), sugonDevProxyPlugin(), serveDesignSkillsPlugin()],

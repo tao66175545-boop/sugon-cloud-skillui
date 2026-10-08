@@ -8,12 +8,16 @@ export type LlmSettings = {
 
 export const LLM_STORAGE_KEY = 'sugon-skillui-llm-settings'
 
-/** 默认云网关主机（不含路径）；OpenAI 兼容 /v1/chat/completions */
-export const DEFAULT_LLM_HOST = 't.mysugoncloud.com:8765'
+/**
+ * 公开构建不内置任何网关地址：Base URL 默认留空，由使用者在设置里填写自己的
+ * OpenAI 兼容端点（浏览器直连，需端点允许 CORS）。
+ * 内部构建可在 .env.local（已 gitignore）设置 VITE_LLM_BASE_URL 预填，
+ * 并由 Vite dev/preview 的同源 /api/llm 代理转发（见 vite.config.ts）。
+ */
+export const LLM_BASE_URL_PLACEHOLDER = 'https://api.example.com'
 
-/** 默认 Base（不含 /v1）；有 Key 后在浏览器走同源 /api/llm 代理 */
 export const DEFAULT_LLM_SETTINGS: LlmSettings = {
-  baseUrl: `https://${DEFAULT_LLM_HOST}`,
+  baseUrl: '',
   model: 'deepseek-flash',
   apiKey: '',
 }
@@ -44,6 +48,22 @@ export function envSeed(): Partial<LlmSettings> {
   return out
 }
 
+/** 内部开发代理目标（仅在设置了 VITE_SUGON_LLM_PROXY_TARGET / VITE_LLM_BASE_URL 时非空） */
+export function llmProxyBase(): string {
+  return (
+    readEnvString('VITE_SUGON_LLM_PROXY_TARGET') ||
+    readEnvString('VITE_LLM_BASE_URL')
+  ).replace(/\/$/, '')
+}
+
+function hostOf(raw: string): string | null {
+  try {
+    return new URL(raw.includes('://') ? raw : `https://${raw}`).host.toLowerCase()
+  } catch {
+    return null
+  }
+}
+
 function mergeDefaults(): LlmSettings {
   const seed = envSeed()
   return {
@@ -54,13 +74,13 @@ function mergeDefaults(): LlmSettings {
 }
 
 
-/** 本网关历史上预设过但未开通的模型名；加载时迁移到当前默认 */
+/** 内部网关历史上预设过但未开通的模型名；仅对内部代理目标迁移到当前默认（公开端点保留用户填写） */
 const LEGACY_DEFAULT_MODELS = new Set(['gpt-4o-mini', 'gpt-4o', 'gpt-3.5-turbo'])
 
-function normalizeModelName(model: string, fallback: string): string {
+function normalizeModelName(model: string, fallback: string, baseUrl: string): string {
   const m = model.trim()
   if (!m) return fallback
-  if (LEGACY_DEFAULT_MODELS.has(m)) return fallback
+  if (LEGACY_DEFAULT_MODELS.has(m) && shouldUseLlmProxy(baseUrl)) return fallback
   return m
 }
 
@@ -73,14 +93,16 @@ export function loadLlmSettings(): LlmSettings {
     if (!parsed || typeof parsed !== 'object') return { ...defaults }
     const o = parsed as Record<string, unknown>
     const storedKey = typeof o.apiKey === 'string' ? o.apiKey : ''
+    const baseUrl =
+      typeof o.baseUrl === 'string' && o.baseUrl.trim()
+        ? o.baseUrl.trim().replace(/\/$/, '')
+        : defaults.baseUrl
     return {
-      baseUrl:
-        typeof o.baseUrl === 'string' && o.baseUrl.trim()
-          ? o.baseUrl.trim().replace(/\/$/, '')
-          : defaults.baseUrl,
+      baseUrl,
       model: normalizeModelName(
         typeof o.model === 'string' ? o.model : '',
         defaults.model,
+        baseUrl,
       ),
       // localStorage 优先；为空时回落 env 预填（本地开发通常靠此预置 key）
       apiKey: storedKey.trim() || defaults.apiKey,
@@ -104,17 +126,15 @@ export function hasApiKey(settings: LlmSettings = loadLlmSettings()): boolean {
   return settings.apiKey.trim().length > 0
 }
 
-/** 判断是否应走同源 /api/llm（默认云主机或空） */
+/**
+ * 是否走同源 /api/llm 代理：仅当构建/开发环境配置了代理目标（内部开发），
+ * 且 Base URL 为空或与代理目标同主机时。公开构建没有代理目标 → 一律浏览器直连。
+ */
 export function shouldUseLlmProxy(baseUrl: string): boolean {
+  const proxyBase = llmProxyBase()
+  if (!proxyBase) return false
   const raw = (baseUrl || '').trim().replace(/\/$/, '')
   if (!raw) return true
-  try {
-    const u = new URL(raw.includes('://') ? raw : `https://${raw}`)
-    const hostPort = u.port ? `${u.hostname}:${u.port}` : u.hostname
-    if (hostPort === DEFAULT_LLM_HOST || u.host === DEFAULT_LLM_HOST) return true
-    if (raw === DEFAULT_LLM_SETTINGS.baseUrl) return true
-  } catch {
-    /* fall through */
-  }
-  return /mysugoncloud\.com:8765/i.test(raw)
+  const a = hostOf(raw)
+  return !!a && a === hostOf(proxyBase)
 }

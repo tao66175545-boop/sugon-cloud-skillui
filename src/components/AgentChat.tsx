@@ -23,6 +23,7 @@ import {
   saveLlmSettings,
   type LlmSettings,
   DEFAULT_LLM_SETTINGS,
+  LLM_BASE_URL_PLACEHOLDER,
 } from '../lib/llmSettings'
 import {
   buildSystemMessage,
@@ -946,7 +947,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                 onChange={(e) =>
                   setSettingsDraft((s) => ({ ...s, baseUrl: e.target.value }))
                 }
-                placeholder="https://t.mysugoncloud.com:8765"
+                placeholder={LLM_BASE_URL_PLACEHOLDER}
                 autoComplete="off"
               />
               <span
@@ -955,8 +956,8 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                   color: 'var(--color-text-muted)',
                 }}
               >
-                默认云主机在开发模式下走同源 /api/llm 代理，避免浏览器
-                CORS。自定义地址将直连（需网关允许跨域）。
+                填写你自己的 OpenAI 兼容端点（必填）。请求从浏览器直接发往该地址，
+                需端点允许跨域（CORS）；Key 只保存在本浏览器 localStorage。
               </span>
             </label>
             <label style={{ display: 'grid', gap: 'var(--space-1)' }}>
