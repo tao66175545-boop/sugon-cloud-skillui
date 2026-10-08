@@ -30,6 +30,9 @@ jobs:
       - name: DESIGN.md / tokens.css drift guard
         run: npm run check:tokens
 
+      - name: shadcn registry.json validation
+        run: npm run check:registry
+
       # Public build: no API key / internal gateway env vars. The demo asks each visitor for
       # their own OpenAI-compatible endpoint + key (stored only in their browser).
       - name: Build (project page sub-path, no secrets)

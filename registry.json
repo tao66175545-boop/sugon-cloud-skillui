@@ -1,0 +1,84 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "sugon-skillui",
+  "homepage": "https://github.com/tao66175545-boop/sugon-cloud-skillui",
+  "items": [
+    {
+      "name": "sugon-tokens",
+      "type": "registry:item",
+      "title": "曙光云品牌令牌 tokens.css",
+      "description": "Sugon Cloud brand design tokens as plain CSS variables: brand red #C8161D, gray/white neutrals, type scale, radius, spacing, shadows and button sizes. Writes src/styles/sugon-tokens.css.",
+      "files": [
+        {
+          "path": "skills/sugon-brand-kit/tokens.css",
+          "type": "registry:file",
+          "target": "~/src/styles/sugon-tokens.css"
+        }
+      ],
+      "docs": "已写入 src/styles/sugon-tokens.css。请在入口 CSS（如 src/index.css）最顶部加：@import \"./styles/sugon-tokens.css\";（相对路径按你的项目调整；用 Tailwind v4 时放在 @import \"tailwindcss\" 之前）。"
+    },
+    {
+      "name": "sugon-brand-kit",
+      "type": "registry:item",
+      "title": "曙光云 sugon-brand-kit（AI 设计技能 + 令牌）",
+      "description": "Agent Skill (SKILL.md + DESIGN.md + tokens.css) for Codex / Cursor / Copilot / Gemini CLI (.agents/skills) and Claude Code (.claude/skills), plus the same tokens at src/styles/sugon-tokens.css.",
+      "files": [
+        {
+          "path": "skills/sugon-brand-kit/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-brand-kit/SKILL.md"
+        },
+        {
+          "path": "skills/sugon-brand-kit/DESIGN.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-brand-kit/DESIGN.md"
+        },
+        {
+          "path": "skills/sugon-brand-kit/tokens.css",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-brand-kit/tokens.css"
+        },
+        {
+          "path": "skills/sugon-brand-kit/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-brand-kit/SKILL.md"
+        },
+        {
+          "path": "skills/sugon-brand-kit/DESIGN.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-brand-kit/DESIGN.md"
+        },
+        {
+          "path": "skills/sugon-brand-kit/tokens.css",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-brand-kit/tokens.css"
+        },
+        {
+          "path": "skills/sugon-brand-kit/tokens.css",
+          "type": "registry:file",
+          "target": "~/src/styles/sugon-tokens.css"
+        }
+      ],
+      "docs": "技能已写入 .agents/skills/sugon-brand-kit/ 与 .claude/skills/sugon-brand-kit/，令牌写入 src/styles/sugon-tokens.css。请在入口 CSS 最顶部加：@import \"./styles/sugon-tokens.css\";。想让规则常驻生效，可再装可选项 sugon-brand-rules。"
+    },
+    {
+      "name": "sugon-brand-rules",
+      "type": "registry:item",
+      "title": "曙光云常驻品牌规则（可选）",
+      "description": "Optional always-on pointer rules: Cursor .cursor/rules/sugon-brand.mdc and GitHub Copilot .github/instructions/sugon-brand.instructions.md (both scoped to UI files). Never touches AGENTS.md / CLAUDE.md.",
+      "files": [
+        {
+          "path": "registry/rules/sugon-brand.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/sugon-brand.mdc"
+        },
+        {
+          "path": "registry/rules/sugon-brand.instructions.md",
+          "type": "registry:file",
+          "target": "~/.github/instructions/sugon-brand.instructions.md"
+        }
+      ],
+      "docs": "已写入 .cursor/rules/sugon-brand.mdc 与 .github/instructions/sugon-brand.instructions.md（只对 UI 文件生效，指向 sugon-brand-kit 技能，请先装 sugon-brand-kit）。需要 Codex / Claude Code 也常驻遵守时，请手动把 https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/registry/rules/AGENTS.snippet.md 中的一节追加到你的 AGENTS.md / CLAUDE.md；本命令不会修改这两个文件。"
+    }
+  ]
+}

@@ -35,6 +35,7 @@
     "build": "tsc -b && vite build",
     "check:dist": "node scripts/check-dist.mjs",
     "check:tokens": "node scripts/check-tokens.mjs",
+    "check:registry": "npx -y shadcn@4.21.4 registry validate ./registry.json",
     "lint": "oxlint",
     "preview": "vite preview"
   },
