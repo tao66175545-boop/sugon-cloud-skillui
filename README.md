@@ -6,6 +6,25 @@
 
 ---
 
+## 公开说明（Public）
+
+**是什么**：一个「风格供给层」设计 Skill 库 + 单页对话壳。设计 Skill 以 `SKILL.md` + `DESIGN.md` + `tokens.css` 的形式存放在 `design-skills/`，其他项目可直接按路径 `@import`；网页里用对话（Agent）完成学习链接 / 起草 / 看库 / 选用 / 确认归库 / 导出。
+
+- **在线演示**：<!-- TODO: 部署后替换 --> `https://<github-user>.github.io/<repo>/#agent`（由 `.github/workflows/deploy-pages.yml` 在 push 到 `main` 时构建并发布到 GitHub Pages）
+- **本地运行**：
+
+  ```bash
+  npm ci
+  npm run dev          # http://localhost:5173/#agent
+  npm run build        # 产物在 dist/；子路径部署可设 BASE_PATH=/<repo>/
+  npm run check:dist   # 发布前检查 dist 中没有密钥样式字符串 / 内部地址
+  ```
+
+- **自带 Key（Bring your own key）**：仓库与在线演示**不内置任何 API Key 或模型网关**。在「设置」里填写你自己的 OpenAI 兼容 Base URL、模型名与 Key：Key **只保存在你浏览器的 localStorage**，请求**从浏览器直接发往你配置的端点**（端点需允许 CORS），不经过本仓库或任何中转服务器。不填 Key 时「看库 / 选用」仍可用，发送消息会被拦截。
+- **许可证**：MIT，见 [`LICENSE`](./LICENSE)。
+
+---
+
 
 ---
 
@@ -74,20 +93,22 @@ npm run preview
 1. 打开顶栏「对话」或滚到 `#agent`。
 2. 点击「去配置 API」/「设置」。
 3. 填写：
-   - **Base URL**：默认 `https://t.mysugoncloud.com:8765`（任意 OpenAI 兼容端点）
-   - **模型名**：默认 `deepseek-flash`（本网关亦支持 `glm-5.3-flash`；看图请选用支持 vision 的模型）
+   - **Base URL**：必填，你的 OpenAI 兼容端点（例如 `https://api.example.com`；请求由浏览器直连，端点需允许 CORS）
+   - **模型名**：默认 `deepseek-flash`，按你的端点改成实际可用的模型（看图请选用支持 vision 的模型）
    - **API Key**：你的密钥
 4. 保存。未配置 Key 时发送会被拦截，并提示去配置（不假连通）。
 
-也可在项目根目录使用 `.env.local`（已 gitignore）预填，开发/构建时由 Vite 注入：
+也可在项目根目录使用 `.env.local`（已 gitignore）预填，**仅用于本机开发**：
 
 ```bash
-VITE_LLM_BASE_URL=https://t.mysugoncloud.com:8765
+VITE_LLM_BASE_URL=https://your-llm-gateway.example.com
 VITE_SUGON_LLM_API_KEY=你的密钥
 VITE_LLM_MODEL=deepseek-flash
 ```
 
-应用会读取上述变量作为默认值；UI 中保存的 localStorage 优先。勿将 `.env.local` 提交到 git。
+设置了 `VITE_LLM_BASE_URL`（或 `VITE_SUGON_LLM_PROXY_TARGET`）时，`npm run dev` / `npm run preview` 会把同源 `/api/llm` 代理到该地址，用于没有开放 CORS 的内部网关；未设置时不挂代理，浏览器直连你在设置里填写的端点。应用会读取上述变量作为默认值；UI 中保存的 localStorage 优先。
+
+> ⚠️ `VITE_*` 变量会被**内联进构建产物**。带着 `.env.local` 执行 `npm run build` 会把 Key / 内部地址打进 `dist/`，切勿发布这样的产物；`npm run check:dist` 会拦截。勿将 `.env.local` 提交到 git。
 
 ### 对话能力
 
