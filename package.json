@@ -10,7 +10,11 @@
     "./package.json": "./package.json",
     "./css": "./export/sugon-skillui.css",
     "./export/sugon-skillui.css": "./export/sugon-skillui.css",
-    "./tokens": "./design-skills/brand-kit/tokens.css",
+    "./tokens": "./skills/sugon-brand-kit/tokens.css",
+    "./tokens.css": "./skills/sugon-brand-kit/tokens.css",
+    "./skills/sugon-brand-kit/tokens.css": "./skills/sugon-brand-kit/tokens.css",
+    "./skills/sugon-brand-kit/SKILL.md": "./skills/sugon-brand-kit/SKILL.md",
+    "./skills/sugon-brand-kit/DESIGN.md": "./skills/sugon-brand-kit/DESIGN.md",
     "./design-skills/brand-kit/tokens.css": "./design-skills/brand-kit/tokens.css",
     "./design-skills/brand-kit/SKILL.md": "./design-skills/brand-kit/SKILL.md",
     "./design-skills/brand-kit/DESIGN.md": "./design-skills/brand-kit/DESIGN.md",
@@ -18,11 +22,13 @@
     "./export/manifest.json": "./export/manifest.json"
   },
   "files": [
+    "skills",
     "export",
     "design-skills",
     "examples",
     "public/logo.svg",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "dev": "vite",

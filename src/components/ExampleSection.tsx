@@ -40,7 +40,7 @@ export function ExampleSection() {
           >
             选用说明：在对话说「看库」「选用某某」可复制供给层路径（如{' '}
             <code style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)' }}>
-              design-skills/brand-kit/
+              skills/sugon-brand-kit/
             </code>
             ）。最小参考：
             <code style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)' }}>
@@ -69,9 +69,9 @@ export function ExampleSection() {
             >
               其他项目可按相对路径 @import{' '}
               <code style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)' }}>
-                design-skills/brand-kit/tokens.css
+                skills/sugon-brand-kit/tokens.css
               </code>{' '}
-              复用，无需 npm 发布。不引入质量层。
+              复用，或用 npx skills / npx shadcn 一键装进项目（见 README）。不引入质量层。
             </p>
             <TokenUsageExample />
           </div>

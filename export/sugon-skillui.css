@@ -1,6 +1,6 @@
 /**
  * 曙光云 SkillUI 库 — 统一 CSS 出口（仅风格供给层）
- * 其他项目可 @import 本文件，或直接 @import design-skills/brand-kit/tokens.css。
+ * 其他项目可 @import 本文件，或直接 @import skills/sugon-brand-kit/tokens.css。
  * Agent / 对话 UI 不是对外出口。
  */
-@import '../design-skills/brand-kit/tokens.css';
+@import '../skills/sugon-brand-kit/tokens.css';

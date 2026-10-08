@@ -15,7 +15,7 @@
 
 /* ---------- 方式 2：相对路径（clone / 复制后，不依赖 exports） ---------- */
 @import "../../export/sugon-skillui.css";
-/* 等价：@import "../../design-skills/brand-kit/tokens.css"; */
+/* 等价：@import "../../skills/sugon-brand-kit/tokens.css"; */
 
 /* ---------- 使用令牌（勿硬编码品牌色） ---------- */
 .demo-cta {

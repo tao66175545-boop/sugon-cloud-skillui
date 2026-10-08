@@ -1,6 +1,12 @@
-import brandKitTokensCss from '../../design-skills/brand-kit/tokens.css?raw'
-import brandKitDesignMd from '../../design-skills/brand-kit/DESIGN.md?raw'
-import { loadSkills, normalizeSupplyPath, type Skill } from './skills'
+import brandKitTokensCss from '../../skills/sugon-brand-kit/tokens.css?raw'
+import brandKitDesignMd from '../../skills/sugon-brand-kit/DESIGN.md?raw'
+import {
+  BRAND_KIT_PATH,
+  LEGACY_BRAND_KIT_PATH,
+  loadSkills,
+  normalizeSupplyPath,
+  type Skill,
+} from './skills'
 
 /** Parsed preview palette + type/spacing samples for the in-chat style card. */
 export type StylePreviewTokens = {
@@ -118,11 +124,12 @@ const COLOR_PICK_ORDER = [
   'text-secondary',
 ]
 
+const BRAND_KIT_BUNDLE = { tokens: brandKitTokensCss, design: brandKitDesignMd }
+
 const BUNDLED: Record<string, { tokens?: string; design?: string }> = {
-  'design-skills/brand-kit/': {
-    tokens: brandKitTokensCss,
-    design: brandKitDesignMd,
-  },
+  [BRAND_KIT_PATH]: BRAND_KIT_BUNDLE,
+  // 0.1.x 旧路径（现为转发 stub），旧 localStorage 记录仍能直接预览
+  [LEGACY_BRAND_KIT_PATH]: BRAND_KIT_BUNDLE,
 }
 
 function normalizeDirPath(path: string): string {
@@ -148,7 +155,12 @@ export function skillTokensPath(skill: Skill): string {
  */
 export function skillImportPath(skill: Skill): string {
   const dir = normalizeDirPath(skill.path)
-  if (dir === 'design-skills/brand-kit/' || dir.endsWith('/brand-kit/')) {
+  if (
+    dir === BRAND_KIT_PATH ||
+    dir === LEGACY_BRAND_KIT_PATH ||
+    dir.endsWith('/brand-kit/') ||
+    dir.endsWith('/sugon-brand-kit/')
+  ) {
     return 'export/sugon-skillui.css'
   }
   return `${dir}tokens.css`
@@ -708,7 +720,7 @@ function buildPreview(
   }
 }
 
-/** Skill 资源 URL：相对部署 base（GitHub Pages 子路径 /<repo>/ 下也能取到 design-skills/*） */
+/** Skill 资源 URL：相对部署 base（GitHub Pages 子路径 /<repo>/ 下也能取到 skills/*、design-skills/*） */
 export function assetUrl(relPath: string): string {
   return `${import.meta.env.BASE_URL}${relPath.replace(/^\/+/, '')}`
 }

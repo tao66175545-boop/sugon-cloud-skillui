@@ -145,6 +145,7 @@ function serveStaticDir(
 
 function serveDesignSkillsPlugin(): Plugin {
   const mount = (middlewares: Connect.Server) => {
+    middlewares.use(serveStaticDir('/skills/', 'skills'))
     middlewares.use(serveStaticDir('/design-skills/', 'design-skills'))
     middlewares.use(serveStaticDir('/export/', 'export'))
   }
@@ -157,8 +158,8 @@ function serveDesignSkillsPlugin(): Plugin {
       mount(server.middlewares)
     },
     closeBundle() {
-      // Ensure design-skills + export land in dist for preview/static hosts
-      for (const dir of ['design-skills', 'export']) {
+      // Ensure skills (canonical) + design-skills (0.1.x compat stubs) + export land in dist
+      for (const dir of ['skills', 'design-skills', 'export']) {
         const srcDir = path.resolve(process.cwd(), dir)
         const destDir = path.resolve(process.cwd(), 'dist', dir)
         if (!fs.existsSync(srcDir)) continue

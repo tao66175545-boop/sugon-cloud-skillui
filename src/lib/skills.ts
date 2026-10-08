@@ -11,13 +11,19 @@ export type Skill = {
 
 export const STORAGE_KEY = 'sugon-skillui-skills'
 
-/** 默认种子：仓库内供给层 brand-kit */
+/** 种子技能目录（Agent Skills 规范：目录名 = name）。0.2.0 起由 design-skills/brand-kit/ 迁来 */
+export const BRAND_KIT_PATH = 'skills/sugon-brand-kit/'
+/** 0.1.x 旧路径：仓库里只剩转发 stub，0.3.0 删除；本地旧记录在 loadSkills 时迁移 */
+export const LEGACY_BRAND_KIT_PATH = 'design-skills/brand-kit/'
+const BRAND_KIT_NAME = '品牌工具包 (sugon-brand-kit)'
+
+/** 默认种子：仓库内供给层 sugon-brand-kit（id 保持 brand-kit，兼容已有 localStorage） */
 export const DEFAULT_SKILLS: Skill[] = [
   {
     id: 'brand-kit',
-    name: '品牌工具包 (brand-kit)',
+    name: BRAND_KIT_NAME,
     purpose: '风格供给层：颜色、字体、圆角、间距与按钮三态，供 AI 生成 UI 前读取。',
-    path: 'design-skills/brand-kit/',
+    path: BRAND_KIT_PATH,
     content:
       '入口：SKILL.md；规范：DESIGN.md；令牌：tokens.css。主色 #C8161D，灰白中性色。',
     createdAt: '2026-01-01T00:00:00.000Z',
@@ -36,6 +42,16 @@ function isSkill(value: unknown): value is Skill {
   )
 }
 
+/** 0.1.x 种子记录（旧路径 / 旧名）→ 新路径；其余记录原样返回 */
+function migrateSkill(s: Skill): Skill {
+  if (s.id !== 'brand-kit' || s.path !== LEGACY_BRAND_KIT_PATH) return s
+  return {
+    ...s,
+    path: BRAND_KIT_PATH,
+    name: s.name === '品牌工具包 (brand-kit)' ? BRAND_KIT_NAME : s.name,
+  }
+}
+
 export function loadSkills(): Skill[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -48,11 +64,13 @@ export function loadSkills(): Skill[] {
       saveSkills(DEFAULT_SKILLS)
       return [...DEFAULT_SKILLS]
     }
-    const skills = parsed.filter(isSkill)
-    if (skills.length === 0) {
+    const stored = parsed.filter(isSkill)
+    if (stored.length === 0) {
       saveSkills(DEFAULT_SKILLS)
       return [...DEFAULT_SKILLS]
     }
+    const skills = stored.map(migrateSkill)
+    if (skills.some((s, i) => s !== stored[i])) saveSkills(skills)
     return skills
   } catch {
     saveSkills(DEFAULT_SKILLS)
@@ -86,10 +104,10 @@ export function addSkill(
 /** 仅暴露供给层路径，禁止质量层关键词路径 */
 export function normalizeSupplyPath(path: string): string {
   let p = path.trim().replace(/\\/g, '/')
-  if (!p) return 'design-skills/brand-kit/'
+  if (!p) return BRAND_KIT_PATH
   const blocked = /impeccable|hallmark|taste|ui-ux-pro-max|quality-layer/i
   if (blocked.test(p)) {
-    return 'design-skills/brand-kit/'
+    return BRAND_KIT_PATH
   }
   if (!p.endsWith('/')) p += '/'
   return p

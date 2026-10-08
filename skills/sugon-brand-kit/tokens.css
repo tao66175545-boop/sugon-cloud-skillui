@@ -1,0 +1,127 @@
+/**
+ * 曙光 · SkillUI · 品牌设计令牌
+ * 由 src/index.css @import 引入；与 DESIGN.md 保持同步。
+ *
+ * 品牌色板：曙光红 + 中性灰 + 白底
+ * Primary: #C8161D
+ */
+
+:root {
+  /* 品牌主色 — 曙光红 */
+  --color-primary: #C8161D;
+  --color-primary-hover: #A81218;
+  --color-primary-active: #8F0F14;
+  --color-primary-foreground: #ffffff;
+  --color-primary-muted: #FCE8E9;
+
+  /* 辅色 — 与主色一致（DESIGN） */
+  --color-accent: #C8161D;
+  --color-accent-hover: #A81218;
+  --color-accent-muted: #FCE8E9;
+
+  /* 中性色 — 真灰阶梯（白 → subtle → muted → border），少脏灰 */
+  --color-bg: #ffffff;
+  --color-bg-subtle: #fafafa;
+  --color-bg-muted: #f4f4f5;
+  --color-surface: #ffffff;
+  --color-border: #e5e5e5;
+  --color-border-strong: #d4d4d4;
+
+  --color-text: #171717;
+  --color-text-secondary: #525252;
+  --color-text-muted: #a3a3a3;
+  --color-text-inverse: #ffffff;
+
+  /* 语义色 */
+  --color-success: #059669;
+  --color-warning: #d97706;
+  --color-danger: #C8161D;
+  --color-danger-muted: #FEF2F2;
+  --color-danger-border: #FECACA;
+  --color-danger-foreground: #B91C1C;
+
+  /* 焦点环（壳与表单共用） */
+  --focus-ring: 0 0 0 3px var(--color-primary-muted);
+  --focus-ring-strong: 0 0 0 3px color-mix(in srgb, var(--color-primary) 28%, transparent);
+
+  /* 顶栏毛玻璃 */
+  --topbar-bg: color-mix(in srgb, var(--color-surface) 3%, transparent);
+  --topbar-bg-fallback: var(--color-surface);
+  --topbar-blur: saturate(180%) blur(20px);
+  --topbar-border: color-mix(in srgb, var(--color-border) 70%, transparent);
+
+  /* 字体 */
+  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Inter",
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* 圆角 */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* 间距（4px 基准） */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px 0 rgb(23 23 23 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(23 23 23 / 0.08),
+    0 2px 4px -2px rgb(23 23 23 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(23 23 23 / 0.08),
+    0 4px 6px -4px rgb(23 23 23 / 0.05);
+  --shadow-xl: 0 20px 25px -5px rgb(23 23 23 / 0.1),
+    0 8px 10px -6px rgb(23 23 23 / 0.06);
+
+  /* 按钮 */
+  --btn-height: 2.75rem;
+  --btn-px: 1.25rem;
+  --btn-radius: var(--radius-lg);
+  --btn-font-size: var(--text-sm);
+  --btn-font-weight: var(--font-weight-semibold);
+  --btn-transition: background-color 150ms ease, box-shadow 150ms ease,
+    transform 100ms ease, border-color 150ms ease;
+
+  /* 布局 */
+  --container-max: 80rem;
+  --container-pad-inline: var(--space-4);
+  --section-py: var(--space-20);
+  --agent-max: 80rem;
+}

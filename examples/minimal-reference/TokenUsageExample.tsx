@@ -46,7 +46,7 @@ export function TokenUsageExample() {
         <code
           style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)" }}
         >
-          export/sugon-skillui.css → design-skills/brand-kit/tokens.css
+          export/sugon-skillui.css → skills/sugon-brand-kit/tokens.css
         </code>
         。
       </p>
