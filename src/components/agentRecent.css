@@ -1,10 +1,15 @@
 /* Feature: Agent 左库右聊 · 左栏自然撑开、窄屏上下叠；右栏流滚+底栏固定 */
+#agent {
+  /* 右栏高度：首屏 composer 底边距视口底 >= 24px（topbar + 标题行约 7rem，余 2rem 呼吸） */
+  --agent-chat-h: calc(100dvh - 9rem);
+}
+
 .agent-shell {
   display: grid;
   grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr);
   align-items: start;
   /* 左栏可随内容增高 → 页/外层滚；右栏 sticky 保持首屏见输入 */
-  min-height: calc(100dvh - 7rem);
+  min-height: var(--agent-chat-h);
   /* Formal B: drop layout border (child paints / radius AA left corner gaps).
      Continuous 1px ring via box-shadow — outside border-box, not covered. */
   border: none;
@@ -66,8 +71,8 @@
   align-self: start;
   position: sticky;
   top: 4.25rem;
-  height: calc(100dvh - 7rem);
-  max-height: calc(100dvh - 7rem);
+  height: var(--agent-chat-h);
+  max-height: var(--agent-chat-h);
   overflow: hidden;
   background-color: var(--color-bg);
 }
@@ -110,7 +115,7 @@
 
 /* #agent 区：紧凑一句眉+标题+短说明 */
 #agent.section-pad {
-  padding-block: var(--space-3) 0;
+  padding-block: var(--space-2) 0;
 }
 
 #agent .agent-hero {
@@ -119,6 +124,8 @@
   align-items: baseline;
   justify-content: space-between;
   gap: var(--space-2) var(--space-4);
+  /* 与提示条同高：有无 Key 时 shell 起点一致，保存 Key 后不跳动 */
+  min-height: 1.875rem;
   margin: 0 0 var(--space-2);
   padding: 0;
 }
@@ -149,6 +156,42 @@
   font-size: var(--text-xs);
   line-height: var(--leading-normal);
   color: var(--color-text-muted);
+}
+
+/* 未配置 Key：与标题同行的紧凑提示条（不额外占一行，首屏输入框位置与有 Key 时一致） */
+#agent .agent-key-notice {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  flex-wrap: wrap;
+  gap: 0.25rem var(--space-3);
+  margin: 0;
+  box-sizing: border-box;
+  min-height: 1.875rem;
+  padding: 0.125rem 0.1875rem 0.125rem var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 35%, transparent);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-primary-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+}
+
+#agent .agent-key-notice-title {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+#agent .agent-key-notice-text {
+  color: var(--color-text-secondary);
+}
+
+#agent .agent-key-notice-btn {
+  height: 1.5rem;
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  box-shadow: none;
 }
 
 #agent .agent-hero-ref {

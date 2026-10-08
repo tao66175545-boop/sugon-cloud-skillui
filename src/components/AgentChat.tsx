@@ -245,7 +245,8 @@ function TypeIcon({ kind }: { kind: PendingAttachment['kind'] }) {
 
 export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
   const [settings, setSettings] = useState<LlmSettings>(() => loadLlmSettings())
-  const [showSettings, setShowSettings] = useState(() => !hasApiKey())
+  /** 设置表单默认收起；未配置 Key 时只显示紧凑提示条，点「去配置 API」再展开 */
+  const [showSettings, setShowSettings] = useState(false)
   const [settingsDraft, setSettingsDraft] = useState<LlmSettings>(() =>
     loadLlmSettings(),
   )
@@ -270,6 +271,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
   const folderRef = useRef<HTMLInputElement>(null)
   const attachMenuRef = useRef<HTMLDivElement>(null)
   const apiHistory = useRef<ApiMessage[]>([])
+  const apiKeyInputRef = useRef<HTMLInputElement>(null)
 
   const keyed = hasApiKey(settings)
   const recentIngestLabel =
@@ -308,6 +310,11 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
     })
   }, [bubbles, pendingDraft, busy])
 
+  // 未配置 Key 时展开设置（提示条按钮 / 发送被拦截）→ 聚焦 Key 输入框并滚入视口
+  useEffect(() => {
+    if (showSettings && !keyed) apiKeyInputRef.current?.focus()
+  }, [showSettings, keyed])
+
   useEffect(() => {
     const el = folderRef.current
     if (!el) return
@@ -328,6 +335,11 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
 
   function pushBubble(b: Omit<ChatBubble, 'id'> & { id?: string }) {
     setBubbles((prev) => [...prev, { ...b, id: b.id ?? uid() }])
+  }
+
+  function toggleSettings() {
+    setSettingsDraft(loadLlmSettings())
+    setShowSettings((v) => !v)
   }
 
   function saveSettingsForm(e: FormEvent) {
@@ -625,6 +637,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
     }
 
     if (!keyed) {
+      if (!showSettings) setSettingsDraft(loadLlmSettings())
       setShowSettings(true)
       pushBubble({
         role: 'error',
@@ -879,7 +892,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
         scrollMarginTop: '4.5rem',
         backgroundColor: 'var(--color-bg-subtle)',
         borderTop: '1px solid var(--color-border)',
-        paddingBlock: 'var(--space-3) 0',
+        paddingBlock: 'var(--space-2) 0',
       }}
     >
       <div className="container-max" style={{ maxWidth: 'var(--agent-max)' }}>
@@ -894,36 +907,28 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
           {sessionSelected && (
             <p className="agent-hero-ref">当前引用：{sessionSelected.name}</p>
           )}
+          {!keyed && (
+            <div role="status" className="agent-key-notice">
+              <strong className="agent-key-notice-title">未配置 API Key</strong>
+              <span className="agent-key-notice-text">
+                模型请求已拦截；看库 / 选用仍可用
+              </span>
+              <button
+                type="button"
+                className="btn-primary agent-key-notice-btn"
+                aria-expanded={showSettings}
+                aria-controls="agent-llm-settings"
+                onClick={toggleSettings}
+              >
+                {showSettings ? '收起设置' : '去配置 API'}
+              </button>
+            </div>
+          )}
         </header>
-
-        {!keyed && (
-          <div
-            role="status"
-            className="card"
-            style={{
-              marginBottom: 'var(--space-4)',
-              borderColor: 'var(--color-primary)',
-              backgroundColor: 'var(--color-primary-muted)',
-              padding: 'var(--space-4)',
-            }}
-          >
-            <strong style={{ color: 'var(--color-primary)' }}>
-              未配置 API Key
-            </strong>
-            <p
-              style={{
-                margin: 'var(--space-2) 0 0',
-                fontSize: 'var(--text-sm)',
-              }}
-            >
-              不会假连通。请点击「去配置 API」填写 Base URL、模型名与 Key（仅
-              localStorage）。配置前模型请求会被拦截；「看库 / 选用」仍可用。
-            </p>
-          </div>
-        )}
 
         {showSettings && (
           <form
+            id="agent-llm-settings"
             className="card"
             onSubmit={saveSettingsForm}
             style={{
@@ -969,6 +974,7 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
             <label style={{ display: 'grid', gap: 'var(--space-1)' }}>
               <span style={labelStyle}>API Key（仅本机 localStorage）</span>
               <input
+                ref={apiKeyInputRef}
                 className="field-input"
                 type="password"
                 value={settingsDraft.apiKey}
@@ -1040,10 +1046,9 @@ export function AgentChat({ skills, onSkillsChanged }: AgentChatProps) {
                   fontSize: 'var(--text-xs)',
                   flexShrink: 0,
                 }}
-                onClick={() => {
-                  setSettingsDraft(loadLlmSettings())
-                  setShowSettings((v) => !v)
-                }}
+                aria-expanded={showSettings}
+                aria-controls="agent-llm-settings"
+                onClick={toggleSettings}
               >
                 {showSettings ? '收起设置' : keyed ? '设置' : '去配置 API'}
               </button>
