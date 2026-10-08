@@ -82,7 +82,7 @@
 
 ```bash
 curl -H "Authorization: Bearer <GITHUB_TOKEN>" \
-  -L "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/design-skills/brand-kit/tokens.css" \
+  -L "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/tokens.css" \
   -o tokens.css
 ```
 

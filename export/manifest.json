@@ -26,8 +26,8 @@
     "owner": "tao66175545-boop",
     "repo": "sugon-skillui",
     "branch": "main",
-    "rawBase": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main",
-    "blobBase": "https://github.com/tao66175545-boop/sugon-skillui/blob/main"
+    "rawBase": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main",
+    "blobBase": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main"
   },
   "entries": [
     {
@@ -38,8 +38,8 @@
       "packageExport": "./tokens",
       "importHint": "@import \"sugon-skillui/tokens\"; /* 或相对路径 */\n@import \"../path-to/sugon-skillui/design-skills/brand-kit/tokens.css\";",
       "copyHint": "cp -r design-skills/brand-kit <your-app>/vendor/sugon-brand-kit",
-      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/design-skills/brand-kit/tokens.css",
-      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/design-skills/brand-kit/tokens.css"
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/tokens.css",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/design-skills/brand-kit/tokens.css"
     },
     {
       "id": "export-css",
@@ -49,8 +49,8 @@
       "packageExport": "./css",
       "importHint": "@import \"sugon-skillui/css\"; /* 或 */\n@import \"../path-to/sugon-skillui/export/sugon-skillui.css\";",
       "copyHint": "cp export/sugon-skillui.css <your-app>/vendor/ && 同步复制 design-skills/brand-kit/tokens.css（相对 @import 依赖）",
-      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/export/sugon-skillui.css",
-      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/export/sugon-skillui.css"
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/export/sugon-skillui.css",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/export/sugon-skillui.css"
     },
     {
       "id": "skill",
@@ -60,8 +60,8 @@
       "packageExport": "./design-skills/brand-kit/SKILL.md",
       "importHint": "只读文档：打开或复制 SKILL.md，勿当 CSS 引用",
       "copyHint": "cp design-skills/brand-kit/SKILL.md <dest>/",
-      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/design-skills/brand-kit/SKILL.md",
-      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/design-skills/brand-kit/SKILL.md"
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/SKILL.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/design-skills/brand-kit/SKILL.md"
     },
     {
       "id": "design",
@@ -71,8 +71,8 @@
       "packageExport": "./design-skills/brand-kit/DESIGN.md",
       "importHint": "只读文档：打开或复制 DESIGN.md",
       "copyHint": "cp design-skills/brand-kit/DESIGN.md <dest>/",
-      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/design-skills/brand-kit/DESIGN.md",
-      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/design-skills/brand-kit/DESIGN.md"
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/DESIGN.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/design-skills/brand-kit/DESIGN.md"
     },
     {
       "id": "brand-kit",
@@ -82,8 +82,8 @@
       "packageExport": null,
       "importHint": "@import \"./vendor/brand-kit/tokens.css\";",
       "copyHint": "cp -r design-skills/brand-kit <your-app>/vendor/brand-kit",
-      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/design-skills/brand-kit/SKILL.md",
-      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/design-skills/brand-kit/SKILL.md"
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/SKILL.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/design-skills/brand-kit/SKILL.md"
     },
     {
       "id": "minimal-reference",
@@ -93,8 +93,8 @@
       "packageExport": null,
       "importHint": "见 examples/minimal-reference/index.html 与 README",
       "copyHint": "cp -r examples/minimal-reference <your-sandbox>/",
-      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/examples/minimal-reference/README.md",
-      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/examples/minimal-reference"
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/examples/minimal-reference/README.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/examples/minimal-reference"
     },
     {
       "id": "import-from-export",
@@ -104,8 +104,8 @@
       "packageExport": null,
       "importHint": "见 examples/import-from-export/consumer.css",
       "copyHint": "对照复制注释到你的 Vite/CSS 入口",
-      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/examples/import-from-export/README.md",
-      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/examples/import-from-export"
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/examples/import-from-export/README.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/examples/import-from-export"
     },
     {
       "id": "logo",
@@ -115,8 +115,8 @@
       "packageExport": null,
       "importHint": "<img src=\".../public/logo.svg\" alt=\"曙光云\" />",
       "copyHint": "cp public/logo.svg <your-app>/public/",
-      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-skillui/main/public/logo.svg",
-      "blob": "https://github.com/tao66175545-boop/sugon-skillui/blob/main/public/logo.svg"
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/public/logo.svg",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/public/logo.svg"
     }
   ]
 }

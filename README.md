@@ -10,7 +10,8 @@
 
 **是什么**：一个「风格供给层」设计 Skill 库 + 单页对话壳。设计 Skill 以 `SKILL.md` + `DESIGN.md` + `tokens.css` 的形式存放在 `design-skills/`，其他项目可直接按路径 `@import`；网页里用对话（Agent）完成学习链接 / 起草 / 看库 / 选用 / 确认归库 / 导出。
 
-- **在线演示**：<!-- TODO: 部署后替换 --> `https://<github-user>.github.io/<repo>/#agent`（由 `.github/workflows/deploy-pages.yml` 在 push 到 `main` 时构建并发布到 GitHub Pages）
+- **在线演示**：<https://tao66175545-boop.github.io/sugon-cloud-skillui/>（对话入口 `#agent`；由 `.github/workflows/deploy-pages.yml` 在 push 到 `main` 时构建并发布到 GitHub Pages）
+- **源码**：<https://github.com/tao66175545-boop/sugon-cloud-skillui>
 - **本地运行**：
 
   ```bash
