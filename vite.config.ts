@@ -181,8 +181,16 @@ function sugonDevProxyPlugin(): Plugin {
   }
 }
 
+/** 部署子路径（GitHub Pages 项目页为 /<repo>/）；默认 '/'。来源：BASE_PATH 环境变量 */
+function normalizeBase(raw: string | undefined): string {
+  const v = (raw || '').trim()
+  if (!v || v === '/') return '/'
+  return `/${v.replace(/^\/+|\/+$/g, '')}/`
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
+  const base = normalizeBase(process.env.BASE_PATH || env.BASE_PATH)
   // 内部开发专用：仅当 .env.local 配置了目标时才挂 /api/llm 代理；公开仓库不内置任何网关地址
   const llmTarget = (
     env.VITE_SUGON_LLM_PROXY_TARGET ||
@@ -204,6 +212,7 @@ export default defineConfig(({ mode }) => {
   } : undefined
 
   return {
+    base,
     plugins: [react(), tailwindcss(), sugonDevProxyPlugin(), serveDesignSkillsPlugin()],
     server: { proxy: llmProxy },
     preview: { proxy: llmProxy },

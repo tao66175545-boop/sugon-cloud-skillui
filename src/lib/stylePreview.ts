@@ -708,6 +708,11 @@ function buildPreview(
   }
 }
 
+/** Skill 资源 URL：相对部署 base（GitHub Pages 子路径 /<repo>/ 下也能取到 design-skills/*） */
+export function assetUrl(relPath: string): string {
+  return `${import.meta.env.BASE_URL}${relPath.replace(/^\/+/, '')}`
+}
+
 async function tryFetchText(url: string): Promise<string | null> {
   try {
     const res = await fetch(url, { method: 'GET', cache: 'no-store' })
@@ -736,15 +741,15 @@ export async function loadStylePreview(skill: Skill): Promise<StylePreviewModel>
 
   let tokensCss = bundled?.tokens ?? null
   if (!tokensCss) {
-    tokensCss = await tryFetchText(`/${tokensPath}`)
+    tokensCss = await tryFetchText(assetUrl(tokensPath))
   }
   if (!tokensCss) {
-    tokensCss = await tryFetchText(`/${dir}tokens.css`)
+    tokensCss = await tryFetchText(assetUrl(`${dir}tokens.css`))
   }
 
   let designMd = bundled?.design ?? null
   if (!designMd) {
-    designMd = await tryFetchText(`/${dir}DESIGN.md`)
+    designMd = await tryFetchText(assetUrl(`${dir}DESIGN.md`))
   }
 
   let preview: StylePreviewTokens
