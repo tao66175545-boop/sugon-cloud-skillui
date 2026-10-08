@@ -18,7 +18,7 @@
 
 锁定版本：shadcn 用 `#v0.2.0`（或完整 commit SHA），jsDelivr 用 `@v0.2.0`，skills 用
 `npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.2.0/skills/sugon-brand-kit`。
-装之前可用 `npx shadcn@latest view tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit` 或 `add … --dry-run` 预览要写入的文件。
+装之前可用 `npx shadcn@latest view tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit` 预览要写入的文件（`add … --dry-run` 只在已有 `components.json` 的项目里可用）。
 
 ---
 

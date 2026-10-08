@@ -1,5 +1,5 @@
 ---
-applyTo: "**/*.{tsx,jsx,ts,js,vue,svelte,astro,html,css,scss}"
+applyTo: "**/*.tsx,**/*.jsx,**/*.vue,**/*.svelte,**/*.astro,**/*.html,**/*.css,**/*.scss"
 description: 曙光云 (Sugon Cloud) brand rules for UI code
 ---
 

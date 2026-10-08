@@ -1,6 +1,6 @@
 ---
 description: 曙光云 (Sugon Cloud) brand rules for UI code — use the sugon-brand-kit tokens, never hard-code brand colors
-globs: "**/*.{tsx,jsx,ts,js,vue,svelte,astro,html,css,scss}"
+globs: **/*.tsx, **/*.jsx, **/*.vue, **/*.svelte, **/*.astro, **/*.html, **/*.css, **/*.scss
 alwaysApply: false
 ---
 

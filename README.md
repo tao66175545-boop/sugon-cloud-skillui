@@ -36,7 +36,7 @@ npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.
 | `sugon-tokens` | 只要令牌：`src/styles/sugon-tokens.css` |
 | `sugon-brand-rules`（可选） | 常驻规则：`.cursor/rules/sugon-brand.mdc`、`.github/instructions/sugon-brand.instructions.md`（只对 UI 文件生效）；**不会**改写你的 `AGENTS.md` / `CLAUDE.md`，需要时手动追加 [`registry/rules/AGENTS.snippet.md`](./registry/rules/AGENTS.snippet.md) |
 
-不要求项目已初始化 shadcn（没有 `components.json` 也能装）。装之前可加 `--dry-run` 预览。装完在入口 CSS 顶部加 `@import "./styles/sugon-tokens.css";`。
+不要求项目已初始化 shadcn（没有 `components.json` 也能装）。装之前可用 `npx shadcn@latest view tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit` 查看将写入的文件和内容（`--dry-run` 需要项目里已有 `components.json`）。装完在入口 CSS 顶部加 `@import "./styles/sugon-tokens.css";`。
 
 **3. 只要 CSS 变量（CDN）**
 
