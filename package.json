@@ -28,7 +28,8 @@
     "examples",
     "public/logo.svg",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "TRADEMARKS.md"
   ],
   "scripts": {
     "dev": "vite",
