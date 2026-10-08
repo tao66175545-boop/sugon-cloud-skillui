@@ -42,7 +42,7 @@
 
 ## package.json exports
 
-本仓虽以 Vite 应用 + `design-skills/` 为主（`private: true`，非强制 npm 发布），仍提供稳定 `exports` 便于 path / `file:` 引用：
+本仓虽以 Vite 应用 + `design-skills/` 为主（`package.json` `private: true` = 不发布到 npm；GitHub 仓库本身公开），仍提供稳定 `exports` 便于 path / `file:` 引用：
 
 | 子路径 | 真实文件 |
 |--------|----------|
@@ -70,23 +70,27 @@
 
 ## URL 说明（非 CDN）
 
-本库**不提供**公有 CDN。消费：
+本仓已公开，以下 URL 均**无需登录 / token**。本库不提供带版本的 CDN，消费方式：
 
 1. **本地相对路径**（克隆 / 子模块 / 复制后）— 推荐  
-2. **GitHub raw**（`raw.githubusercontent.com/...`）— **私有仓需 token**；勿当公开 CDN  
-3. **GitHub blob**（`github.com/.../blob/...`）— 给人看网页用  
+2. **GitHub raw**（`raw.githubusercontent.com/...`）— 公开可下载（text/plain，适合 curl / 工具读取；生产可固定到 commit SHA）  
+3. **GitHub Pages**（`https://tao66175545-boop.github.io/sugon-cloud-skillui/...`）— 在线演示同站提供 `design-skills/`、`export/`（text/css），适合浏览器快速试用  
+4. **GitHub blob**（`github.com/.../blob/...`）— 给人看网页用  
 
-`manifest.json` 里每条 `entries[]` 都带有 `relative` / `raw` / `blob`，以及 `importHint` / `copyHint` / `packageExport`。
+`manifest.json` 里每条 `entries[]` 都带有 `relative` / `raw` / `blob`（Pages 上有的文件另带 `pages`），以及 `importHint` / `copyHint` / `packageExport`；`github.rawBase` / `github.pagesBase` 为前缀。
 
-私有仓拉取 raw 示例：
+下载 raw 示例（无需 token）：
 
 ```bash
-curl -H "Authorization: Bearer <GITHUB_TOKEN>" \
-  -L "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/tokens.css" \
+curl -L "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/tokens.css" \
   -o tokens.css
 ```
 
-勿把 token 写入仓库或提交到 git。
+浏览器快速试用（Pages）：
+
+```html
+<link rel="stylesheet" href="https://tao66175545-boop.github.io/sugon-cloud-skillui/export/sugon-skillui.css" />
+```
 
 ---
 

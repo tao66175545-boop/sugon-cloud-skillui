@@ -36,8 +36,8 @@
 | 入口 | 说明 |
 |------|------|
 | [`export/CONSUME.md`](./export/CONSUME.md) | **3 步接入**（拿到文件 → `@import` → 选 skill path） |
-| [`export/README.md`](./export/README.md) | 中文接入说明（本地 path / package exports / 复制；非 CDN；私有 raw 需登录） |
-| [`export/manifest.json`](./export/manifest.json) | 机器可读：id、path、`importHint`/`copyHint`、relative / raw / blob |
+| [`export/README.md`](./export/README.md) | 中文接入说明（本地 path / package exports / 复制 / 公开 raw 与 Pages URL；非版本化 CDN） |
+| [`export/manifest.json`](./export/manifest.json) | 机器可读：id、path、`importHint`/`copyHint`、relative / raw / pages / blob（公开，无需 token） |
 | [`export/sugon-skillui.css`](./export/sugon-skillui.css) | 仅 `@import` `design-skills/brand-kit/tokens.css` |
 
 `exports` 摘要：`.` / `./css` → 统一 CSS；`./tokens` → `design-skills/brand-kit/tokens.css`；`./manifest` → `export/manifest.json`。

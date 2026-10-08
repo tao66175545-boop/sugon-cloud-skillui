@@ -17,17 +17,20 @@
     "./manifest": "./export/manifest.json"
   },
   "notes": {
-    "privateRaw": "Private repos need a GitHub personal access token (Authorization: Bearer <token>) to fetch raw.githubusercontent.com; relative paths and blob URLs still work for humans/local clones. Do not treat raw URLs as a public CDN.",
+    "raw": "The repo is public: raw.githubusercontent.com URLs (rawBase + path) work without any token. Raw is served as text/plain, so use it for curl/download or tooling; for a browser <link>/@import use the GitHub Pages URL (pagesBase, text/css) or a local copy.",
+    "pages": "GitHub Pages hosts the built demo plus design-skills/ and export/ under pagesBase (served as text/css / text/markdown). Convenient for demos and quick trials; it is not a versioned CDN, so pin a local copy or a raw URL at a commit SHA for production.",
+    "privateRaw": "DEPRECATED (kept for backward compatibility): the repo is public, no token is needed. Same as notes.raw.",
     "notExportSurface": "Agent/chat UI is the in-app management entry only — not part of the style-supply export surface.",
     "qualityLayer": "Out of scope. Do not introduce Taste / Impeccable / Hallmark via this export.",
-    "delivery": "Not a cloud CDN. Prefer: (1) local clone + relative @import / package exports path, (2) copy design-skills/, (3) authenticated GitHub raw if you must. Public consumption = local path or your own mirror."
+    "delivery": "Prefer: (1) local clone / copy of design-skills/ + relative @import or package exports path, (2) public GitHub raw (no token) for download, (3) GitHub Pages URL (pagesBase) for quick browser trials. Not a versioned CDN."
   },
   "github": {
     "owner": "tao66175545-boop",
-    "repo": "sugon-skillui",
+    "repo": "sugon-cloud-skillui",
     "branch": "main",
     "rawBase": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main",
-    "blobBase": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main"
+    "blobBase": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main",
+    "pagesBase": "https://tao66175545-boop.github.io/sugon-cloud-skillui"
   },
   "entries": [
     {
@@ -39,6 +42,7 @@
       "importHint": "@import \"sugon-skillui/tokens\"; /* 或相对路径 */\n@import \"../path-to/sugon-skillui/design-skills/brand-kit/tokens.css\";",
       "copyHint": "cp -r design-skills/brand-kit <your-app>/vendor/sugon-brand-kit",
       "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/tokens.css",
+      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/design-skills/brand-kit/tokens.css",
       "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/design-skills/brand-kit/tokens.css"
     },
     {
@@ -50,6 +54,7 @@
       "importHint": "@import \"sugon-skillui/css\"; /* 或 */\n@import \"../path-to/sugon-skillui/export/sugon-skillui.css\";",
       "copyHint": "cp export/sugon-skillui.css <your-app>/vendor/ && 同步复制 design-skills/brand-kit/tokens.css（相对 @import 依赖）",
       "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/export/sugon-skillui.css",
+      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/export/sugon-skillui.css",
       "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/export/sugon-skillui.css"
     },
     {
@@ -61,6 +66,7 @@
       "importHint": "只读文档：打开或复制 SKILL.md，勿当 CSS 引用",
       "copyHint": "cp design-skills/brand-kit/SKILL.md <dest>/",
       "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/SKILL.md",
+      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/design-skills/brand-kit/SKILL.md",
       "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/design-skills/brand-kit/SKILL.md"
     },
     {
@@ -72,6 +78,7 @@
       "importHint": "只读文档：打开或复制 DESIGN.md",
       "copyHint": "cp design-skills/brand-kit/DESIGN.md <dest>/",
       "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/DESIGN.md",
+      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/design-skills/brand-kit/DESIGN.md",
       "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/design-skills/brand-kit/DESIGN.md"
     },
     {
@@ -83,6 +90,7 @@
       "importHint": "@import \"./vendor/brand-kit/tokens.css\";",
       "copyHint": "cp -r design-skills/brand-kit <your-app>/vendor/brand-kit",
       "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/SKILL.md",
+      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/design-skills/brand-kit/SKILL.md",
       "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/design-skills/brand-kit/SKILL.md"
     },
     {
@@ -116,6 +124,7 @@
       "importHint": "<img src=\".../public/logo.svg\" alt=\"曙光云\" />",
       "copyHint": "cp public/logo.svg <your-app>/public/",
       "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/public/logo.svg",
+      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/logo.svg",
       "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/public/logo.svg"
     }
   ]

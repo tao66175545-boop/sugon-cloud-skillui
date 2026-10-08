@@ -2,13 +2,16 @@
  * 第三方消费示意 — package.json exports 风格
  *
  * 本文件不会被库壳构建打包；请复制注释到你的 CSS 入口。
- * 私有仓无公开 CDN；优先本地 path / file: 安装。
+ * 本仓已公开（无需 token）；生产优先本地 path / file: 安装，快速试用可用下方 Pages URL。
  */
 
 /* ---------- 方式 1：package exports（file: / 本地 path 安装后） ---------- */
 /* @import "sugon-skillui"; */
 /* @import "sugon-skillui/css"; */
 /* @import "sugon-skillui/tokens"; */
+
+/* ---------- 方式 3：在线快速试用（GitHub Pages，text/css；非版本化 CDN） ---------- */
+/* @import url("https://tao66175545-boop.github.io/sugon-cloud-skillui/export/sugon-skillui.css"); */
 
 /* ---------- 方式 2：相对路径（clone / 复制后，不依赖 exports） ---------- */
 @import "../../export/sugon-skillui.css";

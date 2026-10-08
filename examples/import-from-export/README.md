@@ -2,7 +2,7 @@
 
 本目录**不是**第二个产品 UI，只展示如何按 `package.json` `exports` 注释式引用本库出口。
 
-前置：已 clone 本仓，或 `npm i ../path-to/sugon-skillui`（`file:` / 相对 path）。本仓 `private: true`，默认不发布到公网 registry。
+前置：已 clone 本仓（公开：`git clone https://github.com/tao66175545-boop/sugon-cloud-skillui.git`），或 `npm i ../path-to/sugon-skillui`（`file:` / 相对 path）。`package.json` 为 `private: true`，即不发布到 npm registry（与 GitHub 仓库公开无关）。
 
 ## 对照表
 

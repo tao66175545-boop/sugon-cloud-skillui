@@ -3,7 +3,7 @@
 本库是 **风格供给层（style-supply）**，不是 CDN，也不是 Agent UI。  
 机器可读清单见 [`manifest.json`](./manifest.json)；`package.json` `exports` 已指向真实文件。
 
-> **私有仓说明**：GitHub raw 需登录 / PAT。公开稳定消费请用 **本地 clone + 相对路径**，或自行镜像。勿把 raw 当公开 CDN。
+> **公开仓说明**：本仓已公开（<https://github.com/tao66175545-boop/sugon-cloud-skillui>），GitHub raw **无需登录 / token**。生产环境建议 **本地 clone / 复制 + 相对路径**（或固定到某个 commit 的 raw URL）；GitHub Pages 上的文件适合演示与快速试用，不是带版本的 CDN。
 
 ---
 
@@ -13,11 +13,10 @@
 
 | 方式 | 命令 / 操作 |
 |------|-------------|
-| 本地 clone | `git clone <本仓 URL>` 后按相对路径引用 |
+| 本地 clone | `git clone https://github.com/tao66175545-boop/sugon-cloud-skillui.git` 后按相对路径引用 |
 | 复制品牌包 | `cp -r design-skills/brand-kit <your-app>/vendor/brand-kit` |
-| 认证 raw（可选） | `curl -H "Authorization: Bearer <GITHUB_TOKEN>" -L "<raw URL>" -o tokens.css` |
-
-不要把 token 写进仓库或提交到 git。
+| 公开 raw 下载 | `curl -L "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/tokens.css" -o tokens.css` |
+| 浏览器快速试用 | `<link rel="stylesheet" href="https://tao66175545-boop.github.io/sugon-cloud-skillui/export/sugon-skillui.css">`（Pages 以 text/css 提供；raw 是 text/plain，不能直接当样式表引用） |
 
 ---
 
