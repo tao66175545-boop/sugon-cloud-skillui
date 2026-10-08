@@ -1,0 +1,217 @@
+/**
+ * 曙光云 sugon-brand-kit — 纯 CSS 片段（按钮 / 卡片 / 表单）
+ * 不是组件库：只有类名，没有 React / Vue 组件。
+ * 颜色、字号、圆角、间距、阴影全部来自同目录 tokens.css 的变量，本文件不定义新颜色。
+ * 用法：先引入 tokens.css，再引入本文件。
+ *   @import "./styles/sugon-tokens.css";
+ *   @import "./styles/sugon-components.css";
+ * 按钮的 primary / secondary 状态与 DESIGN.md 的配方一致；ghost 是在此之上的补充。
+ */
+
+.sugon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: var(--btn-height);
+  padding-inline: var(--btn-px);
+  border-radius: var(--btn-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: var(--btn-transition);
+}
+
+.sugon-btn:focus-visible {
+  outline: none;
+}
+
+.sugon-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.sugon-btn-primary {
+  color: var(--color-primary-foreground);
+  background-color: var(--color-primary);
+  border-color: transparent;
+}
+
+.sugon-btn-primary:hover {
+  background-color: var(--color-primary-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.sugon-btn-primary:active {
+  background-color: var(--color-primary-active);
+  transform: scale(0.98);
+  box-shadow: var(--shadow-sm);
+}
+
+.sugon-btn-primary:focus-visible {
+  box-shadow: var(--shadow-sm), var(--focus-ring-strong);
+}
+
+.sugon-btn-secondary {
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border-color: var(--color-border-strong);
+}
+
+.sugon-btn-secondary:hover {
+  background-color: var(--color-bg-muted);
+}
+
+.sugon-btn-secondary:active {
+  background-color: var(--color-bg-subtle);
+  transform: scale(0.98);
+}
+
+.sugon-btn-secondary:focus-visible {
+  border-color: var(--color-primary);
+  box-shadow: var(--focus-ring);
+}
+
+.sugon-btn-ghost {
+  color: var(--color-text);
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.sugon-btn-ghost:hover {
+  background-color: var(--color-bg-muted);
+}
+
+.sugon-btn-ghost:active {
+  background-color: var(--color-bg-subtle);
+  transform: scale(0.98);
+}
+
+.sugon-btn-ghost:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+.sugon-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+.sugon-card-title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-snug);
+  color: var(--color-text);
+}
+
+.sugon-card-body {
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.sugon-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-sans);
+}
+
+.sugon-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-snug);
+  color: var(--color-text);
+}
+
+.sugon-input,
+.sugon-select {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--btn-height);
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.sugon-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.sugon-input:focus-visible,
+.sugon-select:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--focus-ring);
+}
+
+.sugon-input:disabled,
+.sugon-select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background-color: var(--color-bg-muted);
+}
+
+.sugon-input[aria-invalid="true"],
+.sugon-select[aria-invalid="true"] {
+  border-color: var(--color-danger-border);
+  background-color: var(--color-danger-muted);
+}
+
+.sugon-help {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--color-text-muted);
+}
+
+.sugon-error {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--color-danger-foreground);
+}
+
+.sugon-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.sugon-check input {
+  width: var(--space-4);
+  height: var(--space-4);
+  margin: 0;
+  accent-color: var(--color-primary);
+}
+
+.sugon-check input:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}

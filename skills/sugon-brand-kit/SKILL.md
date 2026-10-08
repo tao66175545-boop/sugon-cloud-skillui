@@ -27,6 +27,7 @@ metadata:
 | `SKILL.md` | 本入口（何时用、怎么用） |
 | `DESIGN.md` | 设计规范：颜色、字体、圆角、间距、按钮三态、做 / 不做 |
 | `tokens.css` | CSS 自定义属性（`:root` 变量），**唯一事实来源**；`DESIGN.md` 与它不一致时以它为准 |
+| `components.css` | 纯 CSS 片段：按钮、卡片、表单。类名一律 `sugon-` 开头。不是组件库 |
 
 ## 何时使用
 
@@ -54,8 +55,15 @@ metadata:
    只想快速试用、不落文件时，可用 CDN：
    `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.0/skills/sugon-brand-kit/tokens.css`
 3. **写样式时只用变量**：颜色用 `var(--color-*)`，字号 `var(--text-*)`，圆角 `var(--radius-*)`，间距 `var(--space-*)`，阴影 `var(--shadow-*)`。**不要硬编码 `#C8161D` 等色值**；Tailwind 中用任意值写法，例如 `bg-[var(--color-primary)]`、`rounded-[var(--radius-xl)]`。
-4. **按钮必须有 default / hover / active（以及 focus-visible、disabled）**，可直接照 `DESIGN.md` 里的按钮配方实现。
-5. 卡片默认 `var(--radius-xl)` + `var(--color-surface)` + `1px solid var(--color-border)`；区块交替底色用 `var(--color-bg-subtle)`。
+4. **按钮、卡片、表单优先用 `components.css` 里的类，不要另写一套。** 先在令牌之后引入它（shadcn 安装时会写到 `src/styles/sugon-components.css`）：
+
+   ```css
+   @import "./styles/sugon-tokens.css";
+   @import "./styles/sugon-components.css";
+   ```
+
+   类名：`sugon-btn` + `sugon-btn-primary` / `sugon-btn-secondary` / `sugon-btn-ghost`（含 hover、active、focus-visible、disabled），`sugon-card` / `sugon-card-title` / `sugon-card-body`，`sugon-field` / `sugon-label` / `sugon-input` / `sugon-select` / `sugon-check` / `sugon-help` / `sugon-error`。输入错误态用 `aria-invalid="true"`。这些类只组合已有变量，不引入新颜色。
+5. 卡片默认 `var(--radius-xl)` + `var(--color-surface)` + `1px solid var(--color-border)`（`sugon-card` 已按此实现）；区块交替底色用 `var(--color-bg-subtle)`。
 6. **层级优先于装饰**：靠字阶、留白和对比建立层级，少用渐变和花哨阴影。
 7. 不要发明第二套主色板。确实缺变量时，在项目自己的 CSS 里基于现有变量派生（如 `color-mix()`），不要改写品牌主色。
 8. 界面文案默认中文（除非用户另有要求）。
@@ -63,7 +71,7 @@ metadata:
 ## 自检清单（交付前）
 
 - [ ] 组件里没有硬编码品牌色 / 灰阶色值
-- [ ] 主按钮 `--color-primary`，hover `--color-primary-hover`，active `--color-primary-active`
+- [ ] 按钮 / 卡片 / 输入框用了 `sugon-*` 类（或与之等价的变量），主按钮 `--color-primary`，hover `--color-primary-hover`，active `--color-primary-active`
 - [ ] 正文 `--color-text`，次要 `--color-text-secondary`，说明 / 占位 `--color-text-muted`
 - [ ] 字体族用 `var(--font-sans)`
 - [ ] 白字只出现在主色底上；深灰字配白底

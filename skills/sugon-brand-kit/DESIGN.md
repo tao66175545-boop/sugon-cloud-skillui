@@ -68,33 +68,22 @@
 
 ---
 
-## 按钮
+## 按钮 / 卡片 / 表单
 
-按钮必须具备 **default / hover / active**，并提供 `focus-visible` 与 `disabled`。尺寸令牌：`--btn-height` 2.75rem、`--btn-px` 1.25rem、`--btn-font-size`、`--btn-font-weight`、`--btn-transition`。可直接使用以下配方：
+可直接用的类在同目录 [`components.css`](./components.css)（类名以 `sugon-` 开头，只引用本规范的变量）。引入顺序：先 `tokens.css`，再 `components.css`。不要另写一套按钮或输入框。
 
-```css
-.btn-primary {
-  display: inline-flex; align-items: center; justify-content: center;
-  height: var(--btn-height); padding-inline: var(--btn-px);
-  border-radius: var(--btn-radius); border: none; cursor: pointer;
-  font-size: var(--btn-font-size); font-weight: var(--btn-font-weight); line-height: 1;
-  color: var(--color-primary-foreground); background-color: var(--color-primary);
-  box-shadow: var(--shadow-sm); transition: var(--btn-transition);
-}
-.btn-primary:hover { background-color: var(--color-primary-hover); box-shadow: var(--shadow-md); }
-.btn-primary:active { background-color: var(--color-primary-active); transform: scale(0.98); box-shadow: var(--shadow-sm); }
-.btn-primary:focus-visible { outline: none; box-shadow: var(--shadow-sm), var(--focus-ring-strong); }
-.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+| 类 | 用途 |
+|----|------|
+| `sugon-btn` `sugon-btn-primary` | 主按钮。底 `--color-primary`，hover `--color-primary-hover`，active `--color-primary-active`，focus `--focus-ring-strong`，disabled 透明度 0.55 |
+| `sugon-btn` `sugon-btn-secondary` | 次按钮。底 `--color-surface`，描边 `--color-border-strong`，hover `--color-bg-muted`，active `--color-bg-subtle`，focus `--focus-ring` |
+| `sugon-btn` `sugon-btn-ghost` | 幽灵按钮（补充，不改变上面两种的状态）。透明底、无描边，hover / active 同次按钮的底色 |
+| `sugon-card` `sugon-card-title` `sugon-card-body` | 卡片：`--radius-xl`、`--color-surface`、`--color-border`、`--shadow-sm` |
+| `sugon-field` `sugon-label` | 字段间距：字段之间 `--space-4`，标签与控件 `--space-2` |
+| `sugon-input` `sugon-select` | 文本框与下拉。focus 描边 `--color-primary`；`aria-invalid="true"` 时用 `--color-danger-border` / `--color-danger-muted` |
+| `sugon-check` | 复选框行，选中色 `accent-color: var(--color-primary)` |
+| `sugon-help` `sugon-error` | 说明（`--color-text-muted`）与错误（`--color-danger-foreground`） |
 
-.btn-secondary {
-  /* 尺寸同 .btn-primary */
-  color: var(--color-text); background-color: var(--color-surface);
-  border: 1px solid var(--color-border-strong);
-}
-.btn-secondary:hover { background-color: var(--color-bg-muted); }
-.btn-secondary:active { background-color: var(--color-bg-subtle); transform: scale(0.98); }
-.btn-secondary:focus-visible { outline: none; border-color: var(--color-primary); box-shadow: var(--focus-ring); }
-```
+按钮必须具备 **default / hover / active**，并提供 `focus-visible` 与 `disabled`。尺寸仍用 `--btn-height`、`--btn-px`、`--btn-radius`、`--btn-font-size`、`--btn-font-weight`、`--btn-transition`。primary / secondary 的颜色与上一版配方相同，只是类名改为 `sugon-btn-*`，避免和项目里已有的 `.btn-primary` 撞名。
 
 ---
 

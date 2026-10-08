@@ -51,9 +51,24 @@ for (const name of vars.keys()) {
   if (name.startsWith('--color-') && !md.includes(`\`${name}\``)) problems.push(`missing: ${name} not documented in DESIGN.md`)
 }
 
+const snippets = path.join(dir, 'components.css')
+if (fs.existsSync(snippets)) {
+  const scss = fs.readFileSync(snippets, 'utf8')
+  const body = scss.replace(/\/\*[\s\S]*?\*\//g, '')
+  for (const m of body.matchAll(/#[0-9A-Fa-f]{3,8}\b/g)) problems.push(`components.css: hardcoded color ${m[0]}`)
+  const used = new Set([...body.matchAll(/var\(\s*(--[a-z0-9-]+)/gi)].map((m) => m[1]))
+  for (const name of used) {
+    checked++
+    if (!vars.has(name)) problems.push(`components.css: ${name} is not defined in tokens.css`)
+  }
+  for (const cls of ['sugon-btn-primary', 'sugon-btn-secondary', 'sugon-btn-ghost', 'sugon-card', 'sugon-field', 'sugon-label', 'sugon-input', 'sugon-select', 'sugon-check', 'sugon-help', 'sugon-error']) {
+    if (!scss.includes('.' + cls)) problems.push(`components.css: missing class .${cls}`)
+  }
+}
+
 if (problems.length) {
-  console.error(`check-tokens: FAIL — ${problems.length} drift issue(s) between DESIGN.md and tokens.css`)
+  console.error(`check-tokens: FAIL — ${problems.length} drift issue(s) between DESIGN.md, tokens.css and components.css`)
   for (const p of problems) console.error('  ' + p)
   process.exit(1)
 }
-console.log(`check-tokens: OK — ${checked} values in DESIGN.md match tokens.css (${path.relative(process.cwd(), dir)})`)
+console.log(`check-tokens: OK — ${checked} values match tokens.css; components.css uses only those variables (${path.relative(process.cwd(), dir)})`)
