@@ -41,4 +41,4 @@
 
 1. 主色锁定 `#C8161D`，与 `tokens.css` / DESIGN 同步。  
 2. IA：顶栏仅「对话」；不堆并列录入 / 浏览 / 选用一级入口；无质量层依赖。  
-3. 他项目通过复制 `design-skills/<skill>/` 消费；本仓 `src/index.css` 为最小引用示例。
+3. 他项目通过 `npx skills add` / `npx shadcn add` 安装，或复制 `skills/<skill>/` 消费；本仓 `src/index.css` 为最小引用示例。

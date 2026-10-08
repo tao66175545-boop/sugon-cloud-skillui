@@ -1,14 +1,61 @@
 # 曙光云 SkillUI 库
 
-**风格供给层（style supply）** — 在 AI 生成 UI **之前 / 之中** 提供可复用的设计 Skill（`SKILL.md` + `DESIGN.md` + `tokens.css`）。本仓库前端是单页库壳：**对话（Agent）为唯一管理入口**；本机库经对话「看库 / 选用」与顶栏数量查看；数据本地持久化；**无需 npm 发布**即可被其他项目按路径引用。
+**风格供给层（style supply）** — 在 AI 生成 UI **之前 / 之中** 提供可复用的设计 Skill（`SKILL.md` + `DESIGN.md` + `tokens.css`）。技能符合 [Agent Skills](https://agentskills.io/specification) 规范，一条命令即可装进 Claude Code、Codex、Cursor、GitHub Copilot、Gemini CLI 等 AI 编程工具，或作为 shadcn registry 条目写进任意前端项目。本仓库前端是单页库壳演示：**对话（Agent）为唯一管理入口**，数据只存在浏览器本地。
 
-> 产品自称：**曙光云 SkillUI 库**。主色 `#C8161D`，辅以灰 / 白。顶栏与浏览器标签使用曙光 SVG logo（`public/logo.svg`）。
+> 产品自称：**曙光云 SkillUI 库**。主色 `#C8161D`，辅以灰 / 白。代码与文档采用 MIT；“曙光 / 曙光云 / Sugon” 名称、logo 与品牌标识**不在 MIT 授权范围内**，见 [`TRADEMARKS.md`](./TRADEMARKS.md)。
+
+<!-- skills.sh 徽章：等 skills.sh 收录本仓库（有人用 npx skills add 安装后自动收录）再启用，避免显示空徽章：
+[![skills.sh](https://skills.sh/b/tao66175545-boop/sugon-cloud-skillui)](https://skills.sh/tao66175545-boop/sugon-cloud-skillui)
+-->
+
+---
+
+## 30 秒安装
+
+技能名 **`sugon-brand-kit`**（目录 [`skills/sugon-brand-kit/`](./skills/sugon-brand-kit/)）。以下命令都**不需要 npm 账号、不需要 clone**；`v0.2.0` 是固定版本，换成 `main` 即为尝鲜版。
+
+**1. 装进 AI 编程工具（Agent Skills）**
+
+```bash
+npx skills add tao66175545-boop/sugon-cloud-skillui
+# 锁定版本：
+npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.2.0/skills/sugon-brand-kit
+```
+
+由 [`skills` CLI](https://github.com/vercel-labs/skills) 写入 `.agents/skills/sugon-brand-kit/`，并按你选择的工具链接到 `.claude/skills/` 等目录（`-a claude-code` 指定工具，`-g` 装到全局）。
+
+**2. 技能 + 令牌一起写进项目（shadcn registry）**
+
+```bash
+npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.0
+```
+
+| 条目 | 写入的文件 |
+|------|-----------|
+| `sugon-brand-kit` | `.agents/skills/sugon-brand-kit/*`、`.claude/skills/sugon-brand-kit/*`（SKILL.md / DESIGN.md / tokens.css）+ `src/styles/sugon-tokens.css` |
+| `sugon-tokens` | 只要令牌：`src/styles/sugon-tokens.css` |
+| `sugon-brand-rules`（可选） | 常驻规则：`.cursor/rules/sugon-brand.mdc`、`.github/instructions/sugon-brand.instructions.md`（只对 UI 文件生效）；**不会**改写你的 `AGENTS.md` / `CLAUDE.md`，需要时手动追加 [`registry/rules/AGENTS.snippet.md`](./registry/rules/AGENTS.snippet.md) |
+
+不要求项目已初始化 shadcn（没有 `components.json` 也能装）。装之前可加 `--dry-run` 预览。装完在入口 CSS 顶部加 `@import "./styles/sugon-tokens.css";`。
+
+**3. 只要 CSS 变量（CDN）**
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.0/skills/sugon-brand-kit/tokens.css">
+```
+
+```css
+@import url("https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.0/skills/sugon-brand-kit/tokens.css");
+.cta { background: var(--color-primary); color: var(--color-primary-foreground); border-radius: var(--btn-radius); }
+```
+
+更多方式（本地路径、package exports、raw 下载、机器可读清单）见 [`export/`](./export/)；给 AI 读的站点索引：<https://tao66175545-boop.github.io/sugon-cloud-skillui/llms.txt>。
 
 ---
 
 ## 公开说明（Public）
 
-**是什么**：一个「风格供给层」设计 Skill 库 + 单页对话壳。设计 Skill 以 `SKILL.md` + `DESIGN.md` + `tokens.css` 的形式存放在 `design-skills/`，其他项目可直接按路径 `@import`；网页里用对话（Agent）完成学习链接 / 起草 / 看库 / 选用 / 确认归库 / 导出。
+**是什么**：一个「风格供给层」设计 Skill 库 + 单页对话壳。可分发的设计 Skill 以 `SKILL.md` + `DESIGN.md` + `tokens.css` 的形式存放在 `skills/`（见上方「30 秒安装」）；网页里用对话（Agent）完成学习链接 / 起草 / 看库 / 选用 / 确认归库 / 导出。**注意**：网页里「归库」的 Skill 只保存在你自己浏览器的 localStorage，不会写回本仓库，也不会出现在上面的安装渠道里。
 
 - **在线演示**：<https://tao66175545-boop.github.io/sugon-cloud-skillui/>（对话入口 `#agent`；由 `.github/workflows/deploy-pages.yml` 在 push 到 `main` 时构建并发布到 GitHub Pages）
 - **源码**：<https://github.com/tao66175545-boop/sugon-cloud-skillui>
@@ -19,35 +66,35 @@
   npm run dev          # http://localhost:5173/#agent
   npm run build        # 产物在 dist/；子路径部署可设 BASE_PATH=/<repo>/
   npm run check:dist   # 发布前检查 dist 中没有密钥样式字符串 / 内部地址
+  npm run check:tokens # DESIGN.md 与 tokens.css 一致性校验
+  npm run check:registry # 校验 registry.json（shadcn）
   ```
 
 - **自带 Key（Bring your own key）**：仓库与在线演示**不内置任何 API Key 或模型网关**。在「设置」里填写你自己的 OpenAI 兼容 Base URL、模型名与 Key：Key **只保存在你浏览器的 localStorage**，请求**从浏览器直接发往你配置的端点**（端点需允许 CORS），不经过本仓库或任何中转服务器。不填 Key 时「看库 / 选用」仍可用，发送消息会被拦截。
-- **许可证**：MIT，见 [`LICENSE`](./LICENSE)。
-
----
-
+- **许可证**：代码与文档 MIT，见 [`LICENSE`](./LICENSE)；品牌名称与标识见 [`TRADEMARKS.md`](./TRADEMARKS.md)。
+- **变更记录**：[`CHANGELOG.md`](./CHANGELOG.md)。
 
 ---
 
 ## 对外统一出口
 
-其他项目消费**风格供给层**请走 [`export/`](./export/)（`package.json` `exports` 已指向真实可消费路径）：
+除了上面的一键安装，其他项目也可以按路径消费，详见 [`export/`](./export/)（`package.json` `exports` 已指向真实可消费路径）：
 
 | 入口 | 说明 |
 |------|------|
-| [`export/CONSUME.md`](./export/CONSUME.md) | **3 步接入**（拿到文件 → `@import` → 选 skill path） |
-| [`export/README.md`](./export/README.md) | 中文接入说明（本地 path / package exports / 复制 / 公开 raw 与 Pages URL；非版本化 CDN） |
-| [`export/manifest.json`](./export/manifest.json) | 机器可读：id、path、`importHint`/`copyHint`、relative / raw / pages / blob（公开，无需 token） |
-| [`export/sugon-skillui.css`](./export/sugon-skillui.css) | 仅 `@import` `design-skills/brand-kit/tokens.css` |
+| [`export/CONSUME.md`](./export/CONSUME.md) | **3 步接入**（安装 / 拿到文件 → `@import` → 用变量） |
+| [`export/README.md`](./export/README.md) | 中文接入说明（npx skills / shadcn / jsDelivr / 本地 path / package exports / raw） |
+| [`export/manifest.json`](./export/manifest.json) | 机器可读：`install`（三种安装命令）、id、path、`importHint`/`copyHint`、relative / raw / pages / blob / jsdelivr |
+| [`export/sugon-skillui.css`](./export/sugon-skillui.css) | 仅 `@import` `skills/sugon-brand-kit/tokens.css` |
 
-`exports` 摘要：`.` / `./css` → 统一 CSS；`./tokens` → `design-skills/brand-kit/tokens.css`；`./manifest` → `export/manifest.json`。
+`exports` 摘要：`.` / `./css` → 统一 CSS；`./tokens` → `skills/sugon-brand-kit/tokens.css`；`./manifest` → `export/manifest.json`。（npm 包尚未发布，目前用于本地 path / `file:` 引用。）
 
 最小示例：
 
 ```css
 @import "../path-to/sugon-skillui/export/sugon-skillui.css";
 /* 或 */
-@import "../path-to/sugon-skillui/design-skills/brand-kit/tokens.css";
+@import "../path-to/sugon-skillui/skills/sugon-brand-kit/tokens.css";
 /* file: 安装后也可：@import "sugon-skillui/css"; */
 ```
 
@@ -57,7 +104,7 @@
 
 | 层级 | 职责 | 本仓库 |
 |------|------|--------|
-| **供给层** | 生成前/中提供品牌令牌与规则 | ✅ 本库拥有（`design-skills/`） |
+| **供给层** | 生成前/中提供品牌令牌与规则 | ✅ 本库拥有（`skills/`） |
 | **质量层** | 生成后的品味审计 / 打磨 | ❌ 不引入（Taste / Impeccable / Hallmark 等） |
 
 ---
@@ -132,49 +179,39 @@ VITE_LLM_MODEL=your-model-name
 
 ---
 
-## 其他项目如何复用（路径导入）
+## 仓库结构（分发相关）
 
-无需发布 npm。在目标项目 CSS 中按相对路径引入令牌：
-
-```css
-@import "../path-to/test02/design-skills/brand-kit/tokens.css";
+```
+skills/sugon-brand-kit/          # 唯一事实来源（Agent Skills 规范：目录名 = name）
+├── SKILL.md                     # AI 入口：frontmatter（name / description）+ 何时 / 如何使用
+├── DESIGN.md                    # 规范：颜色、字体、圆角、间距、按钮三态（数值抄自 tokens.css）
+└── tokens.css                   # CSS 变量（主色 #C8161D）
+registry.json                    # shadcn GitHub registry：sugon-tokens / sugon-brand-kit / sugon-brand-rules
+registry/rules/                  # 可选常驻规则（.mdc / .instructions.md / AGENTS.snippet.md）
+design-skills/brand-kit/         # 0.1.x 旧路径的转发 stub，0.3.0 删除
+export/                          # 统一 CSS 出口 + manifest.json + 接入文档
+public/llms.txt                  # 给 AI 读的站点索引（Pages：/sugon-cloud-skillui/llms.txt）
 ```
 
 本仓库自身接线（`src/index.css`）：
 
 ```css
-@import "../design-skills/brand-kit/tokens.css";
+@import "../skills/sugon-brand-kit/tokens.css";
 @import "tailwindcss";
 ```
 
-| 资源 | 路径 |
-|------|------|
-| Skill 入口 | `design-skills/brand-kit/SKILL.md` |
-| 设计规范 | `design-skills/brand-kit/DESIGN.md` |
-| CSS 令牌 | `design-skills/brand-kit/tokens.css` |
-| 最小参考示例 | `examples/minimal-reference/` |
-
-详见 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)。
-
----
-
-## 设计技能包
-
-```
-design-skills/brand-kit/
-├── SKILL.md      # AI 入口：何时/如何使用供给层
-├── DESIGN.md     # 规范：颜色、字体、圆角、间距、按钮三态
-└── tokens.css    # CSS 变量（主色 #C8161D）
-```
+最小参考示例：[`examples/minimal-reference/`](./examples/minimal-reference/)。架构说明见 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)。
 
 ---
 
 ## 非目标
 
-- 云端 / Figma / 登录 / 远程市场
+- 托管服务：托管 MCP、云端市场、账号登录（分发只靠 GitHub 仓库本身 + 开放标准 CLI）
+- Figma 导入
 - 引入质量层依赖（Taste / Impeccable / Hallmark 等）
-- npm 发布（可选，非必需）
 - 将 API Key 提交到仓库
+
+（npm 包 `sugon-skillui` 在计划中，尚未发布。）
 
 ---
 

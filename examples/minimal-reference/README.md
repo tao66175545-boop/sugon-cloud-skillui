@@ -1,6 +1,6 @@
 # 最小参考示例 — 曙光云 SkillUI 库
 
-本目录演示**其他项目如何消费**本仓库的风格供给层出口（**不是 npm 发布**、**不是 CDN**）。
+本目录演示**其他项目如何消费**本仓库的风格供给层出口（本地路径引用；一键安装方式见根目录 README「30 秒安装」）。
 
 出口路径与机器清单见 [`export/CONSUME.md`](../../export/CONSUME.md)、[`export/README.md`](../../export/README.md)、[`export/manifest.json`](../../export/manifest.json)。
 
@@ -11,9 +11,9 @@
 | 统一出口说明 | `export/README.md` / `export/CONSUME.md` | ✅ |
 | 机器清单 | `export/manifest.json` | ✅ |
 | CSS 再导出 | `export/sugon-skillui.css` | ✅ |
-| Skill 入口 | `design-skills/brand-kit/SKILL.md` | ✅ |
-| 设计规范 | `design-skills/brand-kit/DESIGN.md` | ✅ |
-| CSS 令牌 | `design-skills/brand-kit/tokens.css` | ✅ |
+| Skill 入口 | `skills/sugon-brand-kit/SKILL.md` | ✅ |
+| 设计规范 | `skills/sugon-brand-kit/DESIGN.md` | ✅ |
+| CSS 令牌 | `skills/sugon-brand-kit/tokens.css` | ✅ |
 | **静态可打开页** | `examples/minimal-reference/index.html` + `demo.css` | ✅ 照抄 |
 | 组件对照 | `examples/minimal-reference/TokenUsageExample.tsx` | 可选 |
 
@@ -39,17 +39,17 @@ npx --yes serve .
 @import "../../export/sugon-skillui.css";
 
 /* B. 直接 tokens（与本仓 src/index.css 一致） */
-@import "../../design-skills/brand-kit/tokens.css";
+@import "../../skills/sugon-brand-kit/tokens.css";
 ```
 
 本仓库库壳自身（`src/index.css`）用：
 
 ```css
-@import "../design-skills/brand-kit/tokens.css";
+@import "../skills/sugon-brand-kit/tokens.css";
 @import "tailwindcss";
 ```
 
-也可**复制** `design-skills/brand-kit/` 到目标项目后按本地路径 `@import`。
+也可**复制** `skills/sugon-brand-kit/` 到目标项目后按本地路径 `@import`。
 
 ### 3) package exports 风格
 
@@ -62,7 +62,7 @@ npx --yes serve .
 
 ## 边界
 
-- 只消费供给层（`design-skills/...` / `export/...`）
+- 只消费供给层（`skills/...` / `export/...`）
 - **不要**引入质量层（Taste / Impeccable / Hallmark）
 - Agent / 对话 **不是**对外出口
 - 本样例无需单独 `npm install`；库壳开发仍用根目录 `npm run dev`

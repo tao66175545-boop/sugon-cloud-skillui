@@ -1,7 +1,7 @@
 {
   "name": "sugon-skillui",
   "displayName": "曙光云 SkillUI 库",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "layer": "style-supply",
   "brand": {
     "primary": "#C8161D",
@@ -10,19 +10,53 @@
       "white"
     ]
   },
+  "skill": {
+    "name": "sugon-brand-kit",
+    "path": "skills/sugon-brand-kit/",
+    "spec": "https://agentskills.io/specification",
+    "legacyPath": "design-skills/brand-kit/ (forwarding stubs until 0.3.0)"
+  },
+  "install": {
+    "skills": {
+      "command": "npx skills add tao66175545-boop/sugon-cloud-skillui",
+      "pinned": "npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.2.0/skills/sugon-brand-kit",
+      "writes": ".agents/skills/sugon-brand-kit/ (+ per-agent dirs such as .claude/skills/)",
+      "docs": "https://github.com/vercel-labs/skills"
+    },
+    "shadcn": {
+      "items": {
+        "sugon-brand-kit": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.0",
+        "sugon-tokens": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#v0.2.0",
+        "sugon-brand-rules": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-rules#v0.2.0"
+      },
+      "registry": "registry.json",
+      "note": "GitHub registry: owner/repo/item, optional #tag or #commit-sha. sugon-brand-rules is opt-in and never writes AGENTS.md / CLAUDE.md.",
+      "docs": "https://ui.shadcn.com/docs/registry/github"
+    },
+    "jsdelivr": {
+      "tokens": "https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.0/skills/sugon-brand-kit/tokens.css",
+      "latest": "https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@main/skills/sugon-brand-kit/tokens.css",
+      "note": "Versioned CDN (text/css) straight from GitHub tags; use @v0.2.0 in production, @main only for trials."
+    },
+    "npm": {
+      "status": "not published yet (planned as sugon-skillui)"
+    }
+  },
   "packageExports": {
     ".": "./export/sugon-skillui.css",
     "./css": "./export/sugon-skillui.css",
-    "./tokens": "./design-skills/brand-kit/tokens.css",
+    "./tokens": "./skills/sugon-brand-kit/tokens.css",
+    "./tokens.css": "./skills/sugon-brand-kit/tokens.css",
     "./manifest": "./export/manifest.json"
   },
   "notes": {
-    "raw": "The repo is public: raw.githubusercontent.com URLs (rawBase + path) work without any token. Raw is served as text/plain, so use it for curl/download or tooling; for a browser <link>/@import use the GitHub Pages URL (pagesBase, text/css) or a local copy.",
-    "pages": "GitHub Pages hosts the built demo plus design-skills/ and export/ under pagesBase (served as text/css / text/markdown). Convenient for demos and quick trials; it is not a versioned CDN, so pin a local copy or a raw URL at a commit SHA for production.",
+    "raw": "The repo is public: raw.githubusercontent.com URLs (rawBase + path) work without any token. Raw is served as text/plain, so use it for curl/download or tooling; for a browser <link>/@import use jsDelivr (install.jsdelivr) or a local copy.",
+    "pages": "GitHub Pages hosts the built demo plus skills/, design-skills/ (compat stubs) and export/ under pagesBase, and llms.txt. Convenient for demos; for production pin jsDelivr @v0.2.0 or a local copy.",
     "privateRaw": "DEPRECATED (kept for backward compatibility): the repo is public, no token is needed. Same as notes.raw.",
     "notExportSurface": "Agent/chat UI is the in-app management entry only — not part of the style-supply export surface.",
     "qualityLayer": "Out of scope. Do not introduce Taste / Impeccable / Hallmark via this export.",
-    "delivery": "Prefer: (1) local clone / copy of design-skills/ + relative @import or package exports path, (2) public GitHub raw (no token) for download, (3) GitHub Pages URL (pagesBase) for quick browser trials. Not a versioned CDN."
+    "delivery": "Prefer: (1) npx skills add / npx shadcn add (see install), (2) jsDelivr @tag for <link>, (3) local clone / copy of skills/sugon-brand-kit/ + relative @import or package exports path, (4) public GitHub raw for download.",
+    "trademark": "MIT covers code and docs only. The 曙光 / 曙光云 / Sugon names, logos and brand identity are not licensed; see TRADEMARKS.md."
   },
   "github": {
     "owner": "tao66175545-boop",
@@ -35,15 +69,16 @@
   "entries": [
     {
       "id": "tokens",
-      "path": "design-skills/brand-kit/tokens.css",
+      "path": "skills/sugon-brand-kit/tokens.css",
       "purpose": "CSS 自定义属性（品牌主色 #C8161D 等），供第三方项目 @import 或复制",
-      "relative": "design-skills/brand-kit/tokens.css",
+      "relative": "skills/sugon-brand-kit/tokens.css",
       "packageExport": "./tokens",
-      "importHint": "@import \"sugon-skillui/tokens\"; /* 或相对路径 */\n@import \"../path-to/sugon-skillui/design-skills/brand-kit/tokens.css\";",
-      "copyHint": "cp -r design-skills/brand-kit <your-app>/vendor/sugon-brand-kit",
-      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/tokens.css",
-      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/design-skills/brand-kit/tokens.css",
-      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/design-skills/brand-kit/tokens.css"
+      "importHint": "@import \"sugon-skillui/tokens\"; /* 或相对路径 */\n@import \"../path-to/sugon-skillui/skills/sugon-brand-kit/tokens.css\";",
+      "copyHint": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens  # 或 cp skills/sugon-brand-kit/tokens.css <your-app>/src/styles/sugon-tokens.css",
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/skills/sugon-brand-kit/tokens.css",
+      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/skills/sugon-brand-kit/tokens.css",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/skills/sugon-brand-kit/tokens.css",
+      "jsdelivr": "https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.0/skills/sugon-brand-kit/tokens.css"
     },
     {
       "id": "export-css",
@@ -52,46 +87,57 @@
       "relative": "export/sugon-skillui.css",
       "packageExport": "./css",
       "importHint": "@import \"sugon-skillui/css\"; /* 或 */\n@import \"../path-to/sugon-skillui/export/sugon-skillui.css\";",
-      "copyHint": "cp export/sugon-skillui.css <your-app>/vendor/ && 同步复制 design-skills/brand-kit/tokens.css（相对 @import 依赖）",
+      "copyHint": "cp export/sugon-skillui.css <your-app>/vendor/ && 同步复制 skills/sugon-brand-kit/tokens.css（相对 @import 依赖）",
       "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/export/sugon-skillui.css",
       "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/export/sugon-skillui.css",
       "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/export/sugon-skillui.css"
     },
     {
       "id": "skill",
-      "path": "design-skills/brand-kit/SKILL.md",
-      "purpose": "AI / 工具读取的风格供给技能说明",
-      "relative": "design-skills/brand-kit/SKILL.md",
-      "packageExport": "./design-skills/brand-kit/SKILL.md",
+      "path": "skills/sugon-brand-kit/SKILL.md",
+      "purpose": "Agent Skill 入口（含 name / description frontmatter），AI 编程工具按需加载",
+      "relative": "skills/sugon-brand-kit/SKILL.md",
+      "packageExport": "./skills/sugon-brand-kit/SKILL.md",
       "importHint": "只读文档：打开或复制 SKILL.md，勿当 CSS 引用",
-      "copyHint": "cp design-skills/brand-kit/SKILL.md <dest>/",
-      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/SKILL.md",
-      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/design-skills/brand-kit/SKILL.md",
-      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/design-skills/brand-kit/SKILL.md"
+      "copyHint": "npx skills add tao66175545-boop/sugon-cloud-skillui",
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/skills/sugon-brand-kit/SKILL.md",
+      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/skills/sugon-brand-kit/SKILL.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/skills/sugon-brand-kit/SKILL.md"
     },
     {
       "id": "design",
-      "path": "design-skills/brand-kit/DESIGN.md",
+      "path": "skills/sugon-brand-kit/DESIGN.md",
       "purpose": "设计规范：色彩、字体、圆角、间距、按钮状态",
-      "relative": "design-skills/brand-kit/DESIGN.md",
-      "packageExport": "./design-skills/brand-kit/DESIGN.md",
+      "relative": "skills/sugon-brand-kit/DESIGN.md",
+      "packageExport": "./skills/sugon-brand-kit/DESIGN.md",
       "importHint": "只读文档：打开或复制 DESIGN.md",
-      "copyHint": "cp design-skills/brand-kit/DESIGN.md <dest>/",
-      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/DESIGN.md",
-      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/design-skills/brand-kit/DESIGN.md",
-      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/design-skills/brand-kit/DESIGN.md"
+      "copyHint": "cp skills/sugon-brand-kit/DESIGN.md <dest>/",
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/skills/sugon-brand-kit/DESIGN.md",
+      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/skills/sugon-brand-kit/DESIGN.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/skills/sugon-brand-kit/DESIGN.md"
     },
     {
-      "id": "brand-kit",
-      "path": "design-skills/brand-kit/",
-      "purpose": "完整品牌路径，可复制到目标项目后本地消费",
-      "relative": "design-skills/brand-kit/",
+      "id": "sugon-brand-kit",
+      "path": "skills/sugon-brand-kit/",
+      "purpose": "完整技能目录（SKILL.md + DESIGN.md + tokens.css），可一键安装或复制到目标项目",
+      "relative": "skills/sugon-brand-kit/",
       "packageExport": null,
-      "importHint": "@import \"./vendor/brand-kit/tokens.css\";",
-      "copyHint": "cp -r design-skills/brand-kit <your-app>/vendor/brand-kit",
-      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/design-skills/brand-kit/SKILL.md",
-      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/design-skills/brand-kit/SKILL.md",
-      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/design-skills/brand-kit/SKILL.md"
+      "importHint": "@import \"./styles/sugon-tokens.css\"; /* shadcn 安装后的默认位置 */",
+      "copyHint": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit  # 或 cp -r skills/sugon-brand-kit <your-app>/.agents/skills/",
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/skills/sugon-brand-kit/SKILL.md",
+      "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/skills/sugon-brand-kit/SKILL.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/skills/sugon-brand-kit/SKILL.md"
+    },
+    {
+      "id": "brand-rules",
+      "path": "registry/rules/",
+      "purpose": "可选常驻规则：Cursor .mdc、Copilot .instructions.md、AGENTS.md 片段（需手动追加）",
+      "relative": "registry/rules/",
+      "packageExport": null,
+      "importHint": "只读文档 / 规则文件",
+      "copyHint": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-rules",
+      "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/registry/rules/AGENTS.snippet.md",
+      "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/registry/rules"
     },
     {
       "id": "minimal-reference",

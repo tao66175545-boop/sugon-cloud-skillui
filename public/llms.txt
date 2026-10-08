@@ -1,0 +1,32 @@
+# 曙光云 SkillUI 库 (sugon-cloud-skillui)
+
+> Style-supply design skill for AI coding agents: the `sugon-brand-kit` Agent Skill (SKILL.md + DESIGN.md + tokens.css) gives 曙光云 / Sugon Cloud brand tokens — brand red #C8161D with gray/white neutrals, type scale, radius, spacing, shadows and button default/hover/active states — as plain CSS variables. Read it before generating UI; use `var(--color-*)` etc. instead of hard-coded colors. Not a post-generation polish / audit tool.
+
+Install (no account or clone needed; `v0.2.0` is the pinned release, `main` is latest):
+
+- Agent Skills (Claude Code, Codex, Cursor, Copilot, Gemini CLI, …): `npx skills add tao66175545-boop/sugon-cloud-skillui`
+- Skill + tokens into a project (shadcn GitHub registry): `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.0`
+- Tokens only: `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#v0.2.0`
+- Optional always-on rules (Cursor .mdc + Copilot instructions; never edits AGENTS.md): `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-rules#v0.2.0`
+- CDN: `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.0/skills/sugon-brand-kit/tokens.css`
+
+Code and docs are MIT. The 曙光 / 曙光云 / Sugon names, logos and brand identity are not covered by the MIT license (see TRADEMARKS.md).
+
+## Skill
+
+- [SKILL.md](https://tao66175545-boop.github.io/sugon-cloud-skillui/skills/sugon-brand-kit/SKILL.md): when and how an agent should apply the brand (frontmatter name `sugon-brand-kit`)
+- [DESIGN.md](https://tao66175545-boop.github.io/sugon-cloud-skillui/skills/sugon-brand-kit/DESIGN.md): design spec — colors, typography, radius, spacing, button recipe, do / don't
+- [tokens.css](https://tao66175545-boop.github.io/sugon-cloud-skillui/skills/sugon-brand-kit/tokens.css): CSS custom properties, the single source of truth
+
+## Integration
+
+- [export/CONSUME.md](https://tao66175545-boop.github.io/sugon-cloud-skillui/export/CONSUME.md): 3-step integration guide (Chinese)
+- [export/manifest.json](https://tao66175545-boop.github.io/sugon-cloud-skillui/export/manifest.json): machine-readable manifest with install commands and file URLs
+- [registry.json](https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/registry.json): shadcn registry item definitions
+- [AGENTS.snippet.md](https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/registry/rules/AGENTS.snippet.md): optional section to append to AGENTS.md / CLAUDE.md by hand
+
+## Optional
+
+- [README](https://github.com/tao66175545-boop/sugon-cloud-skillui#readme): project overview (Chinese)
+- [Live demo](https://tao66175545-boop.github.io/sugon-cloud-skillui/): single-page library shell with agent chat (bring your own OpenAI-compatible key)
+- [CHANGELOG](https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/CHANGELOG.md): release notes
