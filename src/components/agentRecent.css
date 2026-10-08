@@ -13,7 +13,10 @@
   box-shadow:
     var(--shadow-md),
     0 0 0 1px var(--color-border);
-  overflow: visible;
+  /* Clip square-cornered children to the 16px arc so they cannot paint over
+     the ring. clip (not hidden) = no scroll container: sticky chat and
+     single page scroll are unaffected. Outer ring sits outside border-box. */
+  overflow: clip;
   isolation: isolate;
 }
 
