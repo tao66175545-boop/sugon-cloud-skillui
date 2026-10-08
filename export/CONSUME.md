@@ -14,7 +14,7 @@
 | 方式 | 命令 / 操作 | 得到什么 |
 |------|-------------|----------|
 | **AI 编程工具技能**（推荐） | `npx skills add tao66175545-boop/sugon-cloud-skillui` | `.agents/skills/sugon-brand-kit/`（+ `.claude/skills/` 等，按所选工具） |
-| **技能 + 令牌进项目**（推荐） | `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.0` | 技能写入 `.agents/skills/` 与 `.claude/skills/`，令牌写入 `src/styles/sugon-tokens.css` |
+| **技能 + 令牌进项目**（推荐） | `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.0` | 技能写入 `.agents/skills/` 与 `.claude/skills/`（含 components.css），令牌写入 `src/styles/sugon-tokens.css`，片段写入 `src/styles/sugon-components.css` |
 | 只要令牌 | `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#v0.2.0` | `src/styles/sugon-tokens.css` |
 | 可选常驻规则 | `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-rules#v0.2.0` | `.cursor/rules/sugon-brand.mdc`、`.github/instructions/sugon-brand.instructions.md`（不会改 `AGENTS.md` / `CLAUDE.md`；需要时手动追加 [`registry/rules/AGENTS.snippet.md`](../registry/rules/AGENTS.snippet.md)） |
 | CDN（浏览器快速试用 / 生产 `<link>`） | `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.0/skills/sugon-brand-kit/tokens.css">` | jsDelivr 按 tag 版本化，`text/css` |
@@ -31,6 +31,7 @@
 ```css
 /* A. shadcn 安装后的默认位置（入口 CSS 最顶部；Tailwind v4 时放在 @import "tailwindcss" 之前） */
 @import "./styles/sugon-tokens.css";
+@import "./styles/sugon-components.css"; /* 按钮 / 卡片 / 表单，类名 sugon-* */
 
 /* B. CDN */
 @import url("https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.0/skills/sugon-brand-kit/tokens.css");

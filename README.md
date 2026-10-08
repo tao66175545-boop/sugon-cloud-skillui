@@ -32,7 +32,7 @@ npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.
 
 | 条目 | 写入的文件 |
 |------|-----------|
-| `sugon-brand-kit` | `.agents/skills/sugon-brand-kit/*`、`.claude/skills/sugon-brand-kit/*`（SKILL.md / DESIGN.md / tokens.css）+ `src/styles/sugon-tokens.css` |
+| `sugon-brand-kit` | `.agents/skills/sugon-brand-kit/*`、`.claude/skills/sugon-brand-kit/*`（SKILL.md / DESIGN.md / tokens.css / components.css）+ `src/styles/sugon-tokens.css` 与 `src/styles/sugon-components.css`（按钮 / 卡片 / 表单的 `sugon-*` 类，0.2.1 起；`sugon-tokens` 不含它） |
 | `sugon-tokens` | 只要令牌：`src/styles/sugon-tokens.css` |
 | `sugon-brand-rules`（可选） | 常驻规则：`.cursor/rules/sugon-brand.mdc`、`.github/instructions/sugon-brand.instructions.md`（只对 UI 文件生效）；**不会**改写你的 `AGENTS.md` / `CLAUDE.md`，需要时手动追加 [`registry/rules/AGENTS.snippet.md`](./registry/rules/AGENTS.snippet.md) |
 
@@ -185,7 +185,8 @@ VITE_LLM_MODEL=your-model-name
 skills/sugon-brand-kit/          # 唯一事实来源（Agent Skills 规范：目录名 = name）
 ├── SKILL.md                     # AI 入口：frontmatter（name / description）+ 何时 / 如何使用
 ├── DESIGN.md                    # 规范：颜色、字体、圆角、间距、按钮三态（数值抄自 tokens.css）
-└── tokens.css                   # CSS 变量（主色 #C8161D）
+├── tokens.css                   # CSS 变量（主色 #C8161D）
+└── components.css               # 纯 CSS 片段：sugon-btn / sugon-card / sugon-input 等
 registry.json                    # shadcn GitHub registry：sugon-tokens / sugon-brand-kit / sugon-brand-rules
 registry/rules/                  # 可选常驻规则（.mdc / .instructions.md / AGENTS.snippet.md）
 design-skills/brand-kit/         # 0.1.x 旧路径的转发 stub，0.3.0 删除

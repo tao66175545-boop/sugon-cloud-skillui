@@ -11,7 +11,7 @@ description: >-
 license: MIT
 metadata:
   author: 涛 李
-  version: "0.2.0"
+  version: "0.2.1"
   homepage: https://github.com/tao66175545-boop/sugon-cloud-skillui
 ---
 

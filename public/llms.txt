@@ -17,6 +17,7 @@ Code and docs are MIT. The 曙光 / 曙光云 / Sugon names, logos and brand ide
 - [SKILL.md](https://tao66175545-boop.github.io/sugon-cloud-skillui/skills/sugon-brand-kit/SKILL.md): when and how an agent should apply the brand (frontmatter name `sugon-brand-kit`)
 - [DESIGN.md](https://tao66175545-boop.github.io/sugon-cloud-skillui/skills/sugon-brand-kit/DESIGN.md): design spec — colors, typography, radius, spacing, button recipe, do / don't
 - [tokens.css](https://tao66175545-boop.github.io/sugon-cloud-skillui/skills/sugon-brand-kit/tokens.css): CSS custom properties, the single source of truth
+- [components.css](https://tao66175545-boop.github.io/sugon-cloud-skillui/skills/sugon-brand-kit/components.css): plain CSS snippets (sugon-btn, sugon-card, sugon-input, …); load after tokens.css. Not a component library. Not included in sugon-tokens
 
 ## Integration
 

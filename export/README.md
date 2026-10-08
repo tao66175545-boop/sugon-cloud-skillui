@@ -60,7 +60,7 @@
 |--------|----------|
 | `.` / `./css` | `export/sugon-skillui.css` |
 | `./tokens` / `./tokens.css` | `skills/sugon-brand-kit/tokens.css` |
-| `./skills/sugon-brand-kit/*` | 技能三件套 |
+| `./skills/sugon-brand-kit/*` | 技能文件（含 components.css） |
 | `./manifest` | `export/manifest.json` |
 | `./design-skills/brand-kit/*` | 0.1.x 旧路径（转发 stub，0.3.0 删除） |
 
@@ -76,6 +76,7 @@
 | [`skills/sugon-brand-kit/SKILL.md`](../skills/sugon-brand-kit/SKILL.md) | Agent Skill 入口（何时 / 如何用供给层） |
 | [`skills/sugon-brand-kit/DESIGN.md`](../skills/sugon-brand-kit/DESIGN.md) | 设计规范（色、字、圆角、间距、按钮状态） |
 | [`skills/sugon-brand-kit/tokens.css`](../skills/sugon-brand-kit/tokens.css) | CSS 变量唯一事实来源 |
+| [`skills/sugon-brand-kit/components.css`](../skills/sugon-brand-kit/components.css) | 纯 CSS 片段（`sugon-*` 按钮 / 卡片 / 表单）；先引入 tokens |
 | [`registry.json`](../registry.json) | shadcn registry 条目定义 |
 | [`registry/rules/`](../registry/rules/) | 可选常驻规则与 AGENTS.md 片段 |
 | [`examples/minimal-reference/`](../examples/minimal-reference/) | 最小参考（静态 HTML + TSX） |

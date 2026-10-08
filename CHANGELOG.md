@@ -4,6 +4,19 @@
 一个版本号贯穿所有渠道：git tag `vX.Y.Z` = `package.json` `version` = `SKILL.md` `metadata.version` = `export/manifest.json` `version`。
 1.0 之前：删除 / 重命名 CSS 变量、改技能目录或 `name` 视为破坏性变更，升 minor。
 
+## [0.2.1] - 2026-10-08
+
+### 新增
+
+- `skills/sugon-brand-kit/components.css`：纯 CSS 片段，不是组件库。类名以 `sugon-` 开头，只用 `tokens.css` 已有变量。
+  - 按钮：`sugon-btn` + `sugon-btn-primary` / `sugon-btn-secondary`（状态与 0.2.0 的配方一致）/ `sugon-btn-ghost`，含 hover、active、focus-visible、disabled。
+  - 卡片：`sugon-card`、`sugon-card-title`、`sugon-card-body`。
+  - 表单：`sugon-field`、`sugon-label`、`sugon-input`、`sugon-select`、`sugon-check`、`sugon-help`、`sugon-error`（错误态用 `aria-invalid="true"`）。
+- `sugon-brand-kit` 安装时把该文件写入 `.agents/skills/`、`.claude/skills/` 和 `src/styles/sugon-components.css`。`sugon-tokens` 仍然只有令牌。
+- `npm run check:tokens` 同时检查 `components.css` 没有硬编码色值、引用的变量都在 `tokens.css` 里。
+
+尚未打 tag。文档里锁版本的命令仍指向已发布的 `v0.2.0`；合入 main 并打 `v0.2.1` 之后，把 `#v0.2.0` / `@v0.2.0` 换成 `v0.2.1` 才能装到本文件。
+
 ## [0.2.0] - 2026-10-08
 
 可一键安装：技能符合 Agent Skills 规范，仓库同时是 shadcn GitHub registry。
@@ -45,4 +58,5 @@
 - 公开构建不内置任何 API Key 或模型网关（用户自带 OpenAI 兼容端点与 Key，仅存浏览器）；`npm run check:dist` 拦截密钥与内部地址。
 - GitHub Pages 子路径构建与自动部署；MIT 许可证。
 
+[0.2.1]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.2.1
 [0.2.0]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.2.0

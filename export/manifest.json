@@ -1,7 +1,7 @@
 {
   "name": "sugon-skillui",
   "displayName": "曙光云 SkillUI 库",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "layer": "style-supply",
   "brand": {
     "primary": "#C8161D",
@@ -14,7 +14,14 @@
     "name": "sugon-brand-kit",
     "path": "skills/sugon-brand-kit/",
     "spec": "https://agentskills.io/specification",
-    "legacyPath": "design-skills/brand-kit/ (forwarding stubs until 0.3.0)"
+    "legacyPath": "design-skills/brand-kit/ (forwarding stubs until 0.3.0)",
+    "files": [
+      "SKILL.md",
+      "DESIGN.md",
+      "tokens.css",
+      "components.css"
+    ],
+    "snippets": "skills/sugon-brand-kit/components.css (plain CSS, class prefix sugon-; not part of sugon-tokens)"
   },
   "install": {
     "skills": {
