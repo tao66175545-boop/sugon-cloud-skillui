@@ -21,6 +21,47 @@
       "docs": "已写入 src/styles/sugon-tokens.css。若上面的日志有 Updating 你的入口 CSS（components.json 里 tailwind.css 指向的文件，Vite 为 src/index.css），@import \"./styles/sugon-tokens.css\"; 已经写进去，不必再手改。若没有这行 Updating，说明项目没有 components.json（例如刚 npm create vite），请在 src/index.css 最顶部手写这一行：@import \"./styles/sugon-tokens.css\";。路径相对于入口 CSS 所在目录；入口不在 src/（例如 app/globals.css）时改成正确的相对路径。用 Tailwind v4 时，这行放在 @import \"tailwindcss\" 之前。"
     },
     {
+      "name": "sugon-theme",
+      "type": "registry:theme",
+      "title": "曙光云主题（cssVars）",
+      "description": "Sugon Cloud brand theme as shadcn cssVars.light (brand red #C8161D + neutrals + radius). For projects that already use shadcn; does not write skill files. Pair with sugon-brand-kit if you also want the Agent Skill and plain-CSS snippets.",
+      "cssVars": {
+        "light": {
+          "primary": "#C8161D",
+          "primary-hover": "#A81218",
+          "primary-active": "#8F0F14",
+          "primary-foreground": "#ffffff",
+          "primary-muted": "#FCE8E9",
+          "accent": "#C8161D",
+          "accent-hover": "#A81218",
+          "accent-muted": "#FCE8E9",
+          "bg": "#ffffff",
+          "bg-subtle": "#fafafa",
+          "bg-muted": "#f4f4f5",
+          "surface": "#ffffff",
+          "border": "#e5e5e5",
+          "border-strong": "#d4d4d4",
+          "text": "#171717",
+          "text-secondary": "#525252",
+          "text-muted": "#a3a3a3",
+          "text-inverse": "#ffffff",
+          "success": "#059669",
+          "warning": "#d97706",
+          "danger": "#C8161D",
+          "danger-muted": "#FEF2F2",
+          "danger-border": "#FECACA",
+          "danger-foreground": "#B91C1C",
+          "radius-sm": "0.375rem",
+          "radius-md": "0.5rem",
+          "radius-lg": "0.75rem",
+          "radius-xl": "1rem",
+          "radius-2xl": "1.5rem",
+          "radius-full": "9999px"
+        }
+      },
+      "docs": "已把曙光品牌色与圆角写入当前项目的 CSS 变量（shadcn theme）。本条目不拷贝 tokens.css / components.css / SKILL.md。若还需要 AI 技能与 sugon-* 类，请再装 sugon-brand-kit。"
+    },
+    {
       "name": "sugon-brand-kit",
       "type": "registry:item",
       "title": "曙光云 sugon-brand-kit（AI 设计技能 + 令牌）",
