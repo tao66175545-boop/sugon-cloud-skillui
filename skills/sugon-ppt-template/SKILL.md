@@ -8,14 +8,15 @@ description: >-
 license: MIT
 metadata:
   author: 涛 李
-  version: "0.4.1"
+  version: "0.4.2"
   homepage: https://github.com/tao66175545-boop/sugon-cloud-skillui
 ---
 
 # 曙光云政企 PPT 模板 sugon-ppt-template
 
 > **通用 16:9 草稿母版**（无官方 `.potx` 时使用）。颜色与 logo 来自 `sugon-brand-core`。  
-> 交付物为可在 PowerPoint / WPS 继续编辑的 `.pptx`。**本环境未做 UOS / 麒麟 WPS 实机验收。**
+> 交付物为可在 PowerPoint / WPS 继续编辑的 `.pptx`。**本环境未做 UOS / 麒麟 WPS 实机验收。**  
+> **v0.4.2**：加大留白与层级，短竖标+短红线强调，浅底卡片分区；原则见仓库外调研笔记（不复制第三方 skill 代码）。
 
 ## 本目录
 
@@ -28,7 +29,7 @@ metadata:
 | `scripts/build-deck.mjs` | 大纲 JSON → 样例 / 定制 deck |
 | `scripts/check-deck.mjs` | 色值白名单、logo、16:9、无 Wingdings、无占位符残留 |
 | `assets/logo.png` | 横式 logo（白底渲染，供 pptxgenjs） |
-| `examples/sample-deck.pptx` | 生成的样例（封面+目录+2 正文+结束） |
+| `examples/sample-deck.pptx` | 生成的样例（封面+目录+章节+正文+双栏+数据+结束） |
 
 ## 何时使用
 
@@ -55,7 +56,7 @@ node scripts/check-deck.mjs examples/sample-deck.pptx
 
 ## 版式一览
 
-cover · agenda · section · content · two-col · chart · closing（详见 `references/layouts.md`）
+cover · agenda · section · content · two-col · stats · chart · closing（详见 `references/layouts.md`）
 
 ## 来源与商标
 

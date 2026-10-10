@@ -4,6 +4,18 @@
 一个版本号贯穿所有渠道：git tag `vX.Y.Z` = `package.json` `version` = `SKILL.md` `metadata.version` = `export/manifest.json` `version`。
 1.0 之前：删除 / 重命名 CSS 变量、改技能目录或 `name` 视为破坏性变更，升 minor。
 
+## [0.4.2] - 2026-10-10
+
+### 变更
+
+- **`sugon-ppt-template` 版式重做**：边距 ≥0.65"；结论句标题；短竖标 + 标题下短红线（取消全高左边条 / 通栏底条）；浅底圆角卡片分区；封面 / 目录（红编号）/ 章节 / 单栏 / 双栏 / 数据要点 / 结束全套节奏。
+- 样例 `sample-deck.pptx` 扩至 **7 页**，展示全部主版式；`check-deck` 仍通过（识别红、logo、16:9、无 Wingdings / 雅黑）。
+- 版式原则来自公开调研摘要（咨询稿结论句、Slidev 角色布局、政企克制风等）；**未复制** Anthropic 或其他专有 skill 源码。
+
+### 说明
+
+- 仍为无官方 `.potx` 时的通用草稿；WPS / UOS 实机验收未做。
+
 ## [0.4.1] - 2026-10-10
 
 ### 新增
@@ -134,6 +146,7 @@
 - 公开构建不内置任何 API Key 或模型网关（用户自带 OpenAI 兼容端点与 Key，仅存浏览器）；`npm run check:dist` 拦截密钥与内部地址。
 - GitHub Pages 子路径构建与自动部署；MIT 许可证。
 
+[0.4.2]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.4.2
 [0.4.1]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.4.1
 [0.4.0]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.4.0
 [0.3.1]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.3.1
