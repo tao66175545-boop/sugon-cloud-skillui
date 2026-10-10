@@ -1,20 +1,27 @@
 #!/usr/bin/env node
 /**
- * Drift guard: skills/sugon-brand-kit/DESIGN.md must quote the same values as tokens.css
- * (tokens.css is the single source of truth).
- *
- *   node scripts/check-tokens.mjs [skillDir]
- *
- * Checks
- *  - every table row  | `--name` | `value` |  in DESIGN.md
- *  - every inline     `--name` value   (e.g. `--text-xs` 0.75rem) in DESIGN.md
- *  - the font family order quoted in DESIGN.md matches --font-sans
- *  - every --color-* defined in tokens.css appears in DESIGN.md
+ * Drift guard for the kit.
+ * 1) tokens/sugon.tokens.json → generated files must match (`build-kit --check`)
+ * 2) DESIGN.md prose tables / components.css still agree with tokens.css
  */
 import fs from 'node:fs'
 import path from 'node:path'
+import { spawnSync } from 'node:child_process'
+import { fileURLToPath } from 'node:url'
 
-const dir = path.resolve(process.argv[2] || 'skills/sugon-brand-kit')
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+const kit = spawnSync(process.execPath, [path.join(root, 'scripts/build-kit.mjs'), '--check'], {
+  cwd: root,
+  encoding: 'utf8',
+})
+if (kit.status !== 0) {
+  process.stdout.write(kit.stdout || '')
+  process.stderr.write(kit.stderr || '')
+  process.exit(kit.status || 1)
+}
+process.stdout.write(kit.stdout || '')
+
+const dir = path.resolve(process.argv[2] || path.join(root, 'skills/sugon-brand-kit'))
 const css = fs.readFileSync(path.join(dir, 'tokens.css'), 'utf8')
 const md = fs.readFileSync(path.join(dir, 'DESIGN.md'), 'utf8')
 
@@ -34,12 +41,18 @@ const compare = (name, quoted, where) => {
   }
 }
 
-for (const m of md.matchAll(/^\|\s*`(--[a-z0-9-]+)`\s*\|\s*`([^`]+)`\s*\|/gim)) compare(m[1], m[2], 'table')
-for (const m of md.matchAll(/`(--[a-z0-9-]+)`\s+(-?[0-9.]+(?:rem|px|em)?)(?=\s|$|[,，、·）)])/gim)) compare(m[1], m[2], 'inline')
+// Only check prose (after frontmatter) for table/inline quotes — frontmatter is generated
+let prose = md
+if (prose.startsWith('---\n')) {
+  const end = prose.indexOf('\n---\n', 4)
+  if (end !== -1) prose = prose.slice(end + 5)
+}
 
-// font order: families quoted in the 家族 line vs --font-sans
+for (const m of prose.matchAll(/^\|\s*`(--[a-z0-9-]+)`\s*\|\s*`([^`]+)`\s*\|/gim)) compare(m[1], m[2], 'table')
+for (const m of prose.matchAll(/`(--[a-z0-9-]+)`\s+(-?[0-9.]+(?:rem|px|em)?)(?=\s|$|[,，、·）)])/gim)) compare(m[1], m[2], 'inline')
+
 const fam = (s) => [...s.matchAll(/"([^"]+)"/g)].map((m) => m[1])
-const fontLine = md.split('\n').find((l) => l.includes('`--font-sans`')) || ''
+const fontLine = prose.split('\n').find((l) => l.includes('`--font-sans`')) || ''
 const mdFonts = fam(fontLine)
 const cssFonts = fam(vars.get('--font-sans') || '')
 checked++
@@ -48,7 +61,7 @@ if (!mdFonts.length || mdFonts.some((f, i) => cssFonts[i] !== f)) {
 }
 
 for (const name of vars.keys()) {
-  if (name.startsWith('--color-') && !md.includes(`\`${name}\``)) problems.push(`missing: ${name} not documented in DESIGN.md`)
+  if (name.startsWith('--color-') && !prose.includes(`\`${name}\``)) problems.push(`missing: ${name} not documented in DESIGN.md`)
 }
 
 const snippets = path.join(dir, 'components.css')
@@ -71,4 +84,4 @@ if (problems.length) {
   for (const p of problems) console.error('  ' + p)
   process.exit(1)
 }
-console.log(`check-tokens: OK — ${checked} values match tokens.css; components.css uses only those variables (${path.relative(process.cwd(), dir)})`)
+console.log(`check-tokens: OK — ${checked} values match tokens.css; components.css uses only those variables (${path.relative(root, dir)})`)

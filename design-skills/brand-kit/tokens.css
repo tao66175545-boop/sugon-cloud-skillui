@@ -1,5 +1,0 @@
-/**
- * 兼容转发（0.2.0 起）：品牌令牌已迁移到 skills/sugon-brand-kit/tokens.css。
- * 本文件仅保留一个小版本，0.3.0 删除；请改为引用新路径。
- */
-@import "../../skills/sugon-brand-kit/tokens.css";
