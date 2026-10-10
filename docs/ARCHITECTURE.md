@@ -32,13 +32,15 @@
     └─ 对照 examples/minimal-reference/TokenUsageExample.tsx
 ```
 
-本仓库接线：`src/index.css` → `@import "../skills/sugon-brand-kit/tokens.css"`；库壳预览以 `?raw` 打包同一份 `tokens.css` / `DESIGN.md`。构建时 `skills/`、`design-skills/`（0.1.x 转发 stub，0.3.0 删除）、`export/` 复制进 `dist/`，`public/llms.txt` 随 Pages 发布（遵循 `BASE_PATH` 子路径）。
+令牌真相源：`tokens/sugon.tokens.json`，经 `npm run build:kit` 生成 `skills/sugon-brand-kit/tokens.css`、DESIGN.md frontmatter、registry theme 与 Playground JSON。
+
+本仓库接线：`src/index.css` → `@import "../skills/sugon-brand-kit/tokens.css"`；库壳预览以 `?raw` 打包同一份 `tokens.css` / `DESIGN.md`。构建时 `skills/`、`export/` 复制进 `dist/`，`public/llms.txt` 随 Pages 发布（遵循 `BASE_PATH` 子路径）。
 
 ## 持久化（仅演示站，浏览器本地）
 
 - 键名：`sugon-skillui-skills`
 - 介质：浏览器 `localStorage`（跨会话；非仅 session；不同步到任何服务器）
-- 空值时种子：`skills/sugon-brand-kit/`（id 仍为 `brand-kit`；0.1.x 旧记录 `design-skills/brand-kit/` 加载时自动迁移）
+- 空值时种子：`skills/sugon-brand-kit/`（id 仍为 `brand-kit`；旧 localStorage 记录 `design-skills/brand-kit/` 加载时仍自动迁移）
 - LLM 配置：`sugon-skillui-llm-settings`（仅本机；无 Key 不发起模型请求；仓库与演示站不内置任何 Key / 网关）
 
 ## 非目标

@@ -13,11 +13,11 @@
 | 渠道 | 命令 | 适合 |
 |------|------|------|
 | Agent Skills（[`skills` CLI](https://github.com/vercel-labs/skills)） | `npx skills add tao66175545-boop/sugon-cloud-skillui` | 让 Claude Code / Codex / Cursor / Copilot / Gemini CLI 等在写 UI 时按品牌生成 |
-| shadcn GitHub registry（根目录 [`registry.json`](../registry.json)） | `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.2.2` | 一次把技能 + 令牌写进项目；`sugon-tokens` 只要令牌；`sugon-brand-rules` 可选常驻规则 |
-| jsDelivr CDN | `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.2.2/skills/sugon-brand-kit/tokens.css` | 浏览器 `<link>` / `@import url()`，按 tag 版本化 |
+| shadcn GitHub registry（根目录 [`registry.json`](../registry.json)） | `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.3.0` | 一次把技能 + 令牌写进项目；`sugon-tokens` 只要令牌；`sugon-brand-rules` 可选常驻规则 |
+| jsDelivr CDN | `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.0/skills/sugon-brand-kit/tokens.css` | 浏览器 `<link>` / `@import url()`，按 tag 版本化 |
 
-锁定版本：shadcn 用 `#v0.2.2`（或完整 commit SHA），jsDelivr 用 `@v0.2.2`，skills 用
-`npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.2.2/skills/sugon-brand-kit`。
+锁定版本：shadcn 用 `#v0.3.0`（或完整 commit SHA），jsDelivr 用 `@v0.3.0`，skills 用
+`npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.3.0/skills/sugon-brand-kit`。
 装之前可用 `npx shadcn@latest view tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit` 预览要写入的文件（`add … --dry-run` 只在已有 `components.json` 的项目里可用）。
 
 ---
@@ -62,9 +62,8 @@
 | `./tokens` / `./tokens.css` | `skills/sugon-brand-kit/tokens.css` |
 | `./skills/sugon-brand-kit/*` | 技能文件（含 components.css） |
 | `./manifest` | `export/manifest.json` |
-| `./design-skills/brand-kit/*` | 0.1.x 旧路径（转发 stub，0.3.0 删除） |
 
-`style` 字段同指向 `./export/sugon-skillui.css`。`files` 包含 `skills`、`export`、`design-skills`、`examples`、`public/logo.svg` 及 LICENSE / TRADEMARKS / CHANGELOG。
+`style` 字段同指向 `./export/sugon-skillui.css`。`files` 包含 `skills`、`tokens`、`export`、`examples`、`public/logo.svg` 及 LICENSE / TRADEMARKS / CHANGELOG。
 
 ---
 
@@ -98,7 +97,7 @@
 下载 raw 示例：
 
 ```bash
-curl -L "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/v0.2.2/skills/sugon-brand-kit/tokens.css" \
+curl -L "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/v0.3.0/skills/sugon-brand-kit/tokens.css" \
   -o tokens.css
 ```
 

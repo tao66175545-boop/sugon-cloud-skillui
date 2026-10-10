@@ -1,7 +1,7 @@
 {
   "name": "sugon-skillui",
   "private": true,
-  "version": "0.2.2",
+  "version": "0.3.0",
   "type": "module",
   "description": "曙光云 SkillUI 库 — style-supply tokens & design skills（非质量层）",
   "style": "./export/sugon-skillui.css",
@@ -17,16 +17,14 @@
     "./skills/sugon-brand-kit/tokens.css": "./skills/sugon-brand-kit/tokens.css",
     "./skills/sugon-brand-kit/SKILL.md": "./skills/sugon-brand-kit/SKILL.md",
     "./skills/sugon-brand-kit/DESIGN.md": "./skills/sugon-brand-kit/DESIGN.md",
-    "./design-skills/brand-kit/tokens.css": "./design-skills/brand-kit/tokens.css",
-    "./design-skills/brand-kit/SKILL.md": "./design-skills/brand-kit/SKILL.md",
-    "./design-skills/brand-kit/DESIGN.md": "./design-skills/brand-kit/DESIGN.md",
     "./manifest": "./export/manifest.json",
-    "./export/manifest.json": "./export/manifest.json"
+    "./export/manifest.json": "./export/manifest.json",
+    "./tokens.json": "./tokens/sugon.tokens.json"
   },
   "files": [
+    "tokens",
     "skills",
     "export",
-    "design-skills",
     "examples",
     "public/logo.svg",
     "README.md",
@@ -41,7 +39,9 @@
     "check:tokens": "node scripts/check-tokens.mjs",
     "check:registry": "npx -y shadcn@4.21.4 registry validate ./registry.json",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:kit": "node scripts/build-kit.mjs",
+    "check:fresh-vite": "node scripts/check-fresh-vite.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

@@ -33,6 +33,9 @@ jobs:
       - name: shadcn registry.json validation
         run: npm run check:registry
 
+      - name: Fresh Vite install acceptance
+        run: npx playwright install chromium && npm run check:fresh-vite
+
       # Public build: no API key / internal gateway env vars. The demo asks each visitor for
       # their own OpenAI-compatible endpoint + key (stored only in their browser).
       - name: Build (project page sub-path, no secrets)

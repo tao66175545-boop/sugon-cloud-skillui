@@ -4,6 +4,23 @@
 一个版本号贯穿所有渠道：git tag `vX.Y.Z` = `package.json` `version` = `SKILL.md` `metadata.version` = `export/manifest.json` `version`。
 1.0 之前：删除 / 重命名 CSS 变量、改技能目录或 `name` 视为破坏性变更，升 minor。
 
+## [0.3.0] - 2026-10-10
+
+### 破坏性变更
+
+- **演示站默认首页改为 Playground**（色板 + `sugon-*` 实时预览 + 底部复制安装命令），**不需要 API Key**。原 Agent 对话归库降为次级页签「实验：AI 起草 Skill」。
+- 删除 `design-skills/brand-kit/` 转发 stub（0.2.x 已迁移到 `skills/sugon-brand-kit/`）。浏览器 localStorage 里的旧路径记录仍会自动迁移。
+
+### 新增
+
+- **令牌单源** `tokens/sugon.tokens.json` + `npm run build:kit`：生成 `skills/sugon-brand-kit/tokens.css`、Google DESIGN.md alpha frontmatter、`registry/generated/theme.cssVars.json`、`src/playground/tokens.generated.json`。`npm run check:tokens` 含生成物漂移检查。
+- shadcn 条目 **`sugon-theme`**（`registry:theme` + `cssVars.light`），给已有 shadcn 的项目注入品牌色与圆角。
+- **`npm run check:fresh-vite`**：自动走「空 Vite → 装 kit → 文档两行 `@import` → 断言主按钮 `rgb(200, 22, 29)`」。
+
+### 文档
+
+- 安装命令与 CDN 锁到 `v0.3.0`；README / `llms.txt` / `export/` 说明 Playground 为默认首页。
+
 ## [0.2.2] - 2026-10-08
 
 ### 新增
@@ -70,6 +87,7 @@
 - 公开构建不内置任何 API Key 或模型网关（用户自带 OpenAI 兼容端点与 Key，仅存浏览器）；`npm run check:dist` 拦截密钥与内部地址。
 - GitHub Pages 子路径构建与自动部署；MIT 许可证。
 
+[0.3.0]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.3.0
 [0.2.2]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.2.2
 [0.2.1]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.2.1
 [0.2.0]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.2.0
