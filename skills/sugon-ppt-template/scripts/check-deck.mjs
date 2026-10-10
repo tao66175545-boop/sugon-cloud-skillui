@@ -30,7 +30,7 @@ const ALLOWED = new Set(
   ].map((c) => c.toUpperCase()),
 )
 
-const PLACEHOLDER_RE = /\[?\s*(标题|副标题|点击添加|Click to (add|edit)|Placeholder|TODO|TBD|xxx)\s*\]?/i
+const PLACEHOLDER_RE = /(?:点击添加(?:标题|文本|内容)?|\[\s*(?:标题|副标题)\s*\]|Click to (?:add|edit)|Placeholder|\bTODO\b|\bTBD\b|\bxxx\b)/i
 const WINGDINGS_RE = /wingdings|symbol|webdings/i
 const BAD_FONT_EXPORT = /微软雅黑|Microsoft YaHei/i
 

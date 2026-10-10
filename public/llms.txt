@@ -4,15 +4,15 @@
 
 Demo home is the brand Playground (no API key). Agent chat is a secondary experimental tab.
 
-Install (no account or clone needed; `v0.4.1` is the pinned release, `main` is latest).
+Install (no account or clone needed; `v0.4.3` is the pinned release, `main` is latest).
 If the project already has components.json whose tailwind.css points at the global CSS, shadcn add prepends the @import lines. A fresh Vite app has no components.json: add `@import "./styles/sugon-tokens.css";` and `@import "./styles/sugon-components.css";` at the top of src/index.css yourself.
 
 
 - Agent Skills (Claude Code, Codex, Cursor, Copilot, Gemini CLI, …): `npx skills add tao66175545-boop/sugon-cloud-skillui`
-- Skill + tokens into a project (shadcn GitHub registry): `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.4.1`
-- Tokens only: `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#v0.4.1`
-- Optional always-on rules (Cursor .mdc + Copilot instructions; never edits AGENTS.md): `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-rules#v0.4.1`
-- CDN: `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.4.1/skills/sugon-brand-kit/tokens.css`
+- Skill + tokens into a project (shadcn GitHub registry): `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.4.3`
+- Tokens only: `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#v0.4.3`
+- Optional always-on rules (Cursor .mdc + Copilot instructions; never edits AGENTS.md): `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-rules#v0.4.3`
+- CDN: `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.4.3/skills/sugon-brand-kit/tokens.css`
 
 Code and docs are MIT. The 曙光 / 曙光云 / Sugon names, logos and brand identity are not covered by the MIT license (see TRADEMARKS.md).
 
@@ -36,7 +36,7 @@ Code and docs are MIT. The 曙光 / 曙光云 / Sugon names, logos and brand ide
 - [Live demo](https://tao66175545-boop.github.io/sugon-cloud-skillui/): single-page library shell with agent chat (bring your own OpenAI-compatible key)
 - [CHANGELOG](https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/CHANGELOG.md): release notes
 
-- shadcn/ui projects, theme only (standard shadcn tokens; primary/ring brand red, accent neutral gray; needs shadcn init and a non-empty entry CSS): `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-theme#v0.4.1`
+- shadcn/ui projects, theme only (standard shadcn tokens; primary/ring brand red, accent neutral gray; needs shadcn init and a non-empty entry CSS): `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-theme#v0.4.3`
 - Brand identity (logo + brand red #AF1F24): `npx skills add tao66175545-boop/sugon-cloud-skillui --skill sugon-brand-core`
 - Logo placement/audit: `npx skills add tao66175545-boop/sugon-cloud-skillui --skill sugon-logo-usage`
 - Gov/enterprise 16:9 PPT: `npx skills add tao66175545-boop/sugon-cloud-skillui --skill sugon-ppt-template`

@@ -16,7 +16,7 @@
 
 ## 30 秒安装
 
-技能名 **`sugon-brand-kit`**（目录 [`skills/sugon-brand-kit/`](./skills/sugon-brand-kit/)）。以下命令都**不需要 npm 账号、不需要 clone**；`v0.4.2` 是固定版本，换成 `main` 即为尝鲜版。
+技能名 **`sugon-brand-kit`**（目录 [`skills/sugon-brand-kit/`](./skills/sugon-brand-kit/)）。以下命令都**不需要 npm 账号、不需要 clone**；`v0.4.3` 是固定版本，换成 `main` 即为尝鲜版。
 
 **1. 装进 AI 编程工具（Agent Skills）**
 
@@ -27,7 +27,7 @@ npx skills add tao66175545-boop/sugon-cloud-skillui
 # npx skills add tao66175545-boop/sugon-cloud-skillui --skill sugon-logo-usage
 # npx skills add tao66175545-boop/sugon-cloud-skillui --skill sugon-ppt-template
 # 锁定版本：
-npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.4.2/skills/sugon-brand-kit
+npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.4.3/skills/sugon-brand-kit
 ```
 
 由 [`skills` CLI](https://github.com/vercel-labs/skills) 写入 `.agents/skills/sugon-brand-kit/`，并按你选择的工具链接到 `.claude/skills/` 等目录（`-a claude-code` 指定工具，`-g` 装到全局）。
@@ -35,7 +35,7 @@ npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.4
 **2. 技能 + 令牌一起写进项目（shadcn registry）**
 
 ```bash
-npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.4.2
+npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.4.3
 ```
 
 | 条目 | 写入的文件 |
@@ -59,11 +59,11 @@ npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.4.
 **3. 只要 CSS 变量（CDN）**
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.4.2/skills/sugon-brand-kit/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.4.3/skills/sugon-brand-kit/tokens.css">
 ```
 
 ```css
-@import url("https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.4.2/skills/sugon-brand-kit/tokens.css");
+@import url("https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.4.3/skills/sugon-brand-kit/tokens.css");
 .cta { background: var(--color-primary); color: var(--color-primary-foreground); border-radius: var(--btn-radius); }
 ```
 
