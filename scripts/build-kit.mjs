@@ -200,20 +200,43 @@ function ensureProse() {
   return body
 }
 
+function resolveRef(raw, value, where) {
+  const m = /^\{([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)\}$/.exec(String(value))
+  if (!m) return String(value)
+  const entry = raw[m[1]]?.[m[2]]
+  if (!entry || entry.$value == null) throw new Error(`build-kit: unresolved reference ${value} in ${where}`)
+  return String(entry.$value)
+}
+
+/**
+ * shadcn registry:theme cssVars, using shadcn's standard token names
+ * (background, foreground, card, primary, accent, ring, radius …).
+ * Our own --color-* tokens are not emitted here.
+ */
 function renderCssVars({ raw }) {
-  /** @type {Record<string,string>} */
+  const map = raw.shadcn
+  if (!map || !map.light) throw new Error('build-kit: tokens/sugon.tokens.json is missing shadcn.light')
   const light = {}
-  for (const [key, entry] of Object.entries(raw.color || {})) {
-    if (entry.$type === 'color') light[key] = entry.$value
+  for (const [k, v] of Object.entries(map.light)) light[k] = resolveRef(raw, v, `shadcn.light.${k}`)
+  const theme = {}
+  for (const [k, v] of Object.entries(map.theme || {})) theme[k] = resolveRef(raw, v, `shadcn.theme.${k}`)
+  // Guards: accent is the hover surface and must not be the brand red; no self-referencing vars.
+  if (light.accent && light.primary && light.accent.toLowerCase() === light.primary.toLowerCase()) {
+    throw new Error('build-kit: shadcn accent must be a neutral hover surface, not the primary color')
   }
-  // also map a few radius/space that shadcn themes often use
-  for (const [key, entry] of Object.entries(raw.radius || {})) {
-    light[`radius-${key}`] = entry.$value
+  for (const [k, v] of Object.entries({ ...theme, ...light })) {
+    if (v.replace(/\s+/g, '') === `var(--${k})`) throw new Error(`build-kit: --${k} references itself`)
   }
-  return {
-    light,
-    // dark intentionally omitted in 0.3.0 P0
-  }
+  return { theme, light }
+}
+
+function syncRegistryTheme(cssVars) {
+  const regPath = path.join(root, 'registry.json')
+  const reg = JSON.parse(fs.readFileSync(regPath, 'utf8'))
+  const item = reg.items.find((i) => i.name === 'sugon-theme')
+  if (!item) throw new Error('build-kit: registry.json has no sugon-theme item')
+  item.cssVars = cssVars
+  return { regPath, content: JSON.stringify(reg, null, 2) + '\n' }
 }
 
 function writeOrCheck(filePath, content) {
@@ -249,8 +272,11 @@ function main() {
   const prose = ensureProse()
   const designMd = frontmatter + prose
   const cssVars = renderCssVars({ raw })
+  const version = meta.version
+  if (!version) throw new Error('build-kit: meta.version is required')
+  const tag = `v${version}`
   const playground = {
-    version: meta.version || '0.3.0',
+    version,
     primary: meta.primary || '#C8161D',
     name: meta.name || 'sugon-brand-kit',
     colors: Object.fromEntries(
@@ -263,12 +289,12 @@ function main() {
     space: Object.fromEntries(Object.entries(raw.space || {}).map(([k, e]) => [k, e.$value])),
     install: {
       skills: 'npx skills add tao66175545-boop/sugon-cloud-skillui',
-      skillsPinned: 'npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.3.0/skills/sugon-brand-kit',
-      shadcnKit: 'npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.3.0',
-      shadcnTokens: 'npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#v0.3.0',
-      shadcnTheme: 'npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-theme#v0.3.0',
-      cdnTokens: 'https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.0/skills/sugon-brand-kit/tokens.css',
-      cdnComponents: 'https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.0/skills/sugon-brand-kit/components.css',
+      skillsPinned: `npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/${tag}/skills/sugon-brand-kit`,
+      shadcnKit: `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#${tag}`,
+      shadcnTokens: `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#${tag}`,
+      shadcnTheme: `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-theme#${tag}`,
+      cdnTokens: `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@${tag}/skills/sugon-brand-kit/tokens.css`,
+      cdnComponents: `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@${tag}/skills/sugon-brand-kit/components.css`,
     },
   }
 
@@ -276,6 +302,8 @@ function main() {
   ok = writeOrCheck(path.join(skillDir, 'tokens.css'), css) && ok
   ok = writeOrCheck(path.join(skillDir, 'DESIGN.md'), designMd) && ok
   ok = writeOrCheck(path.join(root, 'registry/generated/theme.cssVars.json'), JSON.stringify(cssVars, null, 2) + '\n') && ok
+  const reg = syncRegistryTheme(cssVars)
+  ok = writeOrCheck(reg.regPath, reg.content) && ok
   ok = writeOrCheck(path.join(root, 'src/playground/tokens.generated.json'), JSON.stringify(playground, null, 2) + '\n') && ok
   // Keep app-local mirror in sync (used if someone @imports from src/styles)
   ok = writeOrCheck(path.join(root, 'src/styles/sugon-tokens.css'), css) && ok
@@ -288,4 +316,9 @@ function main() {
   console.log(`build-kit: OK — ${flat.length} tokens compiled`)
 }
 
-main()
+try {
+  main()
+} catch (err) {
+  console.error(`build-kit: FAIL — ${err instanceof Error ? err.message.replace(/^build-kit: /, '') : err}`)
+  process.exit(1)
+}

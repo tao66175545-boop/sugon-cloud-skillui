@@ -5,7 +5,7 @@ type InstallKey = keyof typeof tokens.install
 
 const INSTALL_LABELS: Record<InstallKey, string> = {
   skills: 'Agent Skills',
-  skillsPinned: 'Skills（锁 v0.3.0）',
+  skillsPinned: `Skills（锁 v${tokens.version}）`,
   shadcnKit: 'shadcn · brand-kit',
   shadcnTokens: 'shadcn · tokens',
   shadcnTheme: 'shadcn · theme',
