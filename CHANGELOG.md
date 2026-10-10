@@ -4,6 +4,19 @@
 一个版本号贯穿所有渠道：git tag `vX.Y.Z` = `package.json` `version` = `SKILL.md` `metadata.version` = `export/manifest.json` `version`。
 1.0 之前：删除 / 重命名 CSS 变量、改技能目录或 `name` 视为破坏性变更，升 minor。
 
+## [0.4.5] - 2026-10-10
+
+### 变更
+
+- **`sugon-ppt-template` P0（高级PPT设计专家拍板）**：抽出冻结 `scripts/theme.mjs`（色 / 字号阶梯 / 边距 0.6·0.45·0.4 / gutter 0.2" / 卡 padding / 红竖条 4×22pt / Logo 位）；正文 `#333`、辅助 `#666`、卡底 `#F5F5F5`、H1 `#1A1A1A`；新增参数化 `layoutCards`；H2 默认深色，红仅用于推荐/当前/KPI/Logo/章节数字。
+- 样例 deck 从 100 页**收敛为 40 个叙事母版**（≤45）；`layouts.md` 区分母版与参数化变体；`check-deck` 增加 ≤45 页与禁 `#999`-on-card。
+- 调研/拍板记录：`docs/ppt-p0-expert-audit.md`。
+
+### 说明
+
+- 仍为无官方 `.potx` 时的通用草稿；WPS / UOS 实机验收未做。
+- 实现为原创 pptxgenjs，未复制专有 skill 代码。
+
 ## [0.4.4] - 2026-10-10
 
 ### 变更
@@ -170,6 +183,7 @@
 - 公开构建不内置任何 API Key 或模型网关（用户自带 OpenAI 兼容端点与 Key，仅存浏览器）；`npm run check:dist` 拦截密钥与内部地址。
 - GitHub Pages 子路径构建与自动部署；MIT 许可证。
 
+[0.4.5]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.4.5
 [0.4.4]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.4.4
 [0.4.3]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.4.3
 [0.4.2]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.4.2
