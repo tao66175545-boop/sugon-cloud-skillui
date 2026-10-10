@@ -1,5 +1,5 @@
 {
-  "version": "0.3.0",
+  "version": "0.3.1",
   "primary": "#C8161D",
   "name": "sugon-brand-kit",
   "colors": {
@@ -64,11 +64,11 @@
   },
   "install": {
     "skills": "npx skills add tao66175545-boop/sugon-cloud-skillui",
-    "skillsPinned": "npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.3.0/skills/sugon-brand-kit",
-    "shadcnKit": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.3.0",
-    "shadcnTokens": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#v0.3.0",
-    "shadcnTheme": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-theme#v0.3.0",
-    "cdnTokens": "https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.0/skills/sugon-brand-kit/tokens.css",
-    "cdnComponents": "https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.0/skills/sugon-brand-kit/components.css"
+    "skillsPinned": "npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.3.1/skills/sugon-brand-kit",
+    "shadcnKit": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.3.1",
+    "shadcnTokens": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#v0.3.1",
+    "shadcnTheme": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-theme#v0.3.1",
+    "cdnTokens": "https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.1/skills/sugon-brand-kit/tokens.css",
+    "cdnComponents": "https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.1/skills/sugon-brand-kit/components.css"
   }
 }

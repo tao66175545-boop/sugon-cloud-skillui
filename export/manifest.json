@@ -1,7 +1,7 @@
 {
   "name": "sugon-skillui",
   "displayName": "曙光云 SkillUI 库",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "layer": "style-supply",
   "brand": {
     "primary": "#C8161D",
@@ -26,25 +26,25 @@
   "install": {
     "skills": {
       "command": "npx skills add tao66175545-boop/sugon-cloud-skillui",
-      "pinned": "npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.3.0/skills/sugon-brand-kit",
+      "pinned": "npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.3.1/skills/sugon-brand-kit",
       "writes": ".agents/skills/sugon-brand-kit/ (+ per-agent dirs such as .claude/skills/)",
       "docs": "https://github.com/vercel-labs/skills"
     },
     "shadcn": {
       "items": {
-        "sugon-brand-kit": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.3.0",
-        "sugon-tokens": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#v0.3.0",
-        "sugon-brand-rules": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-rules#v0.3.0",
-        "sugon-theme": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-theme#v0.3.0"
+        "sugon-brand-kit": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.3.1",
+        "sugon-tokens": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-tokens#v0.3.1",
+        "sugon-brand-rules": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-rules#v0.3.1",
+        "sugon-theme": "npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-theme#v0.3.1"
       },
       "registry": "registry.json",
-      "note": "GitHub registry: owner/repo/item, optional #tag or #commit-sha. sugon-brand-rules is opt-in and never writes AGENTS.md / CLAUDE.md. When components.json exists and tailwind.css points at the global CSS, adding sugon-brand-kit or sugon-tokens prepends the @import lines into that file. Without components.json the CSS files are still written, but the entry CSS is not modified. sugon-theme injects cssVars for existing shadcn projects.",
+      "note": "GitHub registry: owner/repo/item, optional #tag or #commit-sha. sugon-brand-rules is opt-in and never writes AGENTS.md / CLAUDE.md. When components.json exists and tailwind.css points at the global CSS, adding sugon-brand-kit or sugon-tokens prepends the @import lines into that file. Without components.json the CSS files are still written, but the entry CSS is not modified. sugon-theme sets the standard shadcn tokens (background, primary, accent, ring, radius, sidebar-* …) for projects that already ran shadcn init; accent is neutral gray, primary/ring brand red. It needs tsconfig/jsconfig and a non-empty entry CSS.",
       "docs": "https://ui.shadcn.com/docs/registry/github"
     },
     "jsdelivr": {
-      "tokens": "https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.0/skills/sugon-brand-kit/tokens.css",
+      "tokens": "https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.1/skills/sugon-brand-kit/tokens.css",
       "latest": "https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@main/skills/sugon-brand-kit/tokens.css",
-      "note": "Versioned CDN (text/css) straight from GitHub tags; use @v0.3.0 in production, @main only for trials."
+      "note": "Versioned CDN (text/css) straight from GitHub tags; use @v0.3.1 in production, @main only for trials."
     },
     "npm": {
       "status": "not published yet (planned as sugon-skillui)"
@@ -59,7 +59,7 @@
   },
   "notes": {
     "raw": "The repo is public: raw.githubusercontent.com URLs (rawBase + path) work without any token. Raw is served as text/plain, so use it for curl/download or tooling; for a browser <link>/@import use jsDelivr (install.jsdelivr) or a local copy.",
-    "pages": "GitHub Pages hosts the built demo plus skills/ and export/ under pagesBase, and llms.txt. Convenient for demos; for production pin jsDelivr @v0.3.0 or a local copy.",
+    "pages": "GitHub Pages hosts the built demo plus skills/ and export/ under pagesBase, and llms.txt. Convenient for demos; for production pin jsDelivr @v0.3.1 or a local copy.",
     "privateRaw": "DEPRECATED (kept for backward compatibility): the repo is public, no token is needed. Same as notes.raw.",
     "notExportSurface": "Agent/chat UI is the in-app management entry only — not part of the style-supply export surface.",
     "qualityLayer": "Out of scope. Do not introduce Taste / Impeccable / Hallmark via this export.",
@@ -86,7 +86,7 @@
       "raw": "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/main/skills/sugon-brand-kit/tokens.css",
       "pages": "https://tao66175545-boop.github.io/sugon-cloud-skillui/skills/sugon-brand-kit/tokens.css",
       "blob": "https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/skills/sugon-brand-kit/tokens.css",
-      "jsdelivr": "https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.0/skills/sugon-brand-kit/tokens.css"
+      "jsdelivr": "https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.1/skills/sugon-brand-kit/tokens.css"
     },
     {
       "id": "export-css",

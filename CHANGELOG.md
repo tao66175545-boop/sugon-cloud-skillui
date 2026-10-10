@@ -4,6 +4,25 @@
 一个版本号贯穿所有渠道：git tag `vX.Y.Z` = `package.json` `version` = `SKILL.md` `metadata.version` = `export/manifest.json` `version`。
 1.0 之前：删除 / 重命名 CSS 变量、改技能目录或 `name` 视为破坏性变更，升 minor。
 
+## [0.3.1] - 2026-10-10
+
+### 修复
+
+- **`sugon-theme` 改用 shadcn/ui 标准变量名**。0.3.0 写的是我们自己的 `--bg`、`--text`、`--surface` 等，shadcn 组件不认，只有 `--primary`、`--border` 等少数几个生效。现在写入 `background`、`foreground`、`card`、`popover`、`primary`、`secondary`、`muted`、`accent`、`destructive`、`border`、`input`、`ring`、`radius` 及 `sidebar-*`（各带 `-foreground`），只覆盖亮色。
+- **`accent` 不再是曙光红**。shadcn 用 `accent` 做幽灵按钮、菜单项的悬停底，0.3.0 会整块变红；现在是中性灰 `#f4f4f5`。`primary` / `ring` 仍是曙光红 `#C8161D`。
+- **去掉自引用的圆角变量**（`--radius-sm: var(--radius-sm)` 这类）。改为 `--radius: 0.75rem`，`radius-sm` … `radius-4xl` 按 shadcn 默认比例由 `--radius` 推导。
+- 映射写在 `tokens/sugon.tokens.json` 的 `shadcn` 段，由 `npm run build:kit` 生成进 `registry.json`；`check:tokens` 会在两者不一致、`accent` 等于主色或出现自引用时报错。安装命令里的版本号也改由 `meta.version` 生成。
+
+### 文档
+
+- 写明 `sugon-theme` 的前提：项目已 `shadcn init`（有 `components.json` 与 `tsconfig.json` / `jsconfig.json`），且入口 CSS 不为空。入口 CSS 是空文件时 shadcn CLI 报 `Cannot read properties of undefined (reading 'proxyOf')`（CLI 自身问题，`sugon-brand-kit` 不受影响），先写一行 `@import "tailwindcss";` 再装。
+- 安装命令与 CDN 锁到 `v0.3.1`。
+
+### 升级说明
+
+- 只影响装过 0.3.0 `sugon-theme` 的项目。重新 `add sugon-theme#v0.3.1` 会写入标准变量，但 0.3.0 留下的 `--bg`、`--text`、`--primary-hover` 等变量和 `@theme inline` 里对应的 `--color-*`、`--radius-*: var(--radius-*)` 行不会被自动删除，请手动删掉。
+- `sugon-brand-kit` / `sugon-tokens` 的 `--color-*` 令牌、`components.css` 与 Playground 都没有变化。
+
 ## [0.3.0] - 2026-10-10
 
 ### 破坏性变更
@@ -87,6 +106,7 @@
 - 公开构建不内置任何 API Key 或模型网关（用户自带 OpenAI 兼容端点与 Key，仅存浏览器）；`npm run check:dist` 拦截密钥与内部地址。
 - GitHub Pages 子路径构建与自动部署；MIT 许可证。
 
+[0.3.1]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.3.1
 [0.3.0]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.3.0
 [0.2.2]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.2.2
 [0.2.1]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.2.1

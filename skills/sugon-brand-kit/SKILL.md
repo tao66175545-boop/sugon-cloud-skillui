@@ -11,7 +11,7 @@ description: >-
 license: MIT
 metadata:
   author: 涛 李
-  version: "0.3.0"
+  version: "0.3.1"
   homepage: https://github.com/tao66175545-boop/sugon-cloud-skillui
 ---
 
@@ -53,7 +53,7 @@ metadata:
    ```
 
    只想快速试用、不落文件时，可用 CDN：
-   `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.0/skills/sugon-brand-kit/tokens.css`
+   `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.1/skills/sugon-brand-kit/tokens.css`
 3. **写样式时只用变量**：颜色用 `var(--color-*)`，字号 `var(--text-*)`，圆角 `var(--radius-*)`，间距 `var(--space-*)`，阴影 `var(--shadow-*)`。**不要硬编码 `#C8161D` 等色值**；Tailwind 中用任意值写法，例如 `bg-[var(--color-primary)]`、`rounded-[var(--radius-xl)]`。
 4. **按钮、卡片、表单优先用 `components.css` 里的类，不要另写一套。** 先在令牌之后引入它（shadcn 安装时会写到 `src/styles/sugon-components.css`；已有 `components.json` 时这两行会自动出现在入口 CSS，不要重复添加）：
 
