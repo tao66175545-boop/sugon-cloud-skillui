@@ -148,6 +148,164 @@
         }
       ],
       "docs": "已写入 .cursor/rules/sugon-brand.mdc 与 .github/instructions/sugon-brand.instructions.md（只对 UI 文件生效，指向 sugon-brand-kit 技能，请先装 sugon-brand-kit）。需要 Codex / Claude Code 也常驻遵守时，请手动把 https://github.com/tao66175545-boop/sugon-cloud-skillui/blob/main/registry/rules/AGENTS.snippet.md 中的一节追加到你的 AGENTS.md / CLAUDE.md；本命令不会修改这两个文件。"
+    },
+    {
+      "name": "sugon-brand-core",
+      "type": "registry:item",
+      "title": "曙光云品牌识别底座",
+      "description": "Brand identity: logo SVG, brand red #AF1F24 (≠ UI #C8161D), gray #727272, fonts, brand-params pack for Kimi/AiPPT. Writes Agent Skill into .agents/skills and .claude/skills.",
+      "files": [
+        {
+          "path": "skills/sugon-brand-core/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-brand-core/SKILL.md"
+        },
+        {
+          "path": "skills/sugon-brand-core/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-brand-core/SKILL.md"
+        },
+        {
+          "path": "skills/sugon-brand-core/BRAND.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-brand-core/BRAND.md"
+        },
+        {
+          "path": "skills/sugon-brand-core/BRAND.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-brand-core/BRAND.md"
+        },
+        {
+          "path": "skills/sugon-brand-core/brand-params.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-brand-core/brand-params.md"
+        },
+        {
+          "path": "skills/sugon-brand-core/brand-params.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-brand-core/brand-params.md"
+        },
+        {
+          "path": "skills/sugon-brand-core/brand-tokens.css",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-brand-core/brand-tokens.css"
+        },
+        {
+          "path": "skills/sugon-brand-core/brand-tokens.css",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-brand-core/brand-tokens.css"
+        },
+        {
+          "path": "skills/sugon-brand-core/references/colors.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-brand-core/references/colors.md"
+        },
+        {
+          "path": "skills/sugon-brand-core/references/colors.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-brand-core/references/colors.md"
+        },
+        {
+          "path": "skills/sugon-brand-core/references/fonts.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-brand-core/references/fonts.md"
+        },
+        {
+          "path": "skills/sugon-brand-core/references/fonts.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-brand-core/references/fonts.md"
+        },
+        {
+          "path": "skills/sugon-brand-core/assets/logo/sugon-cloud-logo.svg",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-brand-core/assets/logo/sugon-cloud-logo.svg"
+        },
+        {
+          "path": "skills/sugon-brand-core/assets/logo/sugon-cloud-logo.svg",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-brand-core/assets/logo/sugon-cloud-logo.svg"
+        },
+        {
+          "path": "skills/sugon-brand-core/assets/logo/sugon-cloud-logo_on-white.png",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-brand-core/assets/logo/sugon-cloud-logo_on-white.png"
+        },
+        {
+          "path": "skills/sugon-brand-core/assets/logo/sugon-cloud-logo_on-white.png",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-brand-core/assets/logo/sugon-cloud-logo_on-white.png"
+        }
+      ],
+      "docs": "识别层技能已安装。网页 UI 请另装 sugon-brand-kit。logo 用法见 sugon-logo-usage。"
+    },
+    {
+      "name": "sugon-logo-usage",
+      "type": "registry:item",
+      "title": "曙光云 Logo 用法",
+      "description": "Place/review Sugon logo: variants, clear space, min size, donts; includes place-logo and check-logo scripts.",
+      "files": [
+        {
+          "path": "skills/sugon-logo-usage/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-logo-usage/SKILL.md"
+        },
+        {
+          "path": "skills/sugon-logo-usage/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-logo-usage/SKILL.md"
+        },
+        {
+          "path": "skills/sugon-logo-usage/references/do-dont.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-logo-usage/references/do-dont.md"
+        },
+        {
+          "path": "skills/sugon-logo-usage/references/do-dont.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-logo-usage/references/do-dont.md"
+        },
+        {
+          "path": "skills/sugon-logo-usage/scripts/place-logo.mjs",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-logo-usage/scripts/place-logo.mjs"
+        },
+        {
+          "path": "skills/sugon-logo-usage/scripts/place-logo.mjs",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-logo-usage/scripts/place-logo.mjs"
+        },
+        {
+          "path": "skills/sugon-logo-usage/scripts/check-logo.mjs",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-logo-usage/scripts/check-logo.mjs"
+        },
+        {
+          "path": "skills/sugon-logo-usage/scripts/check-logo.mjs",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-logo-usage/scripts/check-logo.mjs"
+        },
+        {
+          "path": "skills/sugon-logo-usage/assets/logo/sugon-cloud-logo.svg",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-logo-usage/assets/logo/sugon-cloud-logo.svg"
+        },
+        {
+          "path": "skills/sugon-logo-usage/assets/logo/sugon-cloud-logo.svg",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-logo-usage/assets/logo/sugon-cloud-logo.svg"
+        },
+        {
+          "path": "skills/sugon-logo-usage/assets/logo/sugon-cloud-logo_on-white.png",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-logo-usage/assets/logo/sugon-cloud-logo_on-white.png"
+        },
+        {
+          "path": "skills/sugon-logo-usage/assets/logo/sugon-cloud-logo_on-white.png",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-logo-usage/assets/logo/sugon-cloud-logo_on-white.png"
+        }
+      ],
+      "docs": "Logo 用法技能已安装。请先具备 sugon-brand-core。脚本：node scripts/place-logo.mjs / check-logo.mjs（相对技能目录）。"
     }
   ]
 }

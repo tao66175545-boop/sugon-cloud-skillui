@@ -85,3 +85,11 @@ if (problems.length) {
   process.exit(1)
 }
 console.log(`check-tokens: OK — ${checked} values match tokens.css; components.css uses only those variables (${path.relative(root, dir)})`)
+
+const brand = spawnSync(process.execPath, [path.join(root, 'scripts/check-brand.mjs')], {
+  cwd: root,
+  encoding: 'utf8',
+})
+process.stdout.write(brand.stdout || '')
+process.stderr.write(brand.stderr || '')
+if (brand.status !== 0) process.exit(brand.status || 1)

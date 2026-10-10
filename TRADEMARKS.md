@@ -34,3 +34,15 @@ The following are **not** licensed under MIT and remain the property of their re
 You may use, modify and redistribute the code, the CSS variable structure, the skill file format and the tooling under MIT. You may not use the names or logos to suggest that your product comes from, is affiliated with, or is endorsed by Sugon. Obtain permission from the rights holder before using the Sugon brand in your own product, or fork and replace the names, logos and primary color with your own.
 
 Brand authorization for public use of the 曙光 / 曙光云 brand is **still being confirmed**; until then this project is not promoted in third-party directories or marketplaces. This notice is not legal advice.
+
+## Logo 与本仓库
+
+用户（涛 李）已确认：官方横式 logo SVG（`brand-assets/logo/sugon-cloud-logo.svg`，识别红 `#AF1F24`）**可以随本 kit 放在公开仓库中**，供安装本仓库技能的人在遵守 `sugon-logo-usage` 规则的前提下使用。
+
+这不构成对「曙光 / 曙光云 / Sugon」名称或标识的商标许可转让；也**不**授权：
+
+- 将 logo 用于与曙光云无关的产品或服务；
+- 修改 logo 颜色（包括改成 UI 红 `#C8161D`）、比例或重新绘制；
+- 把本仓库发布到 npm / 技能目录做商业推广（仍须单独授权）。
+
+反白稿、单色稿、竖式等变体尚未提供，规范中标为「待确认 / TBD」。

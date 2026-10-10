@@ -1,7 +1,7 @@
 {
   "name": "sugon-skillui",
   "private": true,
-  "version": "0.3.1",
+  "version": "0.4.0",
   "type": "module",
   "description": "曙光云 SkillUI 库 — style-supply tokens & design skills（非质量层）",
   "style": "./export/sugon-skillui.css",
@@ -19,9 +19,12 @@
     "./skills/sugon-brand-kit/DESIGN.md": "./skills/sugon-brand-kit/DESIGN.md",
     "./manifest": "./export/manifest.json",
     "./export/manifest.json": "./export/manifest.json",
-    "./tokens.json": "./tokens/sugon.tokens.json"
+    "./tokens.json": "./tokens/sugon.tokens.json",
+    "./brand.json": "./tokens/sugon.brand.json",
+    "./brand-tokens.css": "./skills/sugon-brand-core/brand-tokens.css"
   },
   "files": [
+    "brand-assets",
     "tokens",
     "skills",
     "export",
@@ -41,7 +44,8 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "build:kit": "node scripts/build-kit.mjs",
-    "check:fresh-vite": "node scripts/check-fresh-vite.mjs"
+    "check:fresh-vite": "node scripts/check-fresh-vite.mjs",
+    "check:brand": "node scripts/check-brand.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

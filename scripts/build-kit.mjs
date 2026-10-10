@@ -239,16 +239,128 @@ function syncRegistryTheme(cssVars) {
   return { regPath, content: JSON.stringify(reg, null, 2) + '\n' }
 }
 
+
+function loadBrand() {
+  const p = path.join(root, 'tokens/sugon.brand.json')
+  if (!fs.existsSync(p)) return null
+  return JSON.parse(fs.readFileSync(p, 'utf8'))
+}
+
+function renderBrandColorsMd(brand) {
+  const red = brand.color.brand.red
+  const gray = brand.color.brand.gray
+  const lines = []
+  lines.push('# 品牌颜色（由 tokens/sugon.brand.json 生成）')
+  lines.push('')
+  lines.push('| Token | HEX | CSS 变量 | 用途 |')
+  lines.push('|-------|-----|----------|------|')
+  lines.push(`| brand.red | \`${red.$value}\` | \`${red.$css}\` | ${red.usage} |`)
+  lines.push(`| brand.gray | \`${gray.$value}\` | \`${gray.$css}\` | ${gray.usage} |`)
+  lines.push(`| ui.primary（对照） | \`${brand.uiVsBrand.uiPrimary}\` | \`--color-primary\` | 网页按钮 / 链接；**不要**用于 logo |`)
+  lines.push('')
+  lines.push(brand.uiVsBrand.rule)
+  lines.push('')
+  lines.push('## 印刷')
+  lines.push('')
+  lines.push(`- 识别红 CMYK / Pantone：${brand.color.print.red.cmyk} / ${brand.color.print.red.pantone}`)
+  lines.push(`- 灰 CMYK / Pantone：${brand.color.print.gray.cmyk} / ${brand.color.print.gray.pantone}`)
+  lines.push(`- ${brand.color.print.red.note}`)
+  lines.push('')
+  return lines.join('\n')
+}
+
+function renderBrandFontsMd(brand) {
+  const f = brand.font.sans
+  const lines = []
+  lines.push('# 字体与授权（由 tokens/sugon.brand.json 生成）')
+  lines.push('')
+  lines.push(`- **默认正文/标题**：${f.primary.join(' / ')}`)
+  lines.push(`- **可选标题**：${f.optionalTitle.join(' / ')}`)
+  lines.push(`- **Office 编辑回退（禁止出图）**：${f.officeFallback.join(' / ')}`)
+  lines.push('')
+  lines.push('## 规则')
+  lines.push('')
+  for (const r of f.rules) lines.push(`- ${r}`)
+  lines.push('')
+  lines.push('## 下载')
+  lines.push('')
+  lines.push(`- 思源黑体：${f.downloads.sourceHanSansSC}`)
+  lines.push(`- 阿里巴巴普惠体：${f.downloads.alibabaPuHuiTi}`)
+  lines.push('')
+  return lines.join('\n')
+}
+
+function renderBrandParamsMd(brand) {
+  const red = brand.color.brand.red.$value
+  const gray = brand.color.brand.gray.$value
+  const lines = []
+  lines.push('# 曙光云品牌参数包（粘贴给 Kimi / AiPPT）')
+  lines.push('')
+  lines.push('```')
+  lines.push('品牌名称：曙光云 / Sugon Cloud')
+  lines.push(`识别红（logo/VI/PPT/印刷）：${red}`)
+  lines.push(`Logo 灰（仅 logo）：${gray}`)
+  lines.push(`UI 交互红（网页按钮，勿用于 logo）：${brand.uiVsBrand.uiPrimary}`)
+  lines.push('主字体：Source Han Sans SC / Noto Sans CJK SC（思源黑体）')
+  lines.push('可选标题字体：阿里巴巴普惠体')
+  lines.push('禁止：微软雅黑出现在导出图片/PDF；PPT 默认不嵌入字体')
+  lines.push('Logo：横式 SVG 原稿（Sugon + 曙光云）；深底反白稿待提供')
+  lines.push(`Logo 最小宽度草案：屏 ${brand.logo.minSize.screenPxWidth.value}px / 印刷 ${brand.logo.minSize.printMmWidth.value}mm（待确认）`)
+  lines.push(`安全空间草案：${brand.logo.clearSpace.x.value}（待确认）`)
+  lines.push('版式：政企汇报 PPT 默认 16:9')
+  lines.push('```')
+  lines.push('')
+  lines.push('把上面代码块内容整段粘贴到 Kimi「风格描述」或 AiPPT 品牌设置即可。')
+  lines.push('')
+  return lines.join('\n')
+}
+
+function renderBrandTokensCss(brand) {
+  const red = brand.color.brand.red
+  const gray = brand.color.brand.gray
+  return `/**
+ * 曙光云品牌识别色（非 UI）。由 tokens/sugon.brand.json 生成。
+ * 不覆盖 --color-primary（UI 仍为 #C8161D）。
+ */
+:root {
+  ${red.$css}: ${red.$value};
+  ${gray.$css}: ${gray.$value};
+}
+`
+}
+
+function syncBrandAssets() {
+  const srcLogo = path.join(root, 'brand-assets/logo/sugon-cloud-logo.svg')
+  const srcPng = path.join(root, 'brand-assets/logo/sugon-cloud-logo_on-white.png')
+  const targets = [
+    'skills/sugon-brand-core/assets/logo',
+    'skills/sugon-logo-usage/assets/logo',
+  ]
+  const outs = []
+  for (const dir of targets) {
+    const abs = path.join(root, dir)
+    fs.mkdirSync(abs, { recursive: true })
+    for (const [src, name] of [[srcLogo, 'sugon-cloud-logo.svg'], [srcPng, 'sugon-cloud-logo_on-white.png']]) {
+      if (!fs.existsSync(src)) continue
+      const dest = path.join(abs, name)
+      outs.push({ dest, content: fs.readFileSync(src) })
+    }
+  }
+  return outs
+}
+
+
 function writeOrCheck(filePath, content) {
-  const next = content.endsWith('\n') ? content : content + '\n'
+  const isBuf = Buffer.isBuffer(content)
+  const next = isBuf ? content : (content.endsWith('\n') ? content : content + '\n')
   const rel = path.relative(root, filePath)
   if (checkOnly) {
     if (!fs.existsSync(filePath)) {
       console.error(`build-kit --check: FAIL — missing ${rel}`)
       return false
     }
-    const prev = fs.readFileSync(filePath, 'utf8')
-    if (prev !== next) {
+    const prev = fs.readFileSync(filePath)
+    if (!prev.equals(Buffer.isBuffer(next) ? next : Buffer.from(next))) {
       console.error(`build-kit --check: FAIL — drift in ${rel}`)
       return false
     }
@@ -307,6 +419,18 @@ function main() {
   ok = writeOrCheck(path.join(root, 'src/playground/tokens.generated.json'), JSON.stringify(playground, null, 2) + '\n') && ok
   // Keep app-local mirror in sync (used if someone @imports from src/styles)
   ok = writeOrCheck(path.join(root, 'src/styles/sugon-tokens.css'), css) && ok
+
+  const brand = loadBrand()
+  if (brand) {
+    ok = writeOrCheck(path.join(root, 'skills/sugon-brand-core/references/colors.md'), renderBrandColorsMd(brand)) && ok
+    ok = writeOrCheck(path.join(root, 'skills/sugon-brand-core/references/fonts.md'), renderBrandFontsMd(brand)) && ok
+    ok = writeOrCheck(path.join(root, 'skills/sugon-brand-core/brand-params.md'), renderBrandParamsMd(brand)) && ok
+    ok = writeOrCheck(path.join(root, 'skills/sugon-brand-core/brand-tokens.css'), renderBrandTokensCss(brand)) && ok
+    ok = writeOrCheck(path.join(root, 'src/styles/sugon-brand-tokens.css'), renderBrandTokensCss(brand)) && ok
+    for (const { dest, content } of syncBrandAssets()) {
+      ok = writeOrCheck(dest, content) && ok
+    }
+  }
 
   if (checkOnly) {
     if (!ok) process.exit(1)

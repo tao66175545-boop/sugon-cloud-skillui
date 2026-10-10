@@ -1,0 +1,136 @@
+{
+  "$schema": "https://sugon-cloud-skillui.local/schemas/sugon.brand.json",
+  "$description": "曙光云品牌识别层（非 UI）。UI 交互色仍在 sugon.tokens.json 的 --color-primary (#C8161D)。两层红不要混用。",
+  "meta": {
+    "name": "sugon-brand",
+    "brand": "曙光云",
+    "version": "0.4.0",
+    "logoFile": "brand-assets/logo/sugon-cloud-logo.svg"
+  },
+  "color": {
+    "brand": {
+      "red": {
+        "$value": "#AF1F24",
+        "$css": "--color-brand-red",
+        "$type": "color",
+        "usage": "logo / VI / PPT / 印刷 / 新媒体 / 名片。与 UI primary #C8161D 不同，同一画面只选一种红作主色。"
+      },
+      "gray": {
+        "$value": "#727272",
+        "$css": "--color-brand-gray",
+        "$type": "color",
+        "usage": "仅用于 logo 与标准字，不作正文灰。"
+      }
+    },
+    "print": {
+      "red": {
+        "cmyk": "待确认",
+        "pantone": "待确认",
+        "note": "印刷请等品牌方提供官方 CMYK / Pantone，勿用 HEX 粗算值送印。"
+      },
+      "gray": {
+        "cmyk": "待确认",
+        "pantone": "待确认"
+      }
+    }
+  },
+  "font": {
+    "sans": {
+      "primary": [
+        "Source Han Sans SC",
+        "Noto Sans CJK SC"
+      ],
+      "optionalTitle": [
+        "Alibaba PuHuiTi",
+        "阿里巴巴普惠体"
+      ],
+      "officeFallback": [
+        "Microsoft YaHei",
+        "微软雅黑"
+      ],
+      "rules": [
+        "仓库不附带字体文件，只引用名称与官方下载链接。",
+        "导出的图片 / PDF / 网页禁止出现微软雅黑（商用授权风险）；Office 编辑时可用作回退。",
+        "PPT 默认不嵌入字体（国产 WPS / 信创可能崩溃）。",
+        "思源黑体在 Linux 上常显示为 Noto Sans CJK SC，字体栈两个名字都要写。"
+      ],
+      "downloads": {
+        "sourceHanSansSC": "https://github.com/adobe-fonts/source-han-sans",
+        "alibabaPuHuiTi": "https://www.alibabafonts.com"
+      }
+    }
+  },
+  "logo": {
+    "viewBox": "0 0 240.24 95.87",
+    "aspectRatio": 2.506,
+    "colorsAllowed": [
+      "#AF1F24",
+      "#727272",
+      "#FFFFFF",
+      "#000000"
+    ],
+    "variants": {
+      "original": {
+        "status": "available",
+        "file": "sugon-cloud-logo.svg"
+      },
+      "reverse": {
+        "status": "TBD",
+        "note": "深底用白色稿，待品牌方提供"
+      },
+      "monoBlack": {
+        "status": "TBD"
+      },
+      "monoWhite": {
+        "status": "TBD"
+      },
+      "vertical": {
+        "status": "TBD"
+      },
+      "wordmarkOnly": {
+        "status": "TBD",
+        "note": "纯 Sugon 字标，小尺寸时提议使用"
+      }
+    },
+    "minSize": {
+      "screenPxWidth": {
+        "value": 120,
+        "status": "待确认",
+        "basis": "SVG 几何推算：最细笔画约 1.3px，「曙光云」字高约 15px"
+      },
+      "printMmWidth": {
+        "value": 25,
+        "status": "待确认",
+        "basis": "SVG 几何推算：中文字高约 3.2mm"
+      }
+    },
+    "clearSpace": {
+      "x": {
+        "value": "0.3 × logo height (≈ half of S letter height)",
+        "status": "待确认"
+      }
+    },
+    "background": {
+      "light": "原色稿（白底或 L* > 90 浅底）",
+      "dark": "反白稿（TBD；在拿到前不要用原色稿放深底）",
+      "red": "白色单色稿（TBD）"
+    },
+    "dont": [
+      "拉伸或压扁",
+      "旋转",
+      "改色（包括改成 UI 红 #C8161D）",
+      "加描边、阴影、渐变或发光",
+      "拆开中英文另行排列",
+      "重新绘制或重新排字",
+      "放在低对比度或杂乱背景上",
+      "把「曙光云」换成其他字体"
+    ],
+    "sha256": "a2465e4e044db2a90ef064282904965566a1dadd7332f009c7a27d1b893b6354"
+  },
+  "uiVsBrand": {
+    "uiPrimary": "#C8161D",
+    "brandRed": "#AF1F24",
+    "deltaE76": 13.8,
+    "rule": "同一画面只选一种红作为主色。网页 UI 用 --color-primary；logo/VI/PPT/印刷用 brand.red。logo 永远用原稿，不跟随 UI 主题重新着色。"
+  }
+}

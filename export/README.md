@@ -13,11 +13,11 @@
 | 渠道 | 命令 | 适合 |
 |------|------|------|
 | Agent Skills（[`skills` CLI](https://github.com/vercel-labs/skills)） | `npx skills add tao66175545-boop/sugon-cloud-skillui` | 让 Claude Code / Codex / Cursor / Copilot / Gemini CLI 等在写 UI 时按品牌生成 |
-| shadcn GitHub registry（根目录 [`registry.json`](../registry.json)） | `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.3.1` | 一次把技能 + 令牌写进项目；`sugon-tokens` 只要令牌；`sugon-brand-rules` 可选常驻规则 |
-| jsDelivr CDN | `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.1/skills/sugon-brand-kit/tokens.css` | 浏览器 `<link>` / `@import url()`，按 tag 版本化 |
+| shadcn GitHub registry（根目录 [`registry.json`](../registry.json)） | `npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.4.0` | 一次把技能 + 令牌写进项目；`sugon-tokens` 只要令牌；`sugon-brand-rules` 可选常驻规则 |
+| jsDelivr CDN | `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.4.0/skills/sugon-brand-kit/tokens.css` | 浏览器 `<link>` / `@import url()`，按 tag 版本化 |
 
-锁定版本：shadcn 用 `#v0.3.1`（或完整 commit SHA），jsDelivr 用 `@v0.3.1`，skills 用
-`npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.3.1/skills/sugon-brand-kit`。
+锁定版本：shadcn 用 `#v0.4.0`（或完整 commit SHA），jsDelivr 用 `@v0.4.0`，skills 用
+`npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.4.0/skills/sugon-brand-kit`。
 装之前可用 `npx shadcn@latest view tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit` 预览要写入的文件（`add … --dry-run` 只在已有 `components.json` 的项目里可用）。
 
 ---
@@ -97,7 +97,7 @@
 下载 raw 示例：
 
 ```bash
-curl -L "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/v0.3.1/skills/sugon-brand-kit/tokens.css" \
+curl -L "https://raw.githubusercontent.com/tao66175545-boop/sugon-cloud-skillui/v0.4.0/skills/sugon-brand-kit/tokens.css" \
   -o tokens.css
 ```
 

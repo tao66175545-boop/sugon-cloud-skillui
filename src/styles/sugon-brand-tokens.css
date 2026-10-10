@@ -1,0 +1,8 @@
+/**
+ * 曙光云品牌识别色（非 UI）。由 tokens/sugon.brand.json 生成。
+ * 不覆盖 --color-primary（UI 仍为 #C8161D）。
+ */
+:root {
+  --color-brand-red: #AF1F24;
+  --color-brand-gray: #727272;
+}

@@ -16,14 +16,17 @@
 
 ## 30 秒安装
 
-技能名 **`sugon-brand-kit`**（目录 [`skills/sugon-brand-kit/`](./skills/sugon-brand-kit/)）。以下命令都**不需要 npm 账号、不需要 clone**；`v0.3.1` 是固定版本，换成 `main` 即为尝鲜版。
+技能名 **`sugon-brand-kit`**（目录 [`skills/sugon-brand-kit/`](./skills/sugon-brand-kit/)）。以下命令都**不需要 npm 账号、不需要 clone**；`v0.4.0` 是固定版本，换成 `main` 即为尝鲜版。
 
 **1. 装进 AI 编程工具（Agent Skills）**
 
 ```bash
 npx skills add tao66175545-boop/sugon-cloud-skillui
+# 仅装识别层 / logo：
+# npx skills add tao66175545-boop/sugon-cloud-skillui --skill sugon-brand-core
+# npx skills add tao66175545-boop/sugon-cloud-skillui --skill sugon-logo-usage
 # 锁定版本：
-npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.3.1/skills/sugon-brand-kit
+npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.4.0/skills/sugon-brand-kit
 ```
 
 由 [`skills` CLI](https://github.com/vercel-labs/skills) 写入 `.agents/skills/sugon-brand-kit/`，并按你选择的工具链接到 `.claude/skills/` 等目录（`-a claude-code` 指定工具，`-g` 装到全局）。
@@ -31,7 +34,7 @@ npx skills add https://github.com/tao66175545-boop/sugon-cloud-skillui/tree/v0.3
 **2. 技能 + 令牌一起写进项目（shadcn registry）**
 
 ```bash
-npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.3.1
+npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.4.0
 ```
 
 | 条目 | 写入的文件 |
@@ -55,11 +58,11 @@ npx shadcn@latest add tao66175545-boop/sugon-cloud-skillui/sugon-brand-kit#v0.3.
 **3. 只要 CSS 变量（CDN）**
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.1/skills/sugon-brand-kit/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.4.0/skills/sugon-brand-kit/tokens.css">
 ```
 
 ```css
-@import url("https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.1/skills/sugon-brand-kit/tokens.css");
+@import url("https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.4.0/skills/sugon-brand-kit/tokens.css");
 .cta { background: var(--color-primary); color: var(--color-primary-foreground); border-radius: var(--btn-radius); }
 ```
 
@@ -203,7 +206,9 @@ skills/sugon-brand-kit/          # 唯一事实来源（Agent Skills 规范：�
 └── components.css               # 纯 CSS 片段：sugon-btn / sugon-card / sugon-input 等
 registry.json                    # shadcn GitHub registry：sugon-tokens / sugon-brand-kit / sugon-brand-rules
 registry/rules/                  # 可选常驻规则（.mdc / .instructions.md / AGENTS.snippet.md）
-tokens/sugon.tokens.json         # 令牌唯一真相源（npm run build:kit）
+tokens/sugon.tokens.json         # UI 令牌
+tokens/sugon.brand.json          # 识别层（brand.red / logo）
+brand-assets/logo/               # logo 原稿         # 令牌唯一真相源（npm run build:kit）
 export/                          # 统一 CSS 出口 + manifest.json + 接入文档
 public/llms.txt                  # 给 AI 读的站点索引（Pages：/sugon-cloud-skillui/llms.txt）
 ```

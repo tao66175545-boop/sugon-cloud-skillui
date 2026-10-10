@@ -1,3 +1,4 @@
+import brandLogo from '../assets/brand-logo.svg'
 import { useMemo, useState } from 'react'
 import tokens from './tokens.generated.json'
 
@@ -59,6 +60,28 @@ export function Playground() {
           下面预览用的就是公开安装后会拿到的 <code>tokens.css</code> +{' '}
           <code>components.css</code>。不需要 API Key。对话归库已移到「实验」页签。
         </p>
+      </section>
+
+      
+      <section className="playground-brand" aria-label="品牌识别">
+        <div className="playground-brand-row">
+          <img src={brandLogo} alt="曙光云 Sugon" className="playground-brand-logo" width={200} height={80} />
+          <div className="playground-brand-meta">
+            <h2 className="playground-panel-title" style={{ margin: 0 }}>识别层 · brand.red</h2>
+            <p className="playground-brand-note">
+              Logo 与 VI 用 <code>#AF1F24</code>；网页按钮仍用 UI <code>#C8161D</code>。装{' '}
+              <code>sugon-brand-core</code> / <code>sugon-logo-usage</code> 获取规则与脚本。
+            </p>
+            <div className="playground-brand-swatches">
+              <span className="playground-swatch-chip" style={{ background: '#AF1F24' }} title="brand.red" />
+              <code>#AF1F24</code>
+              <span className="playground-swatch-chip" style={{ background: '#727272' }} title="brand.gray" />
+              <code>#727272</code>
+              <span className="playground-swatch-chip" style={{ background: '#C8161D' }} title="ui.primary" />
+              <code>#C8161D UI</code>
+            </div>
+          </div>
+        </div>
       </section>
 
       <div className="playground-grid">

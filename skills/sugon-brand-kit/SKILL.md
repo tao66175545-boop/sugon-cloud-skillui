@@ -11,7 +11,7 @@ description: >-
 license: MIT
 metadata:
   author: 涛 李
-  version: "0.3.1"
+  version: "0.4.0"
   homepage: https://github.com/tao66175545-boop/sugon-cloud-skillui
 ---
 
@@ -35,6 +35,10 @@ metadata:
 - 用户提到「曙光」「曙光云」「品牌风格」「品牌色」「设计令牌」
 - 需要一套现成的颜色 / 字阶 / 圆角 / 间距 / 按钮状态，而不是临时编色值
 
+## 品牌识别（logo / 印刷 / PPT）
+
+涉及 logo、VI、PPT、印刷、新媒体时，请改用或一并安装 **`sugon-brand-core`** 与 **`sugon-logo-usage`**。识别红是 `#AF1F24`，与本技能的 UI 红 `#C8161D` 不同，不要混用。
+
 ## 何时不要使用
 
 - 生成后的品味审计 / 打磨：交给外部质量层工具，不要把本技能扩成质量层
@@ -53,7 +57,7 @@ metadata:
    ```
 
    只想快速试用、不落文件时，可用 CDN：
-   `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.3.1/skills/sugon-brand-kit/tokens.css`
+   `https://cdn.jsdelivr.net/gh/tao66175545-boop/sugon-cloud-skillui@v0.4.0/skills/sugon-brand-kit/tokens.css`
 3. **写样式时只用变量**：颜色用 `var(--color-*)`，字号 `var(--text-*)`，圆角 `var(--radius-*)`，间距 `var(--space-*)`，阴影 `var(--shadow-*)`。**不要硬编码 `#C8161D` 等色值**；Tailwind 中用任意值写法，例如 `bg-[var(--color-primary)]`、`rounded-[var(--radius-xl)]`。
 4. **按钮、卡片、表单优先用 `components.css` 里的类，不要另写一套。** 先在令牌之后引入它（shadcn 安装时会写到 `src/styles/sugon-components.css`；已有 `components.json` 时这两行会自动出现在入口 CSS，不要重复添加）：
 

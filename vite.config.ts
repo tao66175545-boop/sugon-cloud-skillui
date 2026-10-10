@@ -158,7 +158,7 @@ function serveDesignSkillsPlugin(): Plugin {
     },
     closeBundle() {
       // Ensure skills (canonical) + export land in dist
-      for (const dir of ['skills', 'export']) {
+      for (const dir of ['skills', 'export', 'brand-assets']) {
         const srcDir = path.resolve(process.cwd(), dir)
         const destDir = path.resolve(process.cwd(), 'dist', dir)
         if (!fs.existsSync(srcDir)) continue

@@ -4,6 +4,21 @@
 一个版本号贯穿所有渠道：git tag `vX.Y.Z` = `package.json` `version` = `SKILL.md` `metadata.version` = `export/manifest.json` `version`。
 1.0 之前：删除 / 重命名 CSS 变量、改技能目录或 `name` 视为破坏性变更，升 minor。
 
+## [0.4.0] - 2026-10-10
+
+### 新增
+
+- **品牌识别层**：`tokens/sugon.brand.json`（识别红 `#AF1F24`、logo 灰 `#727272`、字体栈、logo 几何草案）+ `brand-assets/logo/`（官方横式 SVG + 白底 PNG）。UI 红 `#C8161D` **不变**，两层红不要混用。
+- 技能 **`sugon-brand-core`**：SKILL / BRAND、生成的 colors/fonts、`brand-params.md`（给 Kimi/AiPPT）、`brand-tokens.css`（`--color-brand-red` / `--color-brand-gray`，不覆盖 `--color-primary`）。
+- 技能 **`sugon-logo-usage`**：做/不做、`place-logo.mjs`、`check-logo.mjs`（拦截把 logo 红改成 UI 红等）。
+- `npm run check:brand`（并入 `check:tokens`）：SVG 色值白名单、logo sha256、技能目录资产副本漂移。
+- shadcn 注册表条目 `sugon-brand-core`、`sugon-logo-usage`；Playground 展示 logo 与两层红对照。
+- `TRADEMARKS.md`：用户确认横式 logo 可随本 kit 公开使用；仍不授权 npm/目录推广与改色。
+
+### 待品牌方材料
+
+- 反白 / 单色 / 竖式 / 字标版 logo；最小尺寸与安全空间官方值；CMYK/Pantone；VI 手册与 PPT 母版。
+
 ## [0.3.1] - 2026-10-10
 
 ### 修复
@@ -106,6 +121,7 @@
 - 公开构建不内置任何 API Key 或模型网关（用户自带 OpenAI 兼容端点与 Key，仅存浏览器）；`npm run check:dist` 拦截密钥与内部地址。
 - GitHub Pages 子路径构建与自动部署；MIT 许可证。
 
+[0.4.0]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.4.0
 [0.3.1]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.3.1
 [0.3.0]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.3.0
 [0.2.2]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.2.2
