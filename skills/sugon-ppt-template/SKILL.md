@@ -8,7 +8,7 @@ description: >-
 license: MIT
 metadata:
   author: 涛 李
-  version: "0.4.3"
+  version: "0.4.4"
   homepage: https://github.com/tao66175545-boop/sugon-cloud-skillui
 ---
 
@@ -17,7 +17,8 @@ metadata:
 > **通用 16:9 草稿母版**（无官方 `.potx` 时使用）。颜色与 logo 来自 `sugon-brand-core`。  
 > 交付物为可在 PowerPoint / WPS 继续编辑的 `.pptx`。**本环境未做 UOS / 麒麟 WPS 实机验收。**  
 > **v0.4.2**：加大留白与层级，短竖标+短红线强调，浅底卡片分区。  
-> **v0.4.3**：扩至约 **35** 种政企版式（目录见 `references/layouts.md`）；原则与目录见调研笔记（不复制第三方 skill 代码）。
+> **v0.4.3**：扩至约 **35** 种政企版式。  
+> **v0.4.4**：扩至约 **100** 种互异版式（封面/目录/框架/甘特/漏斗/组织/FAQ/签批等）；原则与目录见调研笔记（不复制第三方 skill 代码）。
 
 ## 本目录
 
@@ -30,7 +31,7 @@ metadata:
 | `scripts/build-deck.mjs` | 大纲 JSON → 样例 / 定制 deck |
 | `scripts/check-deck.mjs` | 色值白名单、logo、16:9、无 Wingdings、无占位符残留 |
 | `assets/logo.png` | 横式 logo（白底渲染，供 pptxgenjs） |
-| `examples/sample-deck.pptx` | 35 版式 showcase（每种 layout 一页）
+| `examples/sample-deck.pptx` | **100** 版式 showcase（每种 layout 一页）
 
 ## 何时使用
 
@@ -57,7 +58,7 @@ node scripts/check-deck.mjs examples/sample-deck.pptx
 
 ## 版式一览
 
-35 种 layout id：见 `references/layouts.md`（cover / agenda / section / exec-summary / kpi / roadmap / risk / closing …）
+**100** 种 layout id：见 `references/layouts.md`
 
 ## 来源与商标
 

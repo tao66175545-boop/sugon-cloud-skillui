@@ -1,77 +1,170 @@
-# 版式目录（16:9 · LAYOUT_WIDE 13.333×7.5 in）· v0.4.3
+# 版式目录（16:9 · LAYOUT_WIDE）· v0.4.4 · **100** 种
 
-边距 ≥ **0.65 in**。页脚可选「内部资料 · 注意保密」+ 页码。  
-品牌强调：标题左侧**短竖标** + 标题下**短红线**（不用全高侧栏 / 通栏粗底条）。  
-样例 `examples/sample-deck.pptx` 含下列 **35** 种版式各 1 页（`layout` id 印在页内小标签）。
+边距 ≥ **0.65 in**。品牌强调：短竖标 + 短红线。样例 deck 每种 layout 各 1 页（页内小标签为 id）。
 
-## A. 开场与导航
+## A. 开场与导航（基线）
 
-| id | 用途 |
-|----|------|
-| `cover` | 标准封面：logo、大标题、短红线、副标题、单位与日期 |
-| `cover-split` | 左结论 + 右 3 条拍板预告 |
-| `agenda` | 单列红编号目录 |
-| `toc-two-col` | 双列目录卡片 |
-| `section` | 浅底章节隔页（大号章节号） |
-| `section-band` | 中部色带章节隔页 |
+| id |
+|----|
+| `cover` |
+| `cover-split` |
+| `agenda` |
+| `toc-two-col` |
+| `section` |
+| `section-band` |
 
-## B. 叙事与要点
+## B. 叙事与要点（基线）
 
-| id | 用途 |
-|----|------|
-| `exec-summary` | 结论句 + 3 证据卡 |
-| `content` | 单栏编号要点卡 |
-| `content-two-level` | 主点 + 子点分层卡 |
-| `two-col` | 双栏对位卡 |
-| `three-col` | 三等分能力卡 |
-| `four-grid` | 2×2 保障条件 |
-| `icon-rows` | 编号圆标 + 标题 + 说明（4 行） |
-| `callout` | 中心单一关键结论 |
+| id |
+|----|
+| `exec-summary` |
+| `content` |
+| `content-two-level` |
+| `two-col` |
+| `three-col` |
+| `four-grid` |
+| `icon-rows` |
+| `callout` |
 
-## C. 对比与框架
+## C. 对比与框架（基线）
 
-| id | 用途 |
-|----|------|
-| `compare` | 现状 / 目标 |
-| `pros-cons` | 利弊双栏 |
-| `options-3` | 三方案横比（含建议标签） |
-| `matrix-2x2` | 影响-紧急度四格 |
-| `swot` | SWOT 四象限 |
-| `table` | 简洁三列表格 |
+| id |
+|----|
+| `compare` |
+| `pros-cons` |
+| `options-3` |
+| `matrix-2x2` |
+| `swot` |
+| `table` |
 
-## D. 数据与指标
+## D. 数据与指标（基线）
 
-| id | 用途 |
-|----|------|
-| `kpi-3` | 三指标大字号 |
-| `kpi-4` | 四指标 |
-| `kpi-row` | 横向快照条 |
-| `chart-frame` | 图表占位 + 读图要点 |
-| `bridge-frame` | 能力桥段（基线→目标） |
+| id |
+|----|
+| `kpi-3` |
+| `kpi-4` |
+| `kpi-row` |
+| `chart-frame` |
+| `bridge-frame` |
 
-## E. 计划与治理
+## E. 计划与治理（基线）
 
-| id | 用途 |
-|----|------|
-| `timeline` | 横向季度时间轴 |
-| `process-h` | 横向流程步 |
-| `process-v` | 纵向检查链 |
-| `roadmap` | 工作流 × 季度色条 |
-| `risk` | 风险 / 影响 / 缓解表 |
-| `next-steps` | 行动项 + 责任人 |
+| id |
+|----|
+| `timeline` |
+| `process-h` |
+| `process-v` |
+| `roadmap` |
+| `risk` |
+| `next-steps` |
 
-## F. 组织与收束
+## F. 组织与收束（基线）
 
-| id | 用途 |
-|----|------|
-| `team` | 角色卡片行 |
-| `quote` | 引用 / 工作要求（克制） |
-| `closing` | 谢谢 / 联系占位 |
-| `appendix` | 附录隔页 |
+| id |
+|----|
+| `team` |
+| `quote` |
+| `closing` |
+| `appendix` |
+
+## G. 封面/目录扩展
+
+| id |
+|----|
+| `cover-center` |
+| `cover-band` |
+| `cover-logo-right` |
+| `agenda-5` |
+| `agenda-cards` |
+| `toc-dense` |
+| `section-right` |
+| `section-minimal` |
+| `chapter-list` |
+| `key-message` |
+
+## H. 内容变体
+
+| id |
+|----|
+| `bullets-tight` |
+| `two-col-header` |
+| `three-icon` |
+| `five-col` |
+| `six-grid` |
+| `highlight-left` |
+| `highlight-right` |
+| `before-after` |
+| `vs-score` |
+| `criteria-table` |
+
+## I. 商业与运营
+
+| id |
+|----|
+| `pricing-3` |
+| `pricing-table` |
+| `faq` |
+| `checklist` |
+| `status-rag` |
+| `okr` |
+| `smart-goals` |
+| `pestle` |
+| `porter-lite` |
+| `bcg-matrix` |
+
+## J. 战略与组织
+
+| id |
+|----|
+| `ansoff` |
+| `value-chain` |
+| `stakeholder` |
+| `org-3` |
+| `org-tree` |
+| `raci` |
+| `kanban-3` |
+| `gantt-lite` |
+| `gantt-miles` |
+| `funnel-4` |
+
+## K. 图示与数据扩展
+
+| id |
+|----|
+| `pyramid-4` |
+| `cycle-4` |
+| `fishbone-lite` |
+| `force-field` |
+| `risk-heat` |
+| `heat-lite` |
+| `big-number` |
+| `big-number-pair` |
+| `metric-bars` |
+| `bar-frame` |
+| `pie-frame` |
+| `line-frame` |
+| `combo-frame` |
+
+## L. 媒体与收束扩展
+
+| id |
+|----|
+| `map-ph` |
+| `photo-caption` |
+| `photo-grid-2` |
+| `quote-attr` |
+| `testimonial-2` |
+| `decision` |
+| `signoff` |
+| `qa` |
+| `glossary` |
+| `refs-sources` |
+| `contact-card` |
+| `back-cover` |
 
 ## 选用建议
 
-- 政企汇报主线：`cover` → `agenda` → `exec-summary` → `section` → `content` / `two-col` / `kpi-*` → `roadmap` → `risk` → `next-steps` → `closing`
-- 需要方案取舍时插入 `options-3` / `compare` / `swot`
-- 数据页优先 `kpi-*` 或 `chart-frame`，避免纯文字堆砌
+- 主线：cover → agenda → exec-summary → section → content/kpi → roadmap → risk → next-steps → closing
+- 取舍：options-3 / compare / swot / vs-score
+- 计划：gantt-lite / roadmap / kanban-3 / raci
 - **禁止** Wingdings；编号用文本或圆形形状
