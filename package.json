@@ -1,7 +1,7 @@
 {
   "name": "sugon-skillui",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "type": "module",
   "description": "曙光云 SkillUI 库 — style-supply tokens & design skills（非质量层）",
   "style": "./export/sugon-skillui.css",
@@ -45,7 +45,9 @@
     "preview": "vite preview",
     "build:kit": "node scripts/build-kit.mjs",
     "check:fresh-vite": "node scripts/check-fresh-vite.mjs",
-    "check:brand": "node scripts/check-brand.mjs"
+    "check:brand": "node scripts/check-brand.mjs",
+    "build:ppt": "node skills/sugon-ppt-template/scripts/build-deck.mjs",
+    "check:ppt": "node skills/sugon-ppt-template/scripts/check-deck.mjs skills/sugon-ppt-template/examples/sample-deck.pptx"
   },
   "dependencies": {
     "react": "^19.2.8",
@@ -57,8 +59,10 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
+    "jszip": "^3.10.1",
     "oxlint": "^1.81.0",
     "playwright": "^1.59.1",
+    "pptxgenjs": "^3.12.0",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",
     "vite": "^8.3.0"

@@ -306,6 +306,95 @@
         }
       ],
       "docs": "Logo 用法技能已安装。请先具备 sugon-brand-core。脚本：node scripts/place-logo.mjs / check-logo.mjs（相对技能目录）。"
+    },
+    {
+      "name": "sugon-ppt-template",
+      "type": "registry:item",
+      "title": "曙光云政企 PPT 模板",
+      "description": "16:9 gov/enterprise PPT skill: layouts, pptxgenjs build-deck, check-deck, sample deck with brand red #AF1F24 and logo. No font embedding by default.",
+      "files": [
+        {
+          "path": "skills/sugon-ppt-template/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-ppt-template/SKILL.md"
+        },
+        {
+          "path": "skills/sugon-ppt-template/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-ppt-template/SKILL.md"
+        },
+        {
+          "path": "skills/sugon-ppt-template/references/layouts.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-ppt-template/references/layouts.md"
+        },
+        {
+          "path": "skills/sugon-ppt-template/references/layouts.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-ppt-template/references/layouts.md"
+        },
+        {
+          "path": "skills/sugon-ppt-template/references/gov-report-style.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-ppt-template/references/gov-report-style.md"
+        },
+        {
+          "path": "skills/sugon-ppt-template/references/gov-report-style.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-ppt-template/references/gov-report-style.md"
+        },
+        {
+          "path": "skills/sugon-ppt-template/references/brand-core.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-ppt-template/references/brand-core.md"
+        },
+        {
+          "path": "skills/sugon-ppt-template/references/brand-core.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-ppt-template/references/brand-core.md"
+        },
+        {
+          "path": "skills/sugon-ppt-template/scripts/build-deck.mjs",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-ppt-template/scripts/build-deck.mjs"
+        },
+        {
+          "path": "skills/sugon-ppt-template/scripts/build-deck.mjs",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-ppt-template/scripts/build-deck.mjs"
+        },
+        {
+          "path": "skills/sugon-ppt-template/scripts/check-deck.mjs",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-ppt-template/scripts/check-deck.mjs"
+        },
+        {
+          "path": "skills/sugon-ppt-template/scripts/check-deck.mjs",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-ppt-template/scripts/check-deck.mjs"
+        },
+        {
+          "path": "skills/sugon-ppt-template/assets/logo.png",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-ppt-template/assets/logo.png"
+        },
+        {
+          "path": "skills/sugon-ppt-template/assets/logo.png",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-ppt-template/assets/logo.png"
+        },
+        {
+          "path": "skills/sugon-ppt-template/examples/sample-deck.pptx",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-ppt-template/examples/sample-deck.pptx"
+        },
+        {
+          "path": "skills/sugon-ppt-template/examples/sample-deck.pptx",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-ppt-template/examples/sample-deck.pptx"
+        }
+      ],
+      "docs": "PPT 技能已写入 .agents/skills 与 .claude/skills。生成：node scripts/build-deck.mjs；检查：node scripts/check-deck.mjs examples/sample-deck.pptx。默认不嵌入字体。"
     }
   ]
 }

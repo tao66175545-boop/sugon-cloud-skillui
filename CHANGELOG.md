@@ -4,6 +4,19 @@
 一个版本号贯穿所有渠道：git tag `vX.Y.Z` = `package.json` `version` = `SKILL.md` `metadata.version` = `export/manifest.json` `version`。
 1.0 之前：删除 / 重命名 CSS 变量、改技能目录或 `name` 视为破坏性变更，升 minor。
 
+## [0.4.1] - 2026-10-10
+
+### 新增
+
+- 技能 **`sugon-ppt-template`**：通用 16:9 政企汇报版式（封面 / 目录 / 章节 / 正文 / 双栏 / 图表占位 / 结束）；`scripts/build-deck.mjs`（pptxgenjs）生成样例 deck；`scripts/check-deck.mjs` 检查色值白名单、logo、16:9、无 Wingdings / 微软雅黑、无占位符、不用 UI 红。
+- 样例 `skills/sugon-ppt-template/examples/sample-deck.pptx`（封面 + 目录 + 2 页正文 + 结束），强调色为识别红 `#AF1F24`，带横式 logo。
+- 默认**不嵌入字体**（思源黑体 / Source Han Sans SC 仅写字体名）；仓库不附带字体文件。
+
+### 说明
+
+- 无官方 `.potx` 时的通用草稿母版；拿到官方母版后应优先填母版。
+- **未在 WPS（Windows / 统信 UOS / 麒麟）实机打开验收**，需你方人工确认。
+
 ## [0.4.0] - 2026-10-10
 
 ### 新增
@@ -121,6 +134,7 @@
 - 公开构建不内置任何 API Key 或模型网关（用户自带 OpenAI 兼容端点与 Key，仅存浏览器）；`npm run check:dist` 拦截密钥与内部地址。
 - GitHub Pages 子路径构建与自动部署；MIT 许可证。
 
+[0.4.1]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.4.1
 [0.4.0]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.4.0
 [0.3.1]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.3.1
 [0.3.0]: https://github.com/tao66175545-boop/sugon-cloud-skillui/releases/tag/v0.3.0
