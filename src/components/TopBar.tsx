@@ -1,10 +1,13 @@
 import logoUrl from '../assets/logo.svg'
+import type { AppTab } from '../App'
 
 type TopBarProps = {
   skillCount: number
+  tab: AppTab
+  onTabChange: (tab: AppTab) => void
 }
 
-export function TopBar({ skillCount }: TopBarProps) {
+export function TopBar({ skillCount, tab, onTabChange }: TopBarProps) {
   return (
     <header
       className="topbar-frost"
@@ -29,7 +32,11 @@ export function TopBar({ skillCount }: TopBarProps) {
         }}
       >
         <a
-          href="#agent"
+          href="#playground"
+          onClick={(e) => {
+            e.preventDefault()
+            onTabChange('playground')
+          }}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -71,10 +78,30 @@ export function TopBar({ skillCount }: TopBarProps) {
                 lineHeight: 'var(--leading-snug)',
               }}
             >
-              风格供给层 · 本地可复用 · 已登记 {skillCount} 项
+              风格供给层 · Playground · 已登记 {skillCount} 项
             </span>
           </span>
         </a>
+
+        <nav className="app-tabs" aria-label="主导航">
+          <button
+            type="button"
+            className={tab === 'playground' ? 'app-tab is-active' : 'app-tab'}
+            aria-current={tab === 'playground' ? 'page' : undefined}
+            onClick={() => onTabChange('playground')}
+          >
+            Playground
+          </button>
+          <button
+            type="button"
+            className={tab === 'agent' ? 'app-tab is-active' : 'app-tab'}
+            aria-current={tab === 'agent' ? 'page' : undefined}
+            onClick={() => onTabChange('agent')}
+            title="实验功能：需要自备 LLM Key，归库只写入本机浏览器"
+          >
+            实验：AI 起草 Skill
+          </button>
+        </nav>
       </div>
     </header>
   )
