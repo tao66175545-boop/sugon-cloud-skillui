@@ -4,12 +4,15 @@
 一个版本号贯穿所有渠道：git tag `vX.Y.Z` = `package.json` `version` = `SKILL.md` `metadata.version` = `export/manifest.json` `version`。
 1.0 之前：删除 / 重命名 CSS 变量、改技能目录或 `name` 视为破坏性变更，升 minor。
 
-## [0.4.5] - 2026-10-10
+## [0.4.5] - 2026-10-12
 
 ### 变更
 
-- **`sugon-ppt-template` P0（高级PPT设计专家拍板）**：抽出冻结 `scripts/theme.mjs`（色 / 字号阶梯 / 边距 0.6·0.45·0.4 / gutter 0.2" / 卡 padding / 红竖条 4×22pt / Logo 位）；正文 `#333`、辅助 `#666`、卡底 `#F5F5F5`、H1 `#1A1A1A`；新增参数化 `layoutCards`；H2 默认深色，红仅用于推荐/当前/KPI/Logo/章节数字。
-- 样例 deck 从 100 页**收敛为 40 个叙事母版**（≤45）；`layouts.md` 区分母版与参数化变体；`check-deck` 增加 ≤45 页与禁 `#999`-on-card。
+- **`sugon-ppt-template` P0（高级PPT设计专家拍板）**：抽出冻结 `scripts/theme.mjs`（色 / 字号阶梯 / 边距 0.6·0.45·0.4 / gutter 0.2" / 卡 padding / Logo 位）；新增参数化 `layoutCards`；H2 默认深色，红仅用于推荐/当前/KPI/Logo/章节数字。
+- 样例 deck 从 100 页**收敛为 40 个叙事母版**（≤45）；`layouts.md` 区分母版与参数化变体；`check-deck` 增加 ≤45 页与禁低对比灰 on-card。
+- **设计契约入库**：新增 `DESIGN.md`（品牌锁 / Family A·B / 视觉门禁 / 否决清单）、`tokens.css`、`RULES.md`（rule-001…017，含 W42：动效决策树、流水线禁跳步、密度合同、双层 QA、单路由、跨页单母题）。
+- **Token 对齐品牌锁**：Muted `#727272`、Card `#F0F0F0`（与 logo 灰 / 样张 Family B 一致）；站立门禁写入 skill（Logo 安全区、禁三横线 chrome、Icon+字一体、等宽栏）。
+- **图标默认**：Lucide（主）+ Material Symbols（备）；动效 icon 库暂缓。
 - 调研/拍板记录：`docs/ppt-p0-expert-audit.md`。
 
 ### 说明

@@ -77,7 +77,7 @@ for (const name of slideFiles) {
     }
     if (BANNED_ON_CARD.includes(raw) || BANNED_ON_CARD.includes(raw.slice(0, 3))) {
       sawBannedGray = true
-      problems.push(`${name}: banned low-contrast gray ${hex} (no #999 on card #F5F5F5)`)
+      problems.push(`${name}: banned low-contrast gray ${hex} (no #999 on card #F0F0F0)`)
     }
     if (!ALLOWED.has(hex)) {
       const r = parseInt(m[1].slice(0, 2), 16)

@@ -20,9 +20,9 @@ export const COLOR = Object.freeze({
   brand: brand.color.brand.red.$value.replace('#', '').toUpperCase(), // AF1F24
   text: '1A1A1A',
   body: '333333',
-  muted: '666666',
+  muted: '727272',
   white: 'FFFFFF',
-  card: 'F5F5F5',
+  card: 'F0F0F0',
   line: 'E8E8E8',
   subtle: 'FAFAFA',
   /** semantic — status cells only, area <5% */

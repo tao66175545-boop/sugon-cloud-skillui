@@ -1,0 +1,96 @@
+/**
+ * sugon-ppt-template design tokens — v0.4.5
+ *
+ * PPT 识别红用 --sugon-brand (#AF1F24)。
+ * --sugon-brand-deep (#C8161D) 为 UI/深强调，计入红预算。
+ * 与 scripts/theme.mjs 对齐。
+ */
+
+:root {
+  /* —— Color —— */
+  --sugon-canvas: #ffffff;
+  --sugon-card: #f0f0f0;
+  --sugon-title: #1a1a1a;
+  --sugon-body: #333333;
+  --sugon-muted: #727272;
+  --sugon-brand: #af1f24;
+  --sugon-brand-deep: #c8161d;
+  --sugon-line: #e0e0e0;
+  --sugon-white: #ffffff;
+
+  /* Forbidden (do not use as fill) */
+  /* --forbidden-pink-wash: #f8e8e8; */
+  /* --forbidden-pink-wash-2: #fff5f5; */
+
+  /* —— Red budget —— */
+  --sugon-red-max-area: 8%;
+  --sugon-red-max-spots: 2;
+
+  /* —— Canvas 16:9 —— */
+  --sugon-slide-w: 13.333in;
+  --sugon-slide-h: 7.5in;
+  --sugon-margin-l: 0.6in;
+  --sugon-margin-r: 0.6in;
+  --sugon-margin-t: 0.45in;
+  --sugon-margin-b: 0.4in;
+  --sugon-gutter: 0.2in;
+  --sugon-block-gap: 0.35in;
+
+  /* —— Logo safe zone (top-right) —— */
+  --sugon-logo-inset: 0.35in; /* ≥8–10mm */
+  --sugon-logo-safe-min: 8mm;
+
+  /* —— Type (pt) —— */
+  --sugon-type-cover: 48;
+  --sugon-type-page-title: 36;
+  --sugon-type-section: 22;
+  --sugon-type-body: 15;
+  --sugon-type-caption: 11;
+  --sugon-type-num: 36;
+  --sugon-type-kpi: 64;
+
+  /* —— Icon —— */
+  --sugon-icon-set-primary: "lucide";
+  --sugon-icon-set-fallback: "material-symbols";
+  --sugon-icon-title-gap: 6mm; /* after icon row before list */
+
+  /* —— Taste knobs (enterprise) —— */
+  --sugon-variance: low;
+  --sugon-motion: minimal;
+  --sugon-density: medium;
+
+  /* —— Font —— */
+  --sugon-font-sans: "Source Han Sans SC", "Noto Sans CJK SC", "Noto Sans SC",
+    system-ui, sans-serif;
+}
+
+/* Optional dark-scheme block intentionally omitted — dark skins vetoed for Sugon PPT. */
+
+/* Utility hints for HTML / Playground previews only (not .pptx) */
+.sugon-canvas {
+  background: var(--sugon-canvas);
+  color: var(--sugon-body);
+  font-family: var(--sugon-font-sans);
+}
+
+.sugon-card {
+  background: var(--sugon-card);
+}
+
+.sugon-title {
+  color: var(--sugon-title);
+}
+
+.sugon-muted {
+  color: var(--sugon-muted);
+}
+
+.sugon-brand {
+  color: var(--sugon-brand);
+}
+
+.sugon-kpi {
+  color: var(--sugon-brand);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}

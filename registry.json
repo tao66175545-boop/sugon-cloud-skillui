@@ -311,7 +311,7 @@
       "name": "sugon-ppt-template",
       "type": "registry:item",
       "title": "曙光云政企 PPT 模板",
-      "description": "16:9 gov/enterprise PPT skill: layouts, pptxgenjs build-deck, check-deck, sample deck with brand red #AF1F24 and logo. No font embedding by default.",
+      "description": "16:9 gov/enterprise PPT skill: DESIGN/tokens/RULES, theme.mjs, layouts, pptxgenjs build-deck, check-deck, sample deck; brand red #AF1F24; Lucide+Material icons. No font embedding by default.",
       "files": [
         {
           "path": "skills/sugon-ppt-template/SKILL.md",
@@ -392,9 +392,49 @@
           "path": "skills/sugon-ppt-template/examples/sample-deck.pptx",
           "type": "registry:file",
           "target": "~/.claude/skills/sugon-ppt-template/examples/sample-deck.pptx"
+        },
+        {
+          "path": "skills/sugon-ppt-template/DESIGN.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-ppt-template/DESIGN.md"
+        },
+        {
+          "path": "skills/sugon-ppt-template/DESIGN.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-ppt-template/DESIGN.md"
+        },
+        {
+          "path": "skills/sugon-ppt-template/tokens.css",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-ppt-template/tokens.css"
+        },
+        {
+          "path": "skills/sugon-ppt-template/tokens.css",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-ppt-template/tokens.css"
+        },
+        {
+          "path": "skills/sugon-ppt-template/RULES.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-ppt-template/RULES.md"
+        },
+        {
+          "path": "skills/sugon-ppt-template/RULES.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-ppt-template/RULES.md"
+        },
+        {
+          "path": "skills/sugon-ppt-template/scripts/theme.mjs",
+          "type": "registry:file",
+          "target": "~/.agents/skills/sugon-ppt-template/scripts/theme.mjs"
+        },
+        {
+          "path": "skills/sugon-ppt-template/scripts/theme.mjs",
+          "type": "registry:file",
+          "target": "~/.claude/skills/sugon-ppt-template/scripts/theme.mjs"
         }
       ],
-      "docs": "PPT 技能已写入 .agents/skills 与 .claude/skills。生成：node scripts/build-deck.mjs；检查：node scripts/check-deck.mjs examples/sample-deck.pptx。默认不嵌入字体。"
+      "docs": "PPT 技能已写入 .agents/skills 与 .claude/skills。先读 DESIGN.md / RULES.md；生成：node scripts/build-deck.mjs；检查：node scripts/check-deck.mjs examples/sample-deck.pptx。默认不嵌入字体。"
     }
   ]
 }
