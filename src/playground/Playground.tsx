@@ -162,39 +162,39 @@ export function Playground() {
               </div>
             </div>
 
-            <form className="sugon-card" onSubmit={(e) => e.preventDefault()}>
-              <h3 className="sugon-card-title">新建联系人</h3>
+            <form className="sugon-card" onSubmit={(e) => e.preventDefault()} aria-label="表单组件样例">
+              <h3 className="sugon-card-title">表单组件样例</h3>
               <div className="sugon-field">
                 <label className="sugon-label" htmlFor="pg-name">
                   姓名
                 </label>
-                <input id="pg-name" className="sugon-input" placeholder="张三" defaultValue="李涛" />
-                <p className="sugon-help">显示在工单页眉</p>
+                <input id="pg-name" className="sugon-input" placeholder="示例姓名" defaultValue="示例姓名" />
+                <p className="sugon-help">字段下方的辅助说明</p>
               </div>
               <div className="sugon-field">
                 <label className="sugon-label" htmlFor="pg-role">
                   角色
                 </label>
                 <select id="pg-role" className="sugon-select" defaultValue="owner">
-                  <option value="owner">负责人</option>
-                  <option value="member">成员</option>
+                  <option value="owner">选项甲</option>
+                  <option value="member">选项乙</option>
                 </select>
               </div>
               <div className="sugon-field">
                 <label className="sugon-label" htmlFor="pg-email">
-                  邮箱（错误态）
+                  邮箱
                 </label>
                 <input
                   id="pg-email"
                   className="sugon-input"
                   aria-invalid="true"
-                  defaultValue="not-an-email"
+                  defaultValue="invalid@"
                 />
                 <p className="sugon-error">请输入有效邮箱</p>
               </div>
               <label className="sugon-check">
                 <input type="checkbox" defaultChecked />
-                <span>同步到通知中心</span>
+                <span>勾选框标签示例</span>
               </label>
             </form>
           </div>
