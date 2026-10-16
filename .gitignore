@@ -38,3 +38,7 @@ coverage
 # OS
 Thumbs.db
 .tmp-fresh-vite/
+
+# Local smoke / visual evidence (not for repo)
+_test_evidence/
+
