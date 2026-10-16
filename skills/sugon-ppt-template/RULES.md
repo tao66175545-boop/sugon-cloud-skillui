@@ -1,3 +1,5 @@
+> 出门禁清单见同目录 **`GATES.md`**（V/L/C）。硬锁全文见 `references/HARD-LOCKS.md`。v0.4.6-ppt-skill-module。
+
 # RULES.md · 曙光 PPT 规则摘要
 
 > v0.4.5 · 站立门禁 + rule-001…017（含 W42 摄入）。与 `DESIGN.md` 一并执行。

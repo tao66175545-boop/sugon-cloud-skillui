@@ -17,7 +17,11 @@ export const BRAND_KIT_PATH = 'skills/sugon-brand-kit/'
 export const LEGACY_BRAND_KIT_PATH = 'design-skills/brand-kit/'
 const BRAND_KIT_NAME = '品牌工具包 (sugon-brand-kit)'
 
-/** 默认种子：仓库内供给层 sugon-brand-kit（id 保持 brand-kit，兼容已有 localStorage） */
+
+export const PPT_SKILL_PATH = 'skills/sugon-ppt-template/'
+const PPT_SKILL_NAME = '政企 PPT (sugon-ppt-template)'
+
+/** 默认种子：brand-kit + PPT SKILL */
 export const DEFAULT_SKILLS: Skill[] = [
   {
     id: 'brand-kit',
@@ -27,6 +31,16 @@ export const DEFAULT_SKILLS: Skill[] = [
     content:
       '入口：SKILL.md；规范：DESIGN.md；令牌：tokens.css。主色 #C8161D，灰白中性色。',
     createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'ppt-skill',
+    name: PPT_SKILL_NAME,
+    purpose:
+      '政企 16:9 PPT 供给层：HARD-LOCKS、GATES、dehom7 十型与 100 页样张 sugon-od-v3-100。',
+    path: PPT_SKILL_PATH,
+    content:
+      '入口：SKILL.md；门禁：GATES.md；样张：examples/sugon-od-v3-100.pptx（dehom7 · ind7-YokM0y）。识别红 #AF1F24。',
+    createdAt: '2026-10-15T00:00:00.000Z',
   },
 ]
 
@@ -52,6 +66,14 @@ function migrateSkill(s: Skill): Skill {
   }
 }
 
+/** 补全缺失的默认种子（不覆盖用户改过的同 id） */
+function ensureDefaultSkills(skills: Skill[]): Skill[] {
+  const ids = new Set(skills.map((s) => s.id))
+  const missing = DEFAULT_SKILLS.filter((d) => !ids.has(d.id))
+  if (!missing.length) return skills
+  return [...skills, ...missing]
+}
+
 export function loadSkills(): Skill[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -69,8 +91,13 @@ export function loadSkills(): Skill[] {
       saveSkills(DEFAULT_SKILLS)
       return [...DEFAULT_SKILLS]
     }
-    const skills = stored.map(migrateSkill)
-    if (skills.some((s, i) => s !== stored[i])) saveSkills(skills)
+    const skills = ensureDefaultSkills(stored.map(migrateSkill))
+    if (
+      skills.length !== stored.length ||
+      skills.some((s, i) => stored[i] && s !== stored[i])
+    ) {
+      saveSkills(skills)
+    }
     return skills
   } catch {
     saveSkills(DEFAULT_SKILLS)

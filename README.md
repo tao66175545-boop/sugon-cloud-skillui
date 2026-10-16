@@ -12,6 +12,8 @@
 
 ## 演示站
 
+**PPT SKILL 模块**（本地 `npm run dev` 顶栏第三页签）：政企 16:9 供给层入口，样张下载 `public/ppt-skill/sugon-od-v3-100.pptx`（版本 `sugon-od-v3-100 · dehom7 · ind7-YokM0y`），技能目录 [`skills/sugon-ppt-template/`](./skills/sugon-ppt-template/)（含 `GATES.md` / `references/HARD-LOCKS.md`）。不宣称「门禁过」。
+
 打开 [GitHub Pages](https://tao66175545-boop.github.io/sugon-cloud-skillui/) 默认就是 **Playground**（色板 + `sugon-*` 预览 + 底部复制安装命令），**不需要 API Key**。「实验：AI 起草 Skill」是次级页签，归库只写本机浏览器。
 
 ## 30 秒安装

@@ -94,6 +94,15 @@ export function TopBar({ skillCount, tab, onTabChange }: TopBarProps) {
           </button>
           <button
             type="button"
+            className={tab === 'ppt-skill' ? 'app-tab is-active' : 'app-tab'}
+            aria-current={tab === 'ppt-skill' ? 'page' : undefined}
+            onClick={() => onTabChange('ppt-skill')}
+            title="政企 16:9 PPT 供给层与 100 页样张"
+          >
+            PPT SKILL
+          </button>
+          <button
+            type="button"
             className={tab === 'agent' ? 'app-tab is-active' : 'app-tab'}
             aria-current={tab === 'agent' ? 'page' : undefined}
             onClick={() => onTabChange('agent')}

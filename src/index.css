@@ -529,3 +529,104 @@
   font-size: var(--text-xs);
   color: var(--color-text-muted);
 }
+
+/* —— PPT SKILL module —— */
+.ppt-skill {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--space-8) var(--container-pad-inline) 8.5rem;
+}
+
+.ppt-skill-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.ppt-skill-meta {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.ppt-skill-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-sm);
+}
+
+.ppt-skill-label {
+  min-width: 6.5rem;
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+}
+
+.ppt-skill-swatch {
+  width: 1rem;
+  height: 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  display: inline-block;
+}
+
+.ppt-skill-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.ppt-skill-note {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+
+.ppt-skill-notes {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  display: grid;
+  gap: 0.5rem;
+}
+
+.ppt-skill-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+  gap: var(--space-4);
+}
+
+.ppt-skill-card {
+  margin: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ppt-skill-thumb-link {
+  display: block;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-muted);
+}
+
+.ppt-skill-thumb {
+  display: block;
+  width: 100%;
+  height: 7.5rem;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.ppt-skill-card figcaption {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+}
